@@ -1,0 +1,238 @@
+/**
+ * =================================================================================
+ * JHipster Domain Language (JDL) pour le projet de Gestion de Dossiers Patients
+ * Version Finale - Reflète la documentation de base de données détaillée.
+ * =================================================================================
+ */
+
+// --- Enumérations (listes de choix fixes) ---
+
+enum Gender {
+    MALE, FEMALE, OTHER
+}
+
+enum AppointmentStatus {
+    REQUESTED, CONFIRMED, CANCELLED_BY_PATIENT, CANCELLED_BY_CLINIC, COMPLETED
+}
+
+enum NotificationType {
+    APPOINTMENT_CONFIRMED, NEW_DOCUMENT, RESULT_AVAILABLE, APPOINTMENT_REMINDER, APPOINTMENT_REQUEST
+}
+
+
+// =================================================================================
+// --- ENTITES METIER ---
+// =================================================================================
+
+/**
+ * Table centrale: contient les informations d'identification et administratives des patients.
+ * @encryptedFields address, phone1, phone2, email, contactPersonName, contactPersonPhone, antecedents, allergies
+ * @hashedFields nif, ninu, passportNumber
+ */
+entity Patient {
+    firstName String required,
+    lastName String required,
+    birthDate LocalDate required,
+    gender Gender,
+    bloodType String,
+    address TextBlob,
+    phone1 String required,
+    phone2 String,
+    email String unique,
+    nif String unique,
+    ninu String unique,
+    heightCm Integer,       
+    weightKg Double,
+    passportNumber String unique,
+    contactPersonName String,
+    contactPersonPhone String,
+    antecedents TextBlob,
+    allergies TextBlob
+}
+
+/**
+ * Profil professionnel détaillé pour chaque médecin.
+ * @encryptedFields licenseNumber
+ */
+entity DoctorProfile {
+    specialty String required,
+    licenseNumber String required unique,
+    university String,
+    startDateOfPractice LocalDate required
+}
+
+/**
+ * Représente chaque rencontre médicale (visite).
+ * @encryptedFields symptoms, diagnosis
+ */
+entity Consultation {
+    consultationDate ZonedDateTime required,
+    symptoms TextBlob,
+    diagnosis TextBlob
+}
+
+/**
+ * En-tête d'une ordonnance, liée à une consultation.
+ */
+entity Prescription {
+    prescriptionDate LocalDate required
+}
+
+/**
+ * Dictionnaire central des médicaments.
+ */
+entity Medication {
+    name String required unique,
+    description TextBlob
+}
+
+/**
+ * Ligne détaillée d'une prescription (médicament, posologie, etc.).
+ * @encryptedFields dosage, frequency, duration
+ */
+entity PrescriptionItem {
+    dosage String,
+    frequency String required,
+    duration String
+}
+
+/**
+ * Catalogue des documents externes (PDFs, images).
+ * Le fichier est stocké sur le serveur, seul le chemin est en base.
+ * @encryptedFields description
+ */
+entity MedicalDocument {
+    documentName String required,
+    documentDate LocalDate,
+    filePath String required unique,
+    fileType String required,
+    desc String 
+}
+
+/**
+ * Catalogue des types d'analyses de laboratoire disponibles.
+ */
+entity LabTestCatalog {
+    name String required unique,
+    unit String required,
+    referenceRangeLow BigDecimal,
+    referenceRangeHigh BigDecimal
+}
+
+/**
+ * Résultat numérique d'une analyse de laboratoire spécifique.
+ * @encryptedFields resultValue
+ */
+entity LabTestResult {
+    resultValue BigDecimal required,
+    resultDate LocalDate required,
+    isAbnormal Boolean required
+}
+
+/**
+ * Enregistrement d'un séjour hospitalier.
+ * @encryptedFields reason
+ */
+entity Hospitalization {
+    admissionDate ZonedDateTime required,
+    dischargeDate ZonedDateTime,
+    reason TextBlob
+}
+
+/**
+ * Gestion du planning et des rendez-vous.
+ * @encryptedFields reason
+ */
+entity Appointment {
+    startTime ZonedDateTime required,
+    endTime ZonedDateTime required,
+    status AppointmentStatus required,
+    reason TextBlob
+}
+
+/**
+ * Notifications "in-app" pour les utilisateurs.
+ */
+entity Notification {
+    message TextBlob required,
+    isRead Boolean required,
+    notificationType NotificationType required,
+    creationDate ZonedDateTime required,
+    relatedEntityId Long
+}
+
+/**
+ * Préférences et configurations de sécurité de l'utilisateur.
+ * @encryptedFields twoFactorSecret
+ */
+entity UserConfiguration {
+    twoFactorEnabled Boolean required,
+    twoFactorSecret String,
+    receiveEmailNotifs Boolean required
+}
+
+
+// =================================================================================
+// --- RELATIONS ENTRE LES ENTITES ---
+// =================================================================================
+
+relationship OneToOne {
+    /** Un profil de médecin est lié à un et un seul compte utilisateur. */
+    DoctorProfile{user(login) required} to User,
+    
+    /** Un dossier patient est lié à un et un seul compte utilisateur (pour le portail). */
+    Patient{user(login) required} to User,
+    
+    /** Une consultation donne lieu à une et une seule prescription. */
+    Consultation{prescription} to Prescription{consultation},
+
+    /** Chaque utilisateur a une et une seule page de configuration. */
+    UserConfiguration{user(login) required} to User
+}
+
+relationship ManyToOne {
+    /** Une consultation est menée par un médecin (User) et concerne un patient. */
+    Consultation{doctor(login) required} to User,
+    Consultation{patient(firstName) required} to Patient,
+    
+    /** Une ligne de prescription est liée à un médicament du catalogue. */
+    PrescriptionItem{medication(name) required} to Medication,
+    
+    /** Un document appartient à un patient. */
+    MedicalDocument{patient(firstName) required} to Patient,
+
+    /** Un résultat de labo appartient à un patient, est d'un certain type, et peut venir d'une consultation. */
+    LabTestResult{patient(firstName) required} to Patient,
+    LabTestResult{labTest(name) required} to LabTestCatalog,
+    LabTestResult{consultation(id)} to Consultation,
+
+    /** Une hospitalisation concerne un patient et est supervisée par un médecin. */
+    Hospitalization{patient(firstName) required} to Patient,
+    Hospitalization{attendingDoctor(login)} to User,
+
+    /** Un rendez-vous lie un patient et un médecin. */
+    Appointment{patient(firstName) required} to Patient,
+    Appointment{doctor(login) required} to User,
+
+    /** Une notification est destinée à un utilisateur. */
+    Notification{targetUser(login) required} to User
+}
+
+relationship OneToMany {
+    /** Une prescription contient plusieurs lignes de médicaments. */
+    Prescription{items} to PrescriptionItem{prescription(id) required}
+}
+
+
+// =================================================================================
+// --- OPTIONS TECHNIQUES JHIPSTER ---
+// =================================================================================
+
+// On veut des DTOs pour toutes nos entités pour contrôler les données exposées via l'API.
+dto * with mapstruct
+
+// On veut que la logique métier soit dans des classes de Service dédiées.
+service all with serviceClass
+
+// On veut de la pagination pour les longues listes pour ne pas surcharger le client.
+paginate Patient, Consultation, Appointment, MedicalDocument, Hospitalization, Notification with pagination
