@@ -1,0 +1,12 @@
+{
+  "gdpApp": {
+    "AppointmentStatus": {
+      "null": "",
+      "REQUESTED": "REQUESTED",
+      "CONFIRMED": "CONFIRMED",
+      "CANCELLED_BY_PATIENT": "CANCELLED_BY_PATIENT",
+      "CANCELLED_BY_CLINIC": "CANCELLED_BY_CLINIC",
+      "COMPLETED": "COMPLETED"
+    }
+  }
+}

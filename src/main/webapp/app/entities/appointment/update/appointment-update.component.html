@@ -1,0 +1,169 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-appointment-heading" data-cy="AppointmentCreateUpdateHeading" jhiTranslate="gdpApp.appointment.home.createOrEditLabel">
+        Créer ou éditer un Appointment
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="gdpApp.appointment.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let startTimeRef = editForm.get('startTime')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_startTime" jhiTranslate="gdpApp.appointment.startTime">Start Time</label>
+          <div class="d-flex">
+            <input
+              id="field_startTime"
+              data-cy="startTime"
+              type="datetime-local"
+              class="form-control"
+              name="startTime"
+              formControlName="startTime"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (startTimeRef.invalid && (startTimeRef.dirty || startTimeRef.touched)) {
+            <div>
+              @if (editForm.get('startTime')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('startTime')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Ce champ doit être une date et une heure.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let endTimeRef = editForm.get('endTime')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_endTime" jhiTranslate="gdpApp.appointment.endTime">End Time</label>
+          <div class="d-flex">
+            <input
+              id="field_endTime"
+              data-cy="endTime"
+              type="datetime-local"
+              class="form-control"
+              name="endTime"
+              formControlName="endTime"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (endTimeRef.invalid && (endTimeRef.dirty || endTimeRef.touched)) {
+            <div>
+              @if (editForm.get('endTime')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('endTime')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Ce champ doit être une date et une heure.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let statusRef = editForm.get('status')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_status" jhiTranslate="gdpApp.appointment.status">Status</label>
+          <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
+            <option [ngValue]="null">{{ 'gdpApp.AppointmentStatus.null' | translate }}</option>
+            @for (appointmentStatus of appointmentStatusValues; track $index) {
+              <option [value]="appointmentStatus">{{ 'gdpApp.AppointmentStatus.' + appointmentStatus | translate }}</option>
+            }
+          </select>
+          @if (statusRef.invalid && (statusRef.dirty || statusRef.touched)) {
+            <div>
+              @if (editForm.get('status')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_reason" jhiTranslate="gdpApp.appointment.reason">Reason</label>
+          <textarea class="form-control" name="reason" id="field_reason" data-cy="reason" formControlName="reason"></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_patient" jhiTranslate="gdpApp.appointment.patient">Patient</label>
+          <select
+            class="form-control"
+            id="field_patient"
+            data-cy="patient"
+            name="patient"
+            formControlName="patient"
+            [compareWith]="comparePatient"
+          >
+            @if (!editForm.get('patient')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (patientOption of patientsSharedCollection; track $index) {
+              <option [ngValue]="patientOption">{{ patientOption.firstName }}</option>
+            }
+          </select>
+        </div>
+        @if (editForm.get(['patient'])!.invalid && (editForm.get(['patient'])!.dirty || editForm.get(['patient'])!.touched)) {
+          <div>
+            @if (editForm.get(['patient'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+            }
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_doctor" jhiTranslate="gdpApp.appointment.doctor">Doctor</label>
+          <select
+            class="form-control"
+            id="field_doctor"
+            data-cy="doctor"
+            name="doctor"
+            formControlName="doctor"
+            [compareWith]="compareUser"
+          >
+            @if (!editForm.get('doctor')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (userOption of usersSharedCollection; track $index) {
+              <option [ngValue]="userOption">{{ userOption.login }}</option>
+            }
+          </select>
+        </div>
+        @if (editForm.get(['doctor'])!.invalid && (editForm.get(['doctor'])!.dirty || editForm.get(['doctor'])!.touched)) {
+          <div>
+            @if (editForm.get(['doctor'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+            }
+          </div>
+        }
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

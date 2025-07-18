@@ -1,0 +1,28 @@
+{
+  "gdpApp": {
+    "hospitalization": {
+      "home": {
+        "title": "Hospitalizations",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Hospitalization",
+        "createOrEditLabel": "Créer ou éditer un Hospitalization",
+        "notFound": "Aucun Hospitalization trouvé"
+      },
+      "created": "Un nouveau Hospitalization a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Hospitalization avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Hospitalization avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Hospitalization {{ id }} ?"
+      },
+      "detail": {
+        "title": "Hospitalization"
+      },
+      "id": "ID",
+      "admissionDate": "Admission Date",
+      "dischargeDate": "Discharge Date",
+      "reason": "Reason",
+      "patient": "Patient",
+      "attendingDoctor": "Attending Doctor"
+    }
+  }
+}

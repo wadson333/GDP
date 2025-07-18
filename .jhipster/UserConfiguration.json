@@ -1,0 +1,39 @@
+{
+  "annotations": {
+    "changelogDate": "20250716190755"
+  },
+  "applications": "*",
+  "documentation": "Préférences et configurations de sécurité de l'utilisateur.\\n@encryptedFields twoFactorSecret",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "twoFactorEnabled",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "twoFactorSecret",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "receiveEmailNotifs",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "UserConfiguration",
+  "relationships": [
+    {
+      "documentation": "Chaque utilisateur a une et une seule page de configuration.",
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one",
+      "relationshipValidateRules": "required",
+      "relationshipWithBuiltInEntity": true
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

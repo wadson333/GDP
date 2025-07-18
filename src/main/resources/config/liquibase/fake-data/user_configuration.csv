@@ -1,0 +1,3 @@
+id;two_factor_enabled;two_factor_secret;receive_email_notifs;user_id
+1;true;responsable au-delà que;true;1
+2;false;bon dans;false;2

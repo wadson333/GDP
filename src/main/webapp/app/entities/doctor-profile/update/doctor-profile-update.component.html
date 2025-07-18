@@ -1,0 +1,133 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-doctor-profile-heading"
+        data-cy="DoctorProfileCreateUpdateHeading"
+        jhiTranslate="gdpApp.doctorProfile.home.createOrEditLabel"
+      >
+        Créer ou éditer un Doctor Profile
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="gdpApp.doctorProfile.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let specialtyRef = editForm.get('specialty')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_specialty" jhiTranslate="gdpApp.doctorProfile.specialty">Specialty</label>
+          <input type="text" class="form-control" name="specialty" id="field_specialty" data-cy="specialty" formControlName="specialty" />
+          @if (specialtyRef.invalid && (specialtyRef.dirty || specialtyRef.touched)) {
+            <div>
+              @if (editForm.get('specialty')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let licenseNumberRef = editForm.get('licenseNumber')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_licenseNumber" jhiTranslate="gdpApp.doctorProfile.licenseNumber">License Number</label>
+          <input
+            type="text"
+            class="form-control"
+            name="licenseNumber"
+            id="field_licenseNumber"
+            data-cy="licenseNumber"
+            formControlName="licenseNumber"
+          />
+          @if (licenseNumberRef.invalid && (licenseNumberRef.dirty || licenseNumberRef.touched)) {
+            <div>
+              @if (editForm.get('licenseNumber')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_university" jhiTranslate="gdpApp.doctorProfile.university">University</label>
+          <input
+            type="text"
+            class="form-control"
+            name="university"
+            id="field_university"
+            data-cy="university"
+            formControlName="university"
+          />
+        </div>
+
+        @let startDateOfPracticeRef = editForm.get('startDateOfPractice')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_startDateOfPractice" jhiTranslate="gdpApp.doctorProfile.startDateOfPractice"
+            >Start Date Of Practice</label
+          >
+          <div class="input-group">
+            <input
+              id="field_startDateOfPractice"
+              data-cy="startDateOfPractice"
+              type="text"
+              class="form-control"
+              name="startDateOfPractice"
+              ngbDatepicker
+              #startDateOfPracticeDp="ngbDatepicker"
+              formControlName="startDateOfPractice"
+            />
+            <button type="button" class="btn btn-secondary" (click)="startDateOfPracticeDp.toggle()">
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
+          </div>
+          @if (startDateOfPracticeRef.invalid && (startDateOfPracticeRef.dirty || startDateOfPracticeRef.touched)) {
+            <div>
+              @if (editForm.get('startDateOfPractice')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_user" jhiTranslate="gdpApp.doctorProfile.user">User</label>
+          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user" [compareWith]="compareUser">
+            @if (!editForm.get('user')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (userOption of usersSharedCollection; track $index) {
+              <option [ngValue]="userOption">{{ userOption.login }}</option>
+            }
+          </select>
+        </div>
+        @if (editForm.get(['user'])!.invalid && (editForm.get(['user'])!.dirty || editForm.get(['user'])!.touched)) {
+          <div>
+            @if (editForm.get(['user'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+            }
+          </div>
+        }
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

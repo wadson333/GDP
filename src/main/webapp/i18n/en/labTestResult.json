@@ -1,0 +1,29 @@
+{
+  "gdpApp": {
+    "labTestResult": {
+      "home": {
+        "title": "Lab Test Results",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Lab Test Result",
+        "createOrEditLabel": "Create or edit a Lab Test Result",
+        "notFound": "No Lab Test Results found"
+      },
+      "created": "A new Lab Test Result is created with identifier {{ param }}",
+      "updated": "A Lab Test Result is updated with identifier {{ param }}",
+      "deleted": "A Lab Test Result is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Lab Test Result {{ id }}?"
+      },
+      "detail": {
+        "title": "Lab Test Result"
+      },
+      "id": "ID",
+      "resultValue": "Result Value",
+      "resultDate": "Result Date",
+      "isAbnormal": "Is Abnormal",
+      "patient": "Patient",
+      "labTest": "Lab Test",
+      "consultation": "Consultation"
+    }
+  }
+}

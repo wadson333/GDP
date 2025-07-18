@@ -1,0 +1,23 @@
+{
+  "annotations": {
+    "changelogDate": "20250716190750"
+  },
+  "applications": "*",
+  "documentation": "Dictionnaire central des médicaments.",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "TextBlob"
+    }
+  ],
+  "name": "Medication",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

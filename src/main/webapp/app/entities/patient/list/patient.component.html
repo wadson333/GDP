@@ -1,0 +1,252 @@
+<div>
+  <h2 id="page-heading" data-cy="PatientHeading">
+    <span jhiTranslate="gdpApp.patient.home.title">Patients</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="gdpApp.patient.home.refreshListLabel">Actualiser la liste</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-patient"
+        [routerLink]="['/patient/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="gdpApp.patient.home.createLabel">Créer un nouveau Patient</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (patients?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="gdpApp.patient.home.notFound">Aucun Patient trouvé</span>
+    </div>
+  }
+
+  @if (patients && patients.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="firstName">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.firstName">First Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastName">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.lastName">Last Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="birthDate">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.birthDate">Birth Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="gender">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.gender">Gender</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="bloodType">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.bloodType">Blood Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="address">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.address">Address</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="phone1">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.phone1">Phone 1</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="phone2">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.phone2">Phone 2</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="email">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.email">Email</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="nif">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.nif">Nif</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="ninu">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.ninu">Ninu</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="heightCm">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.heightCm">Height Cm</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="weightKg">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.weightKg">Weight Kg</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="passportNumber">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.passportNumber">Passport Number</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="contactPersonName">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.contactPersonName">Contact Person Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="contactPersonPhone">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.contactPersonPhone">Contact Person Phone</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="antecedents">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.antecedents">Antecedents</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="allergies">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.allergies">Allergies</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="user.login">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.user">User</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (patient of patients; track trackId(patient)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/patient', patient.id, 'view']">{{ patient.id }}</a>
+              </td>
+              <td>{{ patient.firstName }}</td>
+              <td>{{ patient.lastName }}</td>
+              <td>{{ patient.birthDate | formatMediumDate }}</td>
+              <td [jhiTranslate]="'gdpApp.Gender.' + (patient.gender ?? 'null')">
+                {{ { null: '', MALE: 'MALE', FEMALE: 'FEMALE', OTHER: 'OTHER' }[patient.gender ?? 'null'] }}
+              </td>
+              <td>{{ patient.bloodType }}</td>
+              <td>{{ patient.address }}</td>
+              <td>{{ patient.phone1 }}</td>
+              <td>{{ patient.phone2 }}</td>
+              <td>{{ patient.email }}</td>
+              <td>{{ patient.nif }}</td>
+              <td>{{ patient.ninu }}</td>
+              <td>{{ patient.heightCm }}</td>
+              <td>{{ patient.weightKg }}</td>
+              <td>{{ patient.passportNumber }}</td>
+              <td>{{ patient.contactPersonName }}</td>
+              <td>{{ patient.contactPersonPhone }}</td>
+              <td>{{ patient.antecedents }}</td>
+              <td>{{ patient.allergies }}</td>
+              <td>
+                {{ patient.user?.login }}
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/patient', patient.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+                  </a>
+
+                  <a [routerLink]="['/patient', patient.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(patient)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (patients && patients.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

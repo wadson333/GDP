@@ -1,0 +1,55 @@
+{
+  "annotations": {
+    "changelogDate": "20250716190744"
+  },
+  "applications": "*",
+  "documentation": "Représente chaque rencontre médicale (visite).\\n@encryptedFields symptoms, diagnosis",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "consultationDate",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "symptoms",
+      "fieldType": "TextBlob"
+    },
+    {
+      "fieldName": "diagnosis",
+      "fieldType": "TextBlob"
+    }
+  ],
+  "name": "Consultation",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "documentation": "Une consultation donne lieu à une et une seule prescription.",
+      "otherEntityName": "prescription",
+      "otherEntityRelationshipName": "consultation",
+      "relationshipName": "prescription",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "documentation": "Une consultation est menée par un médecin (User) et concerne un patient.",
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "relationshipName": "doctor",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required",
+      "relationshipWithBuiltInEntity": true
+    },
+    {
+      "otherEntityField": "firstName",
+      "otherEntityName": "patient",
+      "relationshipName": "patient",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

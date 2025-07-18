@@ -1,0 +1,108 @@
+{
+  "annotations": {
+    "changelogDate": "20250716190752"
+  },
+  "applications": "*",
+  "documentation": "Table centrale: contient les informations d'identification et administratives des patients.\\n@encryptedFields address, phone1, phone2, email, contactPersonName, contactPersonPhone, antecedents, allergies\\n@hashedFields nif, ninu, passportNumber",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "firstName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "birthDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "gender",
+      "fieldType": "Gender",
+      "fieldTypeDocumentation": "=================================================================================\\nJHipster Domain Language (JDL) pour le projet de Gestion de Dossiers Patients\\nVersion Finale - Reflète la documentation de base de données détaillée.\\n=================================================================================",
+      "fieldValues": "MALE,FEMALE,OTHER"
+    },
+    {
+      "fieldName": "bloodType",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "address",
+      "fieldType": "TextBlob"
+    },
+    {
+      "fieldName": "phone1",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "phone2",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String",
+      "fieldValidateRules": ["unique"]
+    },
+    {
+      "fieldName": "nif",
+      "fieldType": "String",
+      "fieldValidateRules": ["unique"]
+    },
+    {
+      "fieldName": "ninu",
+      "fieldType": "String",
+      "fieldValidateRules": ["unique"]
+    },
+    {
+      "fieldName": "heightCm",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "weightKg",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "passportNumber",
+      "fieldType": "String",
+      "fieldValidateRules": ["unique"]
+    },
+    {
+      "fieldName": "contactPersonName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "contactPersonPhone",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "antecedents",
+      "fieldType": "TextBlob"
+    },
+    {
+      "fieldName": "allergies",
+      "fieldType": "TextBlob"
+    }
+  ],
+  "name": "Patient",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "documentation": "Un dossier patient est lié à un et un seul compte utilisateur (pour le portail).",
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one",
+      "relationshipValidateRules": "required",
+      "relationshipWithBuiltInEntity": true
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

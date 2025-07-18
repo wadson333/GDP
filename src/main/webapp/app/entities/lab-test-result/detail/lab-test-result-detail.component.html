@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (labTestResult(); as labTestResultRef) {
+      <div>
+        <h2 data-cy="labTestResultDetailsHeading"><span jhiTranslate="gdpApp.labTestResult.detail.title">Lab Test Result</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ labTestResultRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.labTestResult.resultValue">Result Value</span></dt>
+          <dd>
+            <span>{{ labTestResultRef.resultValue }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.labTestResult.resultDate">Result Date</span></dt>
+          <dd>
+            <span>{{ labTestResultRef.resultDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.labTestResult.isAbnormal">Is Abnormal</span></dt>
+          <dd>
+            <span>{{ labTestResultRef.isAbnormal }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.labTestResult.patient">Patient</span></dt>
+          <dd>
+            @if (labTestResult()!.patient) {
+              <div>
+                <a [routerLink]="['/patient', labTestResult()!.patient?.id, 'view']">{{ labTestResultRef.patient?.firstName }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="gdpApp.labTestResult.labTest">Lab Test</span></dt>
+          <dd>
+            @if (labTestResult()!.labTest) {
+              <div>
+                <a [routerLink]="['/lab-test-catalog', labTestResult()!.labTest?.id, 'view']">{{ labTestResultRef.labTest?.name }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="gdpApp.labTestResult.consultation">Consultation</span></dt>
+          <dd>
+            @if (labTestResult()!.consultation) {
+              <div>
+                <a [routerLink]="['/consultation', labTestResult()!.consultation?.id, 'view']">{{ labTestResultRef.consultation?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+        </button>
+
+        <button type="button" [routerLink]="['/lab-test-result', labTestResultRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (doctorProfile(); as doctorProfileRef) {
+      <div>
+        <h2 data-cy="doctorProfileDetailsHeading"><span jhiTranslate="gdpApp.doctorProfile.detail.title">Doctor Profile</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ doctorProfileRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.doctorProfile.specialty">Specialty</span></dt>
+          <dd>
+            <span>{{ doctorProfileRef.specialty }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.doctorProfile.licenseNumber">License Number</span></dt>
+          <dd>
+            <span>{{ doctorProfileRef.licenseNumber }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.doctorProfile.university">University</span></dt>
+          <dd>
+            <span>{{ doctorProfileRef.university }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.doctorProfile.startDateOfPractice">Start Date Of Practice</span></dt>
+          <dd>
+            <span>{{ doctorProfileRef.startDateOfPractice | formatMediumDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.doctorProfile.user">User</span></dt>
+          <dd>
+            <span>{{ doctorProfileRef.user?.login }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+        </button>
+
+        <button type="button" [routerLink]="['/doctor-profile', doctorProfileRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

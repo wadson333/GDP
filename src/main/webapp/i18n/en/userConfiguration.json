@@ -1,0 +1,27 @@
+{
+  "gdpApp": {
+    "userConfiguration": {
+      "home": {
+        "title": "User Configurations",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new User Configuration",
+        "createOrEditLabel": "Create or edit a User Configuration",
+        "notFound": "No User Configurations found"
+      },
+      "created": "A new User Configuration is created with identifier {{ param }}",
+      "updated": "A User Configuration is updated with identifier {{ param }}",
+      "deleted": "A User Configuration is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete User Configuration {{ id }}?"
+      },
+      "detail": {
+        "title": "User Configuration"
+      },
+      "id": "ID",
+      "twoFactorEnabled": "Two Factor Enabled",
+      "twoFactorSecret": "Two Factor Secret",
+      "receiveEmailNotifs": "Receive Email Notifs",
+      "user": "User"
+    }
+  }
+}

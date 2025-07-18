@@ -1,0 +1,134 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-hospitalization-heading"
+        data-cy="HospitalizationCreateUpdateHeading"
+        jhiTranslate="gdpApp.hospitalization.home.createOrEditLabel"
+      >
+        Créer ou éditer un Hospitalization
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="gdpApp.hospitalization.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let admissionDateRef = editForm.get('admissionDate')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_admissionDate" jhiTranslate="gdpApp.hospitalization.admissionDate">Admission Date</label>
+          <div class="d-flex">
+            <input
+              id="field_admissionDate"
+              data-cy="admissionDate"
+              type="datetime-local"
+              class="form-control"
+              name="admissionDate"
+              formControlName="admissionDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (admissionDateRef.invalid && (admissionDateRef.dirty || admissionDateRef.touched)) {
+            <div>
+              @if (editForm.get('admissionDate')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('admissionDate')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Ce champ doit être une date et une heure.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dischargeDate" jhiTranslate="gdpApp.hospitalization.dischargeDate">Discharge Date</label>
+          <div class="d-flex">
+            <input
+              id="field_dischargeDate"
+              data-cy="dischargeDate"
+              type="datetime-local"
+              class="form-control"
+              name="dischargeDate"
+              formControlName="dischargeDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_reason" jhiTranslate="gdpApp.hospitalization.reason">Reason</label>
+          <textarea class="form-control" name="reason" id="field_reason" data-cy="reason" formControlName="reason"></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_patient" jhiTranslate="gdpApp.hospitalization.patient">Patient</label>
+          <select
+            class="form-control"
+            id="field_patient"
+            data-cy="patient"
+            name="patient"
+            formControlName="patient"
+            [compareWith]="comparePatient"
+          >
+            @if (!editForm.get('patient')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (patientOption of patientsSharedCollection; track $index) {
+              <option [ngValue]="patientOption">{{ patientOption.firstName }}</option>
+            }
+          </select>
+        </div>
+        @if (editForm.get(['patient'])!.invalid && (editForm.get(['patient'])!.dirty || editForm.get(['patient'])!.touched)) {
+          <div>
+            @if (editForm.get(['patient'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+            }
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_attendingDoctor" jhiTranslate="gdpApp.hospitalization.attendingDoctor"
+            >Attending Doctor</label
+          >
+          <select
+            class="form-control"
+            id="field_attendingDoctor"
+            data-cy="attendingDoctor"
+            name="attendingDoctor"
+            formControlName="attendingDoctor"
+            [compareWith]="compareUser"
+          >
+            <option [ngValue]="null"></option>
+            @for (userOption of usersSharedCollection; track $index) {
+              <option [ngValue]="userOption">{{ userOption.login }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

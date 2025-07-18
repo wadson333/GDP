@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (labTestCatalog(); as labTestCatalogRef) {
+      <div>
+        <h2 data-cy="labTestCatalogDetailsHeading"><span jhiTranslate="gdpApp.labTestCatalog.detail.title">Lab Test Catalog</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ labTestCatalogRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.labTestCatalog.name">Name</span></dt>
+          <dd>
+            <span>{{ labTestCatalogRef.name }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.labTestCatalog.unit">Unit</span></dt>
+          <dd>
+            <span>{{ labTestCatalogRef.unit }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.labTestCatalog.referenceRangeLow">Reference Range Low</span></dt>
+          <dd>
+            <span>{{ labTestCatalogRef.referenceRangeLow }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.labTestCatalog.referenceRangeHigh">Reference Range High</span></dt>
+          <dd>
+            <span>{{ labTestCatalogRef.referenceRangeHigh }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+        </button>
+
+        <button type="button" [routerLink]="['/lab-test-catalog', labTestCatalogRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

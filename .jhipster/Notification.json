@@ -1,0 +1,51 @@
+{
+  "annotations": {
+    "changelogDate": "20250716190751"
+  },
+  "applications": "*",
+  "documentation": "Notifications \"in-app\" pour les utilisateurs.",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "message",
+      "fieldType": "TextBlob",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "isRead",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "notificationType",
+      "fieldType": "NotificationType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "APPOINTMENT_CONFIRMED,NEW_DOCUMENT,RESULT_AVAILABLE,APPOINTMENT_REMINDER,APPOINTMENT_REQUEST"
+    },
+    {
+      "fieldName": "creationDate",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "relatedEntityId",
+      "fieldType": "Long"
+    }
+  ],
+  "name": "Notification",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "documentation": "Une notification est destinée à un utilisateur.",
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "relationshipName": "targetUser",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required",
+      "relationshipWithBuiltInEntity": true
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

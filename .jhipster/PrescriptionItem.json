@@ -1,0 +1,46 @@
+{
+  "annotations": {
+    "changelogDate": "20250716190754"
+  },
+  "applications": "*",
+  "documentation": "Ligne détaillée d'une prescription (médicament, posologie, etc.).\\n@encryptedFields dosage, frequency, duration",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "dosage",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "frequency",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "duration",
+      "fieldType": "String"
+    }
+  ],
+  "name": "PrescriptionItem",
+  "relationships": [
+    {
+      "documentation": "Une ligne de prescription est liée à un médicament du catalogue.",
+      "otherEntityField": "name",
+      "otherEntityName": "medication",
+      "relationshipName": "medication",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "prescription",
+      "otherEntityRelationshipName": "items",
+      "relationshipName": "prescription",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

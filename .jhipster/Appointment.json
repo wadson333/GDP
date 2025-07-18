@@ -1,0 +1,54 @@
+{
+  "annotations": {
+    "changelogDate": "20250716190743"
+  },
+  "applications": "*",
+  "documentation": "Gestion du planning et des rendez-vous.\\n@encryptedFields reason",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "startTime",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "endTime",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "AppointmentStatus",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "REQUESTED,CONFIRMED,CANCELLED_BY_PATIENT,CANCELLED_BY_CLINIC,COMPLETED"
+    },
+    {
+      "fieldName": "reason",
+      "fieldType": "TextBlob"
+    }
+  ],
+  "name": "Appointment",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "documentation": "Un rendez-vous lie un patient et un médecin.",
+      "otherEntityField": "firstName",
+      "otherEntityName": "patient",
+      "relationshipName": "patient",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "relationshipName": "doctor",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required",
+      "relationshipWithBuiltInEntity": true
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (consultation(); as consultationRef) {
+      <div>
+        <h2 data-cy="consultationDetailsHeading"><span jhiTranslate="gdpApp.consultation.detail.title">Consultation</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ consultationRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.consultation.consultationDate">Consultation Date</span></dt>
+          <dd>
+            <span>{{ consultationRef.consultationDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.consultation.symptoms">Symptoms</span></dt>
+          <dd>
+            <span>{{ consultationRef.symptoms }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.consultation.diagnosis">Diagnosis</span></dt>
+          <dd>
+            <span>{{ consultationRef.diagnosis }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.consultation.prescription">Prescription</span></dt>
+          <dd>
+            @if (consultation()!.prescription) {
+              <div>
+                <a [routerLink]="['/prescription', consultation()!.prescription?.id, 'view']">{{ consultationRef.prescription?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="gdpApp.consultation.doctor">Doctor</span></dt>
+          <dd>
+            <span>{{ consultationRef.doctor?.login }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.consultation.patient">Patient</span></dt>
+          <dd>
+            @if (consultation()!.patient) {
+              <div>
+                <a [routerLink]="['/patient', consultation()!.patient?.id, 'view']">{{ consultationRef.patient?.firstName }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+        </button>
+
+        <button type="button" [routerLink]="['/consultation', consultationRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

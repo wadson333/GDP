@@ -1,0 +1,28 @@
+{
+  "gdpApp": {
+    "prescriptionItem": {
+      "home": {
+        "title": "PrescriptionItems",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Prescription Item",
+        "createOrEditLabel": "Créer ou éditer un Prescription Item",
+        "notFound": "Aucun Prescription Item trouvé"
+      },
+      "created": "Un nouveau Prescription Item a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Prescription Item avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Prescription Item avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Prescription Item {{ id }} ?"
+      },
+      "detail": {
+        "title": "Prescription Item"
+      },
+      "id": "ID",
+      "dosage": "Dosage",
+      "frequency": "Frequency",
+      "duration": "Duration",
+      "medication": "Medication",
+      "prescription": "Prescription"
+    }
+  }
+}

@@ -1,0 +1,119 @@
+<div>
+  <h2 id="page-heading" data-cy="UserConfigurationHeading">
+    <span jhiTranslate="gdpApp.userConfiguration.home.title">UserConfigurations</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="gdpApp.userConfiguration.home.refreshListLabel">Actualiser la liste</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-user-configuration"
+        [routerLink]="['/user-configuration/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="gdpApp.userConfiguration.home.createLabel">Créer un nouveau User Configuration</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (userConfigurations?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="gdpApp.userConfiguration.home.notFound">Aucun User Configuration trouvé</span>
+    </div>
+  }
+
+  @if (userConfigurations && userConfigurations.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="twoFactorEnabled">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.userConfiguration.twoFactorEnabled">Two Factor Enabled</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="twoFactorSecret">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.userConfiguration.twoFactorSecret">Two Factor Secret</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="receiveEmailNotifs">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.userConfiguration.receiveEmailNotifs">Receive Email Notifs</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="user.login">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.userConfiguration.user">User</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (userConfiguration of userConfigurations; track trackId(userConfiguration)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/user-configuration', userConfiguration.id, 'view']">{{ userConfiguration.id }}</a>
+              </td>
+              <td>{{ userConfiguration.twoFactorEnabled }}</td>
+              <td>{{ userConfiguration.twoFactorSecret }}</td>
+              <td>{{ userConfiguration.receiveEmailNotifs }}</td>
+              <td>
+                {{ userConfiguration.user?.login }}
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/user-configuration', userConfiguration.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+                  </a>
+
+                  <a
+                    [routerLink]="['/user-configuration', userConfiguration.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(userConfiguration)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

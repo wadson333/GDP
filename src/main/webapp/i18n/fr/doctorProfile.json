@@ -1,0 +1,28 @@
+{
+  "gdpApp": {
+    "doctorProfile": {
+      "home": {
+        "title": "DoctorProfiles",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Doctor Profile",
+        "createOrEditLabel": "Créer ou éditer un Doctor Profile",
+        "notFound": "Aucun Doctor Profile trouvé"
+      },
+      "created": "Un nouveau Doctor Profile a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Doctor Profile avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Doctor Profile avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Doctor Profile {{ id }} ?"
+      },
+      "detail": {
+        "title": "Doctor Profile"
+      },
+      "id": "ID",
+      "specialty": "Specialty",
+      "licenseNumber": "License Number",
+      "university": "University",
+      "startDateOfPractice": "Start Date Of Practice",
+      "user": "User"
+    }
+  }
+}

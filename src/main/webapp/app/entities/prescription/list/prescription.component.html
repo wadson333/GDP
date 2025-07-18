@@ -1,0 +1,86 @@
+<div>
+  <h2 id="page-heading" data-cy="PrescriptionHeading">
+    <span jhiTranslate="gdpApp.prescription.home.title">Prescriptions</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="gdpApp.prescription.home.refreshListLabel">Actualiser la liste</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-prescription"
+        [routerLink]="['/prescription/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="gdpApp.prescription.home.createLabel">Créer un nouveau Prescription</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (prescriptions?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="gdpApp.prescription.home.notFound">Aucun Prescription trouvé</span>
+    </div>
+  }
+
+  @if (prescriptions && prescriptions.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="prescriptionDate">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.prescription.prescriptionDate">Prescription Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (prescription of prescriptions; track trackId(prescription)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/prescription', prescription.id, 'view']">{{ prescription.id }}</a>
+              </td>
+              <td>{{ prescription.prescriptionDate | formatMediumDate }}</td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/prescription', prescription.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+                  </a>
+
+                  <a [routerLink]="['/prescription', prescription.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(prescription)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

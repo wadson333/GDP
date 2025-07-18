@@ -1,0 +1,67 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (appointment(); as appointmentRef) {
+      <div>
+        <h2 data-cy="appointmentDetailsHeading"><span jhiTranslate="gdpApp.appointment.detail.title">Appointment</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ appointmentRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.appointment.startTime">Start Time</span></dt>
+          <dd>
+            <span>{{ appointmentRef.startTime | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.appointment.endTime">End Time</span></dt>
+          <dd>
+            <span>{{ appointmentRef.endTime | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.appointment.status">Status</span></dt>
+          <dd>
+            <span [jhiTranslate]="'gdpApp.AppointmentStatus.' + (appointmentRef.status ?? 'null')">{{
+              {
+                null: '',
+                REQUESTED: 'REQUESTED',
+                CONFIRMED: 'CONFIRMED',
+                CANCELLED_BY_PATIENT: 'CANCELLED_BY_PATIENT',
+                CANCELLED_BY_CLINIC: 'CANCELLED_BY_CLINIC',
+                COMPLETED: 'COMPLETED',
+              }[appointmentRef.status ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.appointment.reason">Reason</span></dt>
+          <dd>
+            <span>{{ appointmentRef.reason }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.appointment.patient">Patient</span></dt>
+          <dd>
+            @if (appointment()!.patient) {
+              <div>
+                <a [routerLink]="['/patient', appointment()!.patient?.id, 'view']">{{ appointmentRef.patient?.firstName }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="gdpApp.appointment.doctor">Doctor</span></dt>
+          <dd>
+            <span>{{ appointmentRef.doctor?.login }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+        </button>
+
+        <button type="button" [routerLink]="['/appointment', appointmentRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

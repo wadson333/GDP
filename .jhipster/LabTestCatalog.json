@@ -1,0 +1,32 @@
+{
+  "annotations": {
+    "changelogDate": "20250716190747"
+  },
+  "applications": "*",
+  "documentation": "Catalogue des types d'analyses de laboratoire disponibles.",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "unit",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "referenceRangeLow",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "referenceRangeHigh",
+      "fieldType": "BigDecimal"
+    }
+  ],
+  "name": "LabTestCatalog",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

@@ -1,0 +1,48 @@
+{
+  "annotations": {
+    "changelogDate": "20250716190749"
+  },
+  "applications": "*",
+  "documentation": "Catalogue des documents externes (PDFs, images).\\nLe fichier est stocké sur le serveur, seul le chemin est en base.\\n@encryptedFields description",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "documentName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "documentDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "filePath",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "fileType",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "desc",
+      "fieldType": "String"
+    }
+  ],
+  "name": "MedicalDocument",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "documentation": "Un document appartient à un patient.",
+      "otherEntityField": "firstName",
+      "otherEntityName": "patient",
+      "relationshipName": "patient",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

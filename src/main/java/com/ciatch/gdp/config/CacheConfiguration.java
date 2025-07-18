@@ -50,6 +50,20 @@ public class CacheConfiguration {
             createCache(cm, com.ciatch.gdp.domain.User.class.getName());
             createCache(cm, com.ciatch.gdp.domain.Authority.class.getName());
             createCache(cm, com.ciatch.gdp.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.ciatch.gdp.domain.Appointment.class.getName());
+            createCache(cm, com.ciatch.gdp.domain.Consultation.class.getName());
+            createCache(cm, com.ciatch.gdp.domain.DoctorProfile.class.getName());
+            createCache(cm, com.ciatch.gdp.domain.Hospitalization.class.getName());
+            createCache(cm, com.ciatch.gdp.domain.LabTestCatalog.class.getName());
+            createCache(cm, com.ciatch.gdp.domain.LabTestResult.class.getName());
+            createCache(cm, com.ciatch.gdp.domain.MedicalDocument.class.getName());
+            createCache(cm, com.ciatch.gdp.domain.Medication.class.getName());
+            createCache(cm, com.ciatch.gdp.domain.Notification.class.getName());
+            createCache(cm, com.ciatch.gdp.domain.Patient.class.getName());
+            createCache(cm, com.ciatch.gdp.domain.Prescription.class.getName());
+            createCache(cm, com.ciatch.gdp.domain.Prescription.class.getName() + ".items");
+            createCache(cm, com.ciatch.gdp.domain.PrescriptionItem.class.getName());
+            createCache(cm, com.ciatch.gdp.domain.UserConfiguration.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

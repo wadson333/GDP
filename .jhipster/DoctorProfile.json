@@ -1,0 +1,44 @@
+{
+  "annotations": {
+    "changelogDate": "20250716190745"
+  },
+  "applications": "*",
+  "documentation": "Profil professionnel détaillé pour chaque médecin.\\n@encryptedFields licenseNumber",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "specialty",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "licenseNumber",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "university",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "startDateOfPractice",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "DoctorProfile",
+  "relationships": [
+    {
+      "documentation": "Un profil de médecin est lié à un et un seul compte utilisateur.",
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one",
+      "relationshipValidateRules": "required",
+      "relationshipWithBuiltInEntity": true
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

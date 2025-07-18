@@ -1,0 +1,155 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-notification-heading" data-cy="NotificationCreateUpdateHeading" jhiTranslate="gdpApp.notification.home.createOrEditLabel">
+        Créer ou éditer un Notification
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="gdpApp.notification.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let messageRef = editForm.get('message')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_message" jhiTranslate="gdpApp.notification.message">Message</label>
+          <textarea class="form-control" name="message" id="field_message" data-cy="message" formControlName="message"></textarea>
+          @if (messageRef.invalid && (messageRef.dirty || messageRef.touched)) {
+            <div>
+              @if (editForm.get('message')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let isReadRef = editForm.get('isRead')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_isRead" jhiTranslate="gdpApp.notification.isRead">Is Read</label>
+          <input type="checkbox" class="form-check" name="isRead" id="field_isRead" data-cy="isRead" formControlName="isRead" />
+          @if (isReadRef.invalid && (isReadRef.dirty || isReadRef.touched)) {
+            <div>
+              @if (editForm.get('isRead')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let notificationTypeRef = editForm.get('notificationType')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_notificationType" jhiTranslate="gdpApp.notification.notificationType"
+            >Notification Type</label
+          >
+          <select
+            class="form-control"
+            name="notificationType"
+            formControlName="notificationType"
+            id="field_notificationType"
+            data-cy="notificationType"
+          >
+            <option [ngValue]="null">{{ 'gdpApp.NotificationType.null' | translate }}</option>
+            @for (notificationType of notificationTypeValues; track $index) {
+              <option [value]="notificationType">{{ 'gdpApp.NotificationType.' + notificationType | translate }}</option>
+            }
+          </select>
+          @if (notificationTypeRef.invalid && (notificationTypeRef.dirty || notificationTypeRef.touched)) {
+            <div>
+              @if (editForm.get('notificationType')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let creationDateRef = editForm.get('creationDate')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_creationDate" jhiTranslate="gdpApp.notification.creationDate">Creation Date</label>
+          <div class="d-flex">
+            <input
+              id="field_creationDate"
+              data-cy="creationDate"
+              type="datetime-local"
+              class="form-control"
+              name="creationDate"
+              formControlName="creationDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (creationDateRef.invalid && (creationDateRef.dirty || creationDateRef.touched)) {
+            <div>
+              @if (editForm.get('creationDate')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('creationDate')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Ce champ doit être une date et une heure.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_relatedEntityId" jhiTranslate="gdpApp.notification.relatedEntityId">Related Entity Id</label>
+          <input
+            type="number"
+            class="form-control"
+            name="relatedEntityId"
+            id="field_relatedEntityId"
+            data-cy="relatedEntityId"
+            formControlName="relatedEntityId"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_targetUser" jhiTranslate="gdpApp.notification.targetUser">Target User</label>
+          <select
+            class="form-control"
+            id="field_targetUser"
+            data-cy="targetUser"
+            name="targetUser"
+            formControlName="targetUser"
+            [compareWith]="compareUser"
+          >
+            @if (!editForm.get('targetUser')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (userOption of usersSharedCollection; track $index) {
+              <option [ngValue]="userOption">{{ userOption.login }}</option>
+            }
+          </select>
+        </div>
+        @if (editForm.get(['targetUser'])!.invalid && (editForm.get(['targetUser'])!.dirty || editForm.get(['targetUser'])!.touched)) {
+          <div>
+            @if (editForm.get(['targetUser'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+            }
+          </div>
+        }
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

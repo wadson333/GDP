@@ -1,0 +1,11 @@
+id;start_time;end_time;status;reason;patient_id;doctor_id
+1;2025-07-16T15:47:33;2025-07-16T02:27:13;CANCELLED_BY_CLINIC;../fake-data/blob/hipster.txt;1;1
+2;2025-07-16T00:24:44;2025-07-16T18:39:59;CANCELLED_BY_CLINIC;../fake-data/blob/hipster.txt;2;2
+3;2025-07-16T09:40:44;2025-07-16T07:31:29;CONFIRMED;../fake-data/blob/hipster.txt;1;1
+4;2025-07-16T01:31:19;2025-07-16T14:48:16;REQUESTED;../fake-data/blob/hipster.txt;1;1
+5;2025-07-16T03:37:06;2025-07-16T02:19:18;CONFIRMED;../fake-data/blob/hipster.txt;1;2
+6;2025-07-16T15:16:02;2025-07-16T17:47:27;CONFIRMED;../fake-data/blob/hipster.txt;1;1
+7;2025-07-15T20:11:40;2025-07-16T15:46:46;CONFIRMED;../fake-data/blob/hipster.txt;2;2
+8;2025-07-16T07:59:37;2025-07-16T00:18:35;CANCELLED_BY_CLINIC;../fake-data/blob/hipster.txt;2;1
+9;2025-07-16T10:17:28;2025-07-16T04:03:35;REQUESTED;../fake-data/blob/hipster.txt;2;2
+10;2025-07-15T22:40:17;2025-07-16T05:21:26;REQUESTED;../fake-data/blob/hipster.txt;1;1

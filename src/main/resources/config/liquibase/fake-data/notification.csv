@@ -1,0 +1,11 @@
+id;message;is_read;notification_type;creation_date;related_entity_id;target_user_id
+1;../fake-data/blob/hipster.txt;true;APPOINTMENT_CONFIRMED;2025-07-16T06:47:40;6672;1
+2;../fake-data/blob/hipster.txt;true;RESULT_AVAILABLE;2025-07-16T03:40:09;27510;2
+3;../fake-data/blob/hipster.txt;false;APPOINTMENT_REQUEST;2025-07-16T10:45:59;6448;2
+4;../fake-data/blob/hipster.txt;false;APPOINTMENT_REMINDER;2025-07-15T19:08:24;29899;2
+5;../fake-data/blob/hipster.txt;true;APPOINTMENT_REMINDER;2025-07-16T13:51:14;16564;2
+6;../fake-data/blob/hipster.txt;true;NEW_DOCUMENT;2025-07-16T17:35:25;24335;2
+7;../fake-data/blob/hipster.txt;false;APPOINTMENT_REMINDER;2025-07-16T08:46:35;11011;1
+8;../fake-data/blob/hipster.txt;false;RESULT_AVAILABLE;2025-07-15T23:21:28;11655;2
+9;../fake-data/blob/hipster.txt;true;APPOINTMENT_CONFIRMED;2025-07-16T10:48:21;4501;2
+10;../fake-data/blob/hipster.txt;false;RESULT_AVAILABLE;2025-07-16T03:58:07;7167;1

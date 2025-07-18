@@ -1,0 +1,11 @@
+id;consultation_date;symptoms;diagnosis;doctor_id;patient_id
+1;2025-07-16T10:03:20;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;1;1
+2;2025-07-16T04:12:00;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;2;2
+3;2025-07-16T09:46:16;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;2;1
+4;2025-07-16T13:03:33;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;1;2
+5;2025-07-15T19:33:42;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;1;2
+6;2025-07-16T18:57:12;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;1;1
+7;2025-07-16T04:50:51;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;1;1
+8;2025-07-16T07:00:45;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;2;1
+9;2025-07-16T00:37:27;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;1;1
+10;2025-07-15T22:52:08;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;2;1

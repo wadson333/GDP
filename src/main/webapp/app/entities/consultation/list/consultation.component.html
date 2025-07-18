@@ -1,0 +1,156 @@
+<div>
+  <h2 id="page-heading" data-cy="ConsultationHeading">
+    <span jhiTranslate="gdpApp.consultation.home.title">Consultations</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="gdpApp.consultation.home.refreshListLabel">Actualiser la liste</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-consultation"
+        [routerLink]="['/consultation/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="gdpApp.consultation.home.createLabel">Créer un nouveau Consultation</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (consultations?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="gdpApp.consultation.home.notFound">Aucun Consultation trouvé</span>
+    </div>
+  }
+
+  @if (consultations && consultations.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="consultationDate">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.consultation.consultationDate">Consultation Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="symptoms">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.consultation.symptoms">Symptoms</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="diagnosis">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.consultation.diagnosis">Diagnosis</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="prescription.id">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.consultation.prescription">Prescription</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="doctor.login">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.consultation.doctor">Doctor</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="patient.firstName">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.consultation.patient">Patient</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (consultation of consultations; track trackId(consultation)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/consultation', consultation.id, 'view']">{{ consultation.id }}</a>
+              </td>
+              <td>{{ consultation.consultationDate | formatMediumDatetime }}</td>
+              <td>{{ consultation.symptoms }}</td>
+              <td>{{ consultation.diagnosis }}</td>
+              <td>
+                @if (consultation.prescription) {
+                  <div>
+                    <a [routerLink]="['/prescription', consultation.prescription.id, 'view']">{{ consultation.prescription.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                {{ consultation.doctor?.login }}
+              </td>
+              <td>
+                @if (consultation.patient) {
+                  <div>
+                    <a [routerLink]="['/patient', consultation.patient.id, 'view']">{{ consultation.patient.firstName }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/consultation', consultation.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+                  </a>
+
+                  <a [routerLink]="['/consultation', consultation.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(consultation)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (consultations && consultations.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

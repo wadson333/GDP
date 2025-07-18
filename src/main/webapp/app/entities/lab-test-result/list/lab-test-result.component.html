@@ -1,0 +1,149 @@
+<div>
+  <h2 id="page-heading" data-cy="LabTestResultHeading">
+    <span jhiTranslate="gdpApp.labTestResult.home.title">LabTestResults</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="gdpApp.labTestResult.home.refreshListLabel">Actualiser la liste</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-lab-test-result"
+        [routerLink]="['/lab-test-result/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="gdpApp.labTestResult.home.createLabel">Créer un nouveau Lab Test Result</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (labTestResults?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="gdpApp.labTestResult.home.notFound">Aucun Lab Test Result trouvé</span>
+    </div>
+  }
+
+  @if (labTestResults && labTestResults.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="resultValue">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.labTestResult.resultValue">Result Value</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="resultDate">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.labTestResult.resultDate">Result Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="isAbnormal">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.labTestResult.isAbnormal">Is Abnormal</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="patient.firstName">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.labTestResult.patient">Patient</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="labTest.name">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.labTestResult.labTest">Lab Test</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="consultation.id">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.labTestResult.consultation">Consultation</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (labTestResult of labTestResults; track trackId(labTestResult)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/lab-test-result', labTestResult.id, 'view']">{{ labTestResult.id }}</a>
+              </td>
+              <td>{{ labTestResult.resultValue }}</td>
+              <td>{{ labTestResult.resultDate | formatMediumDate }}</td>
+              <td>{{ labTestResult.isAbnormal }}</td>
+              <td>
+                @if (labTestResult.patient) {
+                  <div>
+                    <a [routerLink]="['/patient', labTestResult.patient.id, 'view']">{{ labTestResult.patient.firstName }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (labTestResult.labTest) {
+                  <div>
+                    <a [routerLink]="['/lab-test-catalog', labTestResult.labTest.id, 'view']">{{ labTestResult.labTest.name }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (labTestResult.consultation) {
+                  <div>
+                    <a [routerLink]="['/consultation', labTestResult.consultation.id, 'view']">{{ labTestResult.consultation.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/lab-test-result', labTestResult.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+                  </a>
+
+                  <a
+                    [routerLink]="['/lab-test-result', labTestResult.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(labTestResult)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

@@ -1,0 +1,27 @@
+{
+  "gdpApp": {
+    "labTestCatalog": {
+      "home": {
+        "title": "LabTestCatalogs",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Lab Test Catalog",
+        "createOrEditLabel": "Créer ou éditer un Lab Test Catalog",
+        "notFound": "Aucun Lab Test Catalog trouvé"
+      },
+      "created": "Un nouveau Lab Test Catalog a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Lab Test Catalog avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Lab Test Catalog avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Lab Test Catalog {{ id }} ?"
+      },
+      "detail": {
+        "title": "Lab Test Catalog"
+      },
+      "id": "ID",
+      "name": "Name",
+      "unit": "Unit",
+      "referenceRangeLow": "Reference Range Low",
+      "referenceRangeHigh": "Reference Range High"
+    }
+  }
+}

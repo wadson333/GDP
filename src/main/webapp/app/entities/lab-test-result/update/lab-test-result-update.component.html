@@ -1,0 +1,180 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-lab-test-result-heading"
+        data-cy="LabTestResultCreateUpdateHeading"
+        jhiTranslate="gdpApp.labTestResult.home.createOrEditLabel"
+      >
+        Créer ou éditer un Lab Test Result
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="gdpApp.labTestResult.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let resultValueRef = editForm.get('resultValue')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_resultValue" jhiTranslate="gdpApp.labTestResult.resultValue">Result Value</label>
+          <input
+            type="number"
+            class="form-control"
+            name="resultValue"
+            id="field_resultValue"
+            data-cy="resultValue"
+            formControlName="resultValue"
+          />
+          @if (resultValueRef.invalid && (resultValueRef.dirty || resultValueRef.touched)) {
+            <div>
+              @if (editForm.get('resultValue')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('resultValue')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Ce champ doit être un nombre.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let resultDateRef = editForm.get('resultDate')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_resultDate" jhiTranslate="gdpApp.labTestResult.resultDate">Result Date</label>
+          <div class="input-group">
+            <input
+              id="field_resultDate"
+              data-cy="resultDate"
+              type="text"
+              class="form-control"
+              name="resultDate"
+              ngbDatepicker
+              #resultDateDp="ngbDatepicker"
+              formControlName="resultDate"
+            />
+            <button type="button" class="btn btn-secondary" (click)="resultDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          </div>
+          @if (resultDateRef.invalid && (resultDateRef.dirty || resultDateRef.touched)) {
+            <div>
+              @if (editForm.get('resultDate')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let isAbnormalRef = editForm.get('isAbnormal')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_isAbnormal" jhiTranslate="gdpApp.labTestResult.isAbnormal">Is Abnormal</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="isAbnormal"
+            id="field_isAbnormal"
+            data-cy="isAbnormal"
+            formControlName="isAbnormal"
+          />
+          @if (isAbnormalRef.invalid && (isAbnormalRef.dirty || isAbnormalRef.touched)) {
+            <div>
+              @if (editForm.get('isAbnormal')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_patient" jhiTranslate="gdpApp.labTestResult.patient">Patient</label>
+          <select
+            class="form-control"
+            id="field_patient"
+            data-cy="patient"
+            name="patient"
+            formControlName="patient"
+            [compareWith]="comparePatient"
+          >
+            @if (!editForm.get('patient')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (patientOption of patientsSharedCollection; track $index) {
+              <option [ngValue]="patientOption">{{ patientOption.firstName }}</option>
+            }
+          </select>
+        </div>
+        @if (editForm.get(['patient'])!.invalid && (editForm.get(['patient'])!.dirty || editForm.get(['patient'])!.touched)) {
+          <div>
+            @if (editForm.get(['patient'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+            }
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_labTest" jhiTranslate="gdpApp.labTestResult.labTest">Lab Test</label>
+          <select
+            class="form-control"
+            id="field_labTest"
+            data-cy="labTest"
+            name="labTest"
+            formControlName="labTest"
+            [compareWith]="compareLabTestCatalog"
+          >
+            @if (!editForm.get('labTest')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (labTestCatalogOption of labTestCatalogsSharedCollection; track $index) {
+              <option [ngValue]="labTestCatalogOption">{{ labTestCatalogOption.name }}</option>
+            }
+          </select>
+        </div>
+        @if (editForm.get(['labTest'])!.invalid && (editForm.get(['labTest'])!.dirty || editForm.get(['labTest'])!.touched)) {
+          <div>
+            @if (editForm.get(['labTest'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+            }
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_consultation" jhiTranslate="gdpApp.labTestResult.consultation">Consultation</label>
+          <select
+            class="form-control"
+            id="field_consultation"
+            data-cy="consultation"
+            name="consultation"
+            formControlName="consultation"
+            [compareWith]="compareConsultation"
+          >
+            <option [ngValue]="null"></option>
+            @for (consultationOption of consultationsSharedCollection; track $index) {
+              <option [ngValue]="consultationOption">{{ consultationOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

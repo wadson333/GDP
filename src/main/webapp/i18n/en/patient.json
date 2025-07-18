@@ -1,0 +1,42 @@
+{
+  "gdpApp": {
+    "patient": {
+      "home": {
+        "title": "Patients",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Patient",
+        "createOrEditLabel": "Create or edit a Patient",
+        "notFound": "No Patients found"
+      },
+      "created": "A new Patient is created with identifier {{ param }}",
+      "updated": "A Patient is updated with identifier {{ param }}",
+      "deleted": "A Patient is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Patient {{ id }}?"
+      },
+      "detail": {
+        "title": "Patient"
+      },
+      "id": "ID",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "birthDate": "Birth Date",
+      "gender": "Gender",
+      "bloodType": "Blood Type",
+      "address": "Address",
+      "phone1": "Phone 1",
+      "phone2": "Phone 2",
+      "email": "Email",
+      "nif": "Nif",
+      "ninu": "Ninu",
+      "heightCm": "Height Cm",
+      "weightKg": "Weight Kg",
+      "passportNumber": "Passport Number",
+      "contactPersonName": "Contact Person Name",
+      "contactPersonPhone": "Contact Person Phone",
+      "antecedents": "Antecedents",
+      "allergies": "Allergies",
+      "user": "User"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "annotations": {
+    "changelogDate": "20250716190748"
+  },
+  "applications": "*",
+  "documentation": "Résultat numérique d'une analyse de laboratoire spécifique.\\n@encryptedFields resultValue",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "resultValue",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "resultDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "isAbnormal",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "LabTestResult",
+  "relationships": [
+    {
+      "documentation": "Un résultat de labo appartient à un patient, est d'un certain type, et peut venir d'une consultation.",
+      "otherEntityField": "firstName",
+      "otherEntityName": "patient",
+      "relationshipName": "patient",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "labTestCatalog",
+      "relationshipName": "labTest",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "consultation",
+      "relationshipName": "consultation",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

@@ -178,21 +178,21 @@ entity UserConfiguration {
 
 relationship OneToOne {
     /** Un profil de médecin est lié à un et un seul compte utilisateur. */
-    DoctorProfile{user(login) required} to User,
+    DoctorProfile{user(login) required} to User with builtInEntity,
     
     /** Un dossier patient est lié à un et un seul compte utilisateur (pour le portail). */
-    Patient{user(login) required} to User,
+    Patient{user(login) required} to User with builtInEntity,
     
     /** Une consultation donne lieu à une et une seule prescription. */
     Consultation{prescription} to Prescription{consultation},
 
     /** Chaque utilisateur a une et une seule page de configuration. */
-    UserConfiguration{user(login) required} to User
+    UserConfiguration{user(login) required} to User with builtInEntity
 }
 
 relationship ManyToOne {
     /** Une consultation est menée par un médecin (User) et concerne un patient. */
-    Consultation{doctor(login) required} to User,
+    Consultation{doctor(login) required} to User with builtInEntity,
     Consultation{patient(firstName) required} to Patient,
     
     /** Une ligne de prescription est liée à un médicament du catalogue. */
@@ -208,14 +208,14 @@ relationship ManyToOne {
 
     /** Une hospitalisation concerne un patient et est supervisée par un médecin. */
     Hospitalization{patient(firstName) required} to Patient,
-    Hospitalization{attendingDoctor(login)} to User,
+    Hospitalization{attendingDoctor(login)} to User with builtInEntity,
 
     /** Un rendez-vous lie un patient et un médecin. */
     Appointment{patient(firstName) required} to Patient,
-    Appointment{doctor(login) required} to User,
+    Appointment{doctor(login) required} to User with builtInEntity,
 
     /** Une notification est destinée à un utilisateur. */
-    Notification{targetUser(login) required} to User
+    Notification{targetUser(login) required} to User with builtInEntity
 }
 
 relationship OneToMany {

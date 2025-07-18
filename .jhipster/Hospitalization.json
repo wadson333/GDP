@@ -1,0 +1,46 @@
+{
+  "annotations": {
+    "changelogDate": "20250716190746"
+  },
+  "applications": "*",
+  "documentation": "Enregistrement d'un séjour hospitalier.\\n@encryptedFields reason",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "admissionDate",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "dischargeDate",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "reason",
+      "fieldType": "TextBlob"
+    }
+  ],
+  "name": "Hospitalization",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "documentation": "Une hospitalisation concerne un patient et est supervisée par un médecin.",
+      "otherEntityField": "firstName",
+      "otherEntityName": "patient",
+      "relationshipName": "patient",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "relationshipName": "attendingDoctor",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipWithBuiltInEntity": true
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

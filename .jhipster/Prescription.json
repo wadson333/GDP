@@ -1,0 +1,35 @@
+{
+  "annotations": {
+    "changelogDate": "20250716190753"
+  },
+  "applications": "*",
+  "documentation": "En-tête d'une ordonnance, liée à une consultation.",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "prescriptionDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Prescription",
+  "relationships": [
+    {
+      "documentation": "Une prescription contient plusieurs lignes de médicaments.",
+      "otherEntityName": "prescriptionItem",
+      "otherEntityRelationshipName": "prescription",
+      "relationshipName": "items",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "consultation",
+      "otherEntityRelationshipName": "prescription",
+      "relationshipName": "consultation",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

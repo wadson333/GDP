@@ -1,0 +1,63 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (notification(); as notificationRef) {
+      <div>
+        <h2 data-cy="notificationDetailsHeading"><span jhiTranslate="gdpApp.notification.detail.title">Notification</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ notificationRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.notification.message">Message</span></dt>
+          <dd>
+            <span>{{ notificationRef.message }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.notification.isRead">Is Read</span></dt>
+          <dd>
+            <span>{{ notificationRef.isRead }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.notification.notificationType">Notification Type</span></dt>
+          <dd>
+            <span [jhiTranslate]="'gdpApp.NotificationType.' + (notificationRef.notificationType ?? 'null')">{{
+              {
+                null: '',
+                APPOINTMENT_CONFIRMED: 'APPOINTMENT_CONFIRMED',
+                NEW_DOCUMENT: 'NEW_DOCUMENT',
+                RESULT_AVAILABLE: 'RESULT_AVAILABLE',
+                APPOINTMENT_REMINDER: 'APPOINTMENT_REMINDER',
+                APPOINTMENT_REQUEST: 'APPOINTMENT_REQUEST',
+              }[notificationRef.notificationType ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.notification.creationDate">Creation Date</span></dt>
+          <dd>
+            <span>{{ notificationRef.creationDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.notification.relatedEntityId">Related Entity Id</span></dt>
+          <dd>
+            <span>{{ notificationRef.relatedEntityId }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.notification.targetUser">Target User</span></dt>
+          <dd>
+            <span>{{ notificationRef.targetUser?.login }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+        </button>
+
+        <button type="button" [routerLink]="['/notification', notificationRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>
