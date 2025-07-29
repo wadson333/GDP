@@ -12,6 +12,7 @@ import {
 } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 
@@ -51,6 +52,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(ServiceWorkerModule.register('ngsw-worker.js', { enabled: false })),
     importProvidersFrom(TranslationModule),
     provideHttpClient(withInterceptorsFromDi()),
+    provideAnimationsAsync(),
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },

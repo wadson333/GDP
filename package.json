@@ -71,6 +71,7 @@
     "packaging": "jar"
   },
   "dependencies": {
+    "@angular/animations": "^18.2.5",
     "@angular/common": "18.2.5",
     "@angular/compiler": "18.2.5",
     "@angular/core": "18.2.5",
@@ -86,9 +87,12 @@
     "@ngx-translate/core": "15.0.0",
     "@ngx-translate/http-loader": "8.0.0",
     "@popperjs/core": "2.11.8",
+    "@primeng/themes": "^20.0.0",
     "bootstrap": "5.3.3",
     "dayjs": "1.11.13",
     "ngx-infinite-scroll": "18.0.0",
+    "primeicons": "^7.0.0",
+    "primeng": "^17.18.0",
     "rxjs": "7.8.1",
     "tslib": "2.7.0",
     "zone.js": "0.14.10"

@@ -9,6 +9,7 @@ import locale from '@angular/common/locales/fr';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { fontAwesomeIcons } from './config/font-awesome-icons';
 import MainComponent from './layouts/main/main.component';
+import { ThemeService } from './core/theme/theme.service';
 
 @Component({
   standalone: true,
@@ -23,11 +24,13 @@ export default class AppComponent {
   private applicationConfigService = inject(ApplicationConfigService);
   private iconLibrary = inject(FaIconLibrary);
   private dpConfig = inject(NgbDatepickerConfig);
+  private themeService = inject(ThemeService);
 
   constructor() {
     this.applicationConfigService.setEndpointPrefix(SERVER_API_URL);
     registerLocaleData(locale);
     this.iconLibrary.addIcons(...fontAwesomeIcons);
     this.dpConfig.minDate = { year: dayjs().subtract(100, 'year').year(), month: 1, day: 1 };
+    this.themeService.initTheme();
   }
 }
