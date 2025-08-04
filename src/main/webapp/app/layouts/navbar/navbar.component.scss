@@ -1,36 +1,142 @@
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
+// @import 'bootstrap/scss/functions';
+// @import 'bootstrap/scss/variables';
 
-/* ==========================================================================
-Navbar
-========================================================================== */
+// /* ==========================================================================
+// Navbar
+// ========================================================================== */
 
-.navbar-version {
-  font-size: 0.65em;
-  color: $navbar-dark-color;
-}
+// .navbar-version {
+//   font-size: 0.65em;
+//   color: $navbar-dark-color;
+// }
 
-.profile-image {
-  height: 1.75em;
-  width: 1.75em;
-}
+// .profile-image {
+//   height: 1.75em;
+//   width: 1.75em;
+// }
 
-.navbar {
-  padding: 0.2rem 1rem;
+// .navbar {
+//   padding: 0.2rem 1rem;
 
-  a.nav-link {
-    font-weight: 400;
-  }
-}
+//   a.nav-link {
+//     font-weight: 400;
+//   }
+// }
 
-/* ==========================================================================
-Logo styles
-========================================================================== */
-.logo-img {
-  height: 45px;
-  width: 45px;
-  display: inline-block;
-  vertical-align: middle;
-  background: url('/content/images/logo-jhipster.png') no-repeat center center;
-  background-size: contain;
-}
+// /* ==========================================================================
+// Logo styles
+// ========================================================================== */
+// .logo-img {
+//   height: 45px;
+//   width: 45px;
+//   display: inline-block;
+//   vertical-align: middle;
+//   background: url('/content/images/logo-jhipster.png') no-repeat center center;
+//   background-size: contain;
+// }
+
+// login.component.scss
+
+// Styles personnalisés pour surcharger PrimeNG si nécessaire
+// :host {
+//   .diagonal-line {
+//     position: absolute;
+//     right: -12px;
+//     top: 0;
+//     width: 48px;
+//     height: 100%;
+//     background: white;
+//     transform: skewX(12deg);
+//     border-right: 2px solid #1f2937;
+//     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+//     z-index: 20;
+//   }
+
+//   // Personnalisation du dropdown de thème
+//   ::ng-deep .p-dropdown {
+//     .p-dropdown-trigger {
+//       width: 2rem;
+//     }
+
+//     .p-dropdown-label {
+//       padding: 0.5rem;
+//     }
+//   }
+
+//   // Personnalisation des champs de saisie
+//   ::ng-deep .p-inputtext {
+//     border-radius: 0 !important;
+//     border-width: 2px !important;
+//     border-color: #1f2937 !important;
+
+//     &:focus {
+//       border-color: #3b82f6 !important;
+//       box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25) !important;
+//     }
+//   }
+
+//   // Personnalisation du champ password
+//   ::ng-deep .p-password {
+//     .p-inputtext {
+//       border-radius: 0 !important;
+//       border-width: 2px !important;
+//       border-color: #1f2937 !important;
+//     }
+
+//     .p-password-toggle-icon {
+//       color: #6b7280;
+//     }
+//   }
+
+//   // Personnalisation du bouton
+//   ::ng-deep .p-button {
+//     border-radius: 0 !important;
+//     transition: all 0.2s ease;
+
+//     &:hover {
+//       transform: translateY(-1px);
+//       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+//     }
+//   }
+
+//   // Animation pour l'apparition du formulaire
+//   .login-form {
+//     animation: slideInRight 0.6s ease-out;
+//   }
+
+//   .login-content {
+//     animation: slideInLeft 0.6s ease-out;
+//   }
+// }
+
+// // Animations
+// @keyframes slideInRight {
+//   from {
+//     opacity: 0;
+//     transform: translateX(30px);
+//   }
+//   to {
+//     opacity: 1;
+//     transform: translateX(0);
+//   }
+// }
+
+// @keyframes slideInLeft {
+//   from {
+//     opacity: 0;
+//     transform: translateX(-30px);
+//   }
+//   to {
+//     opacity: 1;
+//     transform: translateX(0);
+//   }
+// }
+
+// // Responsive design
+// @media (max-width: 768px) {
+//   :host {
+//     .diagonal-line {
+//       display: none;
+//     }
+//   }
+// }

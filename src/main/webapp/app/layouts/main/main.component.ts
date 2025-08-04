@@ -16,6 +16,7 @@ import PageRibbonComponent from '../profiles/page-ribbon.component';
   imports: [RouterOutlet, FooterComponent, PageRibbonComponent],
 })
 export default class MainComponent implements OnInit {
+  account = inject(AccountService).trackCurrentAccount();
   private renderer: Renderer2;
 
   private router = inject(Router);

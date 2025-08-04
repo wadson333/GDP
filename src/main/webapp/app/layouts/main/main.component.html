@@ -1,13 +1,18 @@
-<jhi-page-ribbon></jhi-page-ribbon>
+@let accountRef = account();
+<!-- <jhi-page-ribbon></jhi-page-ribbon> -->
+<div class="h-[98vh] max-h-[98vh] m-0 p-0 overflow-hidden">
+  <!-- @if(accountRef){ -->
 
-<div>
-  <router-outlet name="navbar"></router-outlet>
-</div>
-
-<div class="container-fluid">
-  <div class="card jh-card">
-    <router-outlet></router-outlet>
+  <div class="">
+    <router-outlet name="navbar"></router-outlet>
   </div>
-
-  <jhi-footer></jhi-footer>
+  <!-- } -->
+  <div class="h-full overflow-hidden">
+    <div class="h-full overflow-hidden">
+      <router-outlet></router-outlet>
+    </div>
+    @if (accountRef) {
+      <jhi-footer></jhi-footer>
+    }
+  </div>
 </div>

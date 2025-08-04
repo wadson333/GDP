@@ -1,4 +1,4 @@
-<nav data-cy="navbar" class="navbar navbar-dark navbar-expand-md bg-dark">
+<!-- <nav data-cy="navbar" class="navbar navbar-dark navbar-expand-md bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
       <span class="logo-img"></span>
@@ -27,7 +27,7 @@
             </span>
           </a>
         </li>
-        <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
+       
         @if (account() !== null) {
           <li
             ngbDropdown
@@ -199,7 +199,7 @@
                   <span jhiTranslate="global.menu.entities.userConfiguration">User Configuration</span>
                 </a>
               </li>
-              <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
+              
             </ul>
           </li>
         }
@@ -230,7 +230,7 @@
                 <span jhiTranslate="global.menu.entities.adminAuthority">Authority</span>
               </a>
             </li>
-            <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
+            
             <li>
               <a class="dropdown-item" routerLink="/admin/user-management" routerLinkActive="active" (click)="collapseNavbar()">
                 <fa-icon icon="users" [fixedWidth]="true"></fa-icon>
@@ -369,6 +369,56 @@
           </ul>
         </li>
       </ul>
+    </div>
+  </div>
+</nav> -->
+@let accountRef = account();
+<nav class="w-full min-w-full max-w-full py-1">
+  <div class="max-w-full sm:px-6 lg:px-8">
+    <div class="flex h-10 items-center justify-between">
+      <!-- Mobile menu button-->
+      <!-- <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+       
+        <button type="button" command="--toggle" commandfor="mobile-menu" class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset">
+          <span class="absolute -inset-0.5"></span>
+          <span class="sr-only">Open main menu</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 in-aria-expanded:hidden">
+            <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 not-in-aria-expanded:hidden">
+            <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div> -->
+      <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+        <div class="flex shrink-0 items-center">
+          <img src="../../../content/images/gdp.png" alt="GDP logo" class="h-10 w-auto" />
+        </div>
+      </div>
+      <div class="flex justify-end items-center pr-2 sm:static sm:inset-auto sm:pr-0 gap-1">
+        <p-button icon="pi pi-palette" [rounded]="true" [text]="true" (onClick)="menu.toggle($event)" />
+        <p-tieredMenu #menu [model]="themes" [popup]="true" />
+        <div>
+          @if (languages && languages.length > 1) {
+            <p-button icon="pi pi-flag" [rounded]="true" [text]="true" (onClick)="languagesMenu.toggle($event)" />
+            <p-tieredMenu #languagesMenu [model]="languages" [popup]="true" />
+          }
+        </div>
+        @if (accountRef) {
+          <p-button icon="pi pi-bell" [rounded]="true" [text]="true" />
+          <div>
+            <p-button
+              icon="pi pi-user"
+              [rounded]="true"
+              [text]="true"
+              routerLink="/account/settings"
+              routerLinkActive="active"
+              (onClick)="accountMenu.toggle($event)"
+            />
+            <p-tieredMenu #accountMenu [model]="accountMenuItems" [popup]="true" />
+          </div>
+        }
+      </div>
     </div>
   </div>
 </nav>

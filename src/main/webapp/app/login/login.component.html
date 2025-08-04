@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <div class="d-flex justify-content-center">
     <div class="col-lg-6 col-md-8 col-sm-10">
       <h1 data-cy="loginTitle" jhiTranslate="login.title">Authentification</h1>
@@ -55,5 +55,145 @@
         <a class="alert-link" routerLink="/account/register" jhiTranslate="global.messages.info.register.link">Créer un compte</a>
       </div>
     </div>
+  </div>
+</div> -->
+
+<!-- <div class="flex flex-col min-h-screen bg-surface-0 text-color">
+  <header class="bg-primary text-white p-4">
+    <h1 class="text-xl font-bold">Mon App Santé</h1>
+  </header>
+
+  <main class="flex-1 p-6">
+    <div class="flex flex-col gap-4 p-6">
+      <p-card class="shadow-xl border-0">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input type="text" pInputText [(ngModel)]="value"   class="w-full" styleClass="w-full"/>
+          
+          <p-button 
+            label="Valider" 
+            class="w-full md:w-auto"
+            styleClass="w-full md:w-auto">
+          </p-button>
+        </div>
+      </p-card>
+    </div>
+  </main>
+
+  <footer class="bg-surface-100 text-muted-color p-4 text-center">
+    &copy; 2025 Wadson Dev
+  </footer>
+</div> -->
+
+<div class="h-full flex items-center justify-center card">
+  <!-- Container principal -->
+  <div class="w-full max-w-6xl shadow-2xl rounded-lg border-2 overflow-hidden">
+    <!-- Contenu principal -->
+    <p-card>
+      <div class="flex min-h-[500px] p-0 m-0">
+        <!-- Section gauche avec ligne diagonale -->
+        <div class="flex-1 relative flex items-center justify-center">
+          <!-- Contenu texte -->
+          <div class="z-10 text-center px-5">
+            <img src="../../../content/images/gdp.png" alt="GDP logo" class="h-24 w-auto" />
+            <h2 class="text-2xl font-bold">GESTION DOSSIER PATIENT</h2>
+            <p class="text-xl font-medium" jhiTranslate="login.slogan">Soins Innovants chaque jour</p>
+          </div>
+
+          <!-- Ligne diagonale -->
+          <div class="absolute right-0 top-0 w-24 h-full transform skew-x-12 border-r-2 border-gray-900 bg-blue-600 shadow-lg z-20"></div>
+        </div>
+
+        <!-- Section droite - Formulaire de connexion -->
+        <div class="flex-1 flex items-center justify-center py-5 px-8">
+          <div class="w-full max-w-md space-y-6">
+            <div class="text-center -pt-4 pb-3">
+              <h2 class="text-xl font-medium">
+                <span class="pi pi-user text-xl mr-1"></span>
+                <span jhiTranslate="login.title">Connecter à votre compte GDG</span>
+              </h2>
+            </div>
+            @if (authenticationError()) {
+              <!-- <div class="alert alert-danger" data-cy="loginError" jhiTranslate="login.messages.error.authentication">
+                <strong>Erreur d&apos;authentification !</strong> Veuillez vérifier vos identifiants de connexion.
+              </div> -->
+              <div
+                class="alert-error flex items-center px-4 py-2 mb-4 rounded-xl border border-red-200 bg-gradient-to-r from-red-50 to-red-100 text-red-700 animate-slideIn"
+                data-cy="loginError"
+              >
+                <span class="pi pi-exclamation-circle text-lg mr-2"></span>
+                <div>
+                  <span jhiTranslate="login.messages.error.authentication"> Veuillez vérifier vos identifiants de connexion. </span>
+                </div>
+              </div>
+            }
+
+            @if (loading && !authenticationError()) {
+              <div
+                class="alert-info flex items-center gap-3 px-4 py-2 mb-2 rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 animate-slideIn"
+              >
+                <i class="pi pi-info-circle text-lg"></i>
+                <div>Connexion en cours, veuillez patienter...</div>
+              </div>
+            }
+            <form class="w-full" (ngSubmit)="login()" [formGroup]="loginForm">
+              <!-- Champ Email/Username + 
+                                    (authenticationError() ? 'border-red-500 focus:border-red-500 focus:ring-4 focus:ring-red-100' : 
+                                      'border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100')-->
+              <div class="">
+                <p-floatLabel styleClass="w-full">
+                  <input pInputText id="username" formControlName="username" type="text" [class]="'w-full  text-base'" #username />
+                  <label for="username" jhiTranslate="global.form.username.label">Username</label>
+                </p-floatLabel>
+              </div>
+
+              <!-- Champ Mot de passe  +
+                                    (authenticationError() ? 'border-red-500 focus:border-red-500 focus:ring-4 focus:ring-red-100' : 
+                                      'border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100')-->
+              <div class="mt-7">
+                <p-floatLabel>
+                  <p-password
+                    formControlName="password"
+                    id="password"
+                    [feedback]="false"
+                    [toggleMask]="true"
+                    [feedback]="false"
+                    [inputStyleClass]="'w-full  text-base'"
+                    styleClass="w-full"
+                  />
+                  <label for="password" jhiTranslate="login.form.password">Password</label>
+                </p-floatLabel>
+
+                <!-- Lien mot de passe oublié -->
+                <div class="text-right mt-2">
+                  <a
+                    href="#"
+                    class="text-sm text-blue-600 hover:text-blue-800"
+                    routerLink="/account/reset/request"
+                    data-cy="forgetYourPasswordSelector"
+                    jhiTranslate="login.password.forgot"
+                  >
+                    Mot de passe oublié ?
+                  </a>
+                </div>
+              </div>
+
+              <!-- Bouton de connexion    [disabled]="loading || loginForm.invalid"-->
+              <div class="mt-9 flex justify-end">
+                <p-button
+                  [label]="'login.form.button' | translate"
+                  styleClass="sel font-medium"
+                  type="submit"
+                  data-cy="submit"
+                  [loading]="loading"
+                  (onClick)="login()"
+                  icon="pi pi-sign-in "
+                >
+                </p-button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </p-card>
   </div>
 </div>

@@ -1,6 +1,7 @@
 {
   "login": {
-    "title": "Sign in",
+    "title": "Log in to your GDG account",
+    "slogan": "Innovative care every day",
     "form": {
       "password": "Password",
       "password.placeholder": "Your password",
@@ -13,7 +14,7 @@
       }
     },
     "password": {
-      "forgot": "Did you forget your password?"
+      "forgot": "forget your password?"
     }
   }
 }

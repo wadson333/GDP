@@ -13,28 +13,65 @@ import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
 import ActiveMenuDirective from './active-menu.directive';
 import NavbarItem from './navbar-item.model';
+import { ThemeService } from 'app/core/theme/theme.service';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { TieredMenuModule } from 'primeng/tieredmenu';
+import { AvatarModule } from 'primeng/avatar';
 
 @Component({
   standalone: true,
   selector: 'jhi-navbar',
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
-  imports: [RouterModule, SharedModule, HasAnyAuthorityDirective, ActiveMenuDirective],
+  imports: [
+    RouterModule,
+    SharedModule,
+    HasAnyAuthorityDirective,
+    ActiveMenuDirective,
+    DropdownModule,
+    FormsModule,
+    ButtonModule,
+    TieredMenuModule,
+    AvatarModule,
+  ],
 })
 export default class NavbarComponent implements OnInit {
   inProduction?: boolean;
   isNavbarCollapsed = signal(true);
-  languages = LANGUAGES;
+  languages = LANGUAGES.map(lang => ({
+    label: lang,
+    icon: 'pi pi-flag',
+    command: () => this.changeLanguage(lang),
+  }));
   openAPIEnabled?: boolean;
   version = '';
   account = inject(AccountService).trackCurrentAccount();
   entitiesNavbarItems: NavbarItem[] = [];
+
+  selectedTheme = 'lara-light-blue';
+  themes = [
+    { label: 'Lara Light Blue', icon: 'pi pi-sun', command: () => this.switchTheme('lara-light-blue') },
+    { label: 'MD Light Indigo', icon: 'pi pi-sun', command: () => this.switchTheme('md-light-indigo') },
+    { label: 'MD Light Purple', icon: 'pi pi-sun', command: () => this.switchTheme('md-light-deeppurple') },
+    { label: 'MD Dark Indigo', icon: 'pi pi-moon', command: () => this.switchTheme('md-dark-indigo') },
+    { label: 'MD Dark Purple', icon: 'pi pi-moon', command: () => this.switchTheme('md-dark-deeppurple') },
+    { label: 'Viva Light', icon: 'pi pi-sun', command: () => this.switchTheme('viva-light') },
+    { label: 'Viva Dark', icon: 'pi pi-moon', command: () => this.switchTheme('viva-dark') },
+  ];
+  accountMenuItems = [
+    { label: 'Profil', icon: 'pi pi-user', command: () => this.router.navigate(['/account/settings']) },
+    { label: 'Mot de passe', icon: 'pi pi-cog', command: () => this.router.navigate(['/account/password']) },
+    { label: 'Déconnexion', icon: 'pi pi-sign-out', command: () => this.logout() },
+  ];
 
   private loginService = inject(LoginService);
   private translateService = inject(TranslateService);
   private stateStorageService = inject(StateStorageService);
   private profileService = inject(ProfileService);
   private router = inject(Router);
+  private themeService = inject(ThemeService);
 
   constructor() {
     if (VERSION) {
@@ -71,5 +108,9 @@ export default class NavbarComponent implements OnInit {
 
   toggleNavbar(): void {
     this.isNavbarCollapsed.update(isNavbarCollapsed => !isNavbarCollapsed);
+  }
+  switchTheme(theme: any): void {
+    this.themeService.switchTheme(theme);
+    // this.selectedTheme = theme;
   }
 }

@@ -5,18 +5,36 @@ import { Router, RouterModule } from '@angular/router';
 import SharedModule from 'app/shared/shared.module';
 import { LoginService } from 'app/login/login.service';
 import { AccountService } from 'app/core/auth/account.service';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { PasswordModule } from 'primeng/password';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 @Component({
   standalone: true,
   selector: 'jhi-login',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, RouterModule],
+  imports: [
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    CardModule,
+    InputTextModule,
+    ButtonModule,
+    DropdownModule,
+    PasswordModule,
+    FloatLabelModule,
+  ],
   templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
 })
 export default class LoginComponent implements OnInit, AfterViewInit {
   username = viewChild.required<ElementRef>('username');
+  loading = false;
 
   authenticationError = signal(false);
-
   loginForm = new FormGroup({
     username: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     password: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -41,6 +59,8 @@ export default class LoginComponent implements OnInit, AfterViewInit {
   }
 
   login(): void {
+    this.loading = true;
+    console.error('Login form value:', this.loginForm.getRawValue());
     this.loginService.login(this.loginForm.getRawValue()).subscribe({
       next: () => {
         this.authenticationError.set(false);
@@ -49,7 +69,15 @@ export default class LoginComponent implements OnInit, AfterViewInit {
           this.router.navigate(['']);
         }
       },
-      error: () => this.authenticationError.set(true),
+      error: () => {
+        this.authenticationError.set(true);
+        this.loading = false;
+      },
+      complete: () => {
+        if (this.authenticationError()) {
+          this.loading = false;
+        }
+      },
     });
   }
 }

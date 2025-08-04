@@ -1,6 +1,7 @@
 {
   "login": {
-    "title": "Authentification",
+    "title": "Connecter à votre compte GDG",
+    "slogan": "Soins Innovants chaque jour",
     "form": {
       "password": "Mot de passe",
       "password.placeholder": "Votre mot de passe",
@@ -13,7 +14,7 @@
       }
     },
     "password": {
-      "forgot": "Avez-vous oublié votre mot de passe ?"
+      "forgot": " Mot de passe oublié ?"
     }
   }
 }
