@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 
 @Injectable({

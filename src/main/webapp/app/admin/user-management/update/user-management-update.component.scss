@@ -1,0 +1,26 @@
+:host ::ng-deep {
+  .p-inputtext {
+    @apply text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5;
+    //  border: 1px solid #686d7220;
+  }
+
+  .p-dropdown,
+  .p-multiselect {
+    @apply w-full;
+    .p-dropdown-label,
+    .p-multiselect-label {
+      @apply py-2.5;
+    }
+  }
+
+  .field-checkbox {
+    @apply flex items-center;
+    label {
+      @apply text-sm font-medium;
+    }
+  }
+
+  .p-error {
+    @apply text-red-500 text-sm;
+  }
+}

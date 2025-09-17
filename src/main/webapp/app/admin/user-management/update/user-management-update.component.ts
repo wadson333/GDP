@@ -1,11 +1,17 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, Input, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import SharedModule from 'app/shared/shared.module';
 import { LANGUAGES } from 'app/config/language.constants';
-import { IUser } from '../user-management.model';
+import { IUser, User } from '../user-management.model';
 import { UserManagementService } from '../service/user-management.service';
+
+import { InputTextModule } from 'primeng/inputtext';
+import { CheckboxModule } from 'primeng/checkbox';
+import { DropdownModule } from 'primeng/dropdown';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ButtonModule } from 'primeng/button';
 
 const userTemplate = {} as IUser;
 
@@ -18,9 +24,22 @@ const newUser: IUser = {
   standalone: true,
   selector: 'jhi-user-mgmt-update',
   templateUrl: './user-management-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    InputTextModule,
+    CheckboxModule,
+    DropdownModule,
+    MultiSelectModule,
+    ButtonModule,
+  ],
+  styleUrls: ['./user-management-update.component.scss'],
 })
 export default class UserManagementUpdateComponent implements OnInit {
+  @Input() user: User | null = null;
+  @Output() closeEvent = new EventEmitter<boolean>();
+
   languages = LANGUAGES;
   authorities = signal<string[]>([]);
   isSaving = signal(false);
@@ -51,13 +70,13 @@ export default class UserManagementUpdateComponent implements OnInit {
   private route = inject(ActivatedRoute);
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ user }) => {
-      if (user) {
-        this.editForm.reset(user);
-      } else {
-        this.editForm.reset(newUser);
-      }
-    });
+    // this.route.data.subscribe(({ user }) => {
+    if (this.user) {
+      this.editForm.reset(this.user);
+    } else {
+      this.editForm.reset(newUser);
+    }
+    // });
     this.userService.authorities().subscribe(authorities => this.authorities.set(authorities));
   }
 
@@ -80,13 +99,18 @@ export default class UserManagementUpdateComponent implements OnInit {
       });
     }
   }
+  cancel(): void {
+    this.closeEvent.emit(false);
+  }
 
   private onSaveSuccess(): void {
     this.isSaving.set(false);
-    this.previousState();
+    this.closeEvent.emit(true);
+    // this.previousState();
   }
 
   private onSaveError(): void {
     this.isSaving.set(false);
+    // this.closeEvent.emit(false);
   }
 }

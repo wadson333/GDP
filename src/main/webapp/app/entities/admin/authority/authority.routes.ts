@@ -9,31 +9,34 @@ const authorityRoute: Routes = [
     loadComponent: () => import('./list/authority.component').then(m => m.AuthorityComponent),
     data: {
       authorities: ['ROLE_ADMIN'],
+      breadcrumb: "Les roles d'utilisateurs",
+      title: 'Les roles d’utilisateurs',
+      defaultSort: 'name,asc',
     },
     canActivate: [UserRouteAccessService],
   },
-  {
-    path: ':name/view',
-    loadComponent: () => import('./detail/authority-detail.component').then(m => m.AuthorityDetailComponent),
-    resolve: {
-      authority: AuthorityResolve,
-    },
-    data: {
-      authorities: ['ROLE_ADMIN'],
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: 'new',
-    loadComponent: () => import('./update/authority-update.component').then(m => m.AuthorityUpdateComponent),
-    resolve: {
-      authority: AuthorityResolve,
-    },
-    data: {
-      authorities: ['ROLE_ADMIN'],
-    },
-    canActivate: [UserRouteAccessService],
-  },
+  // {
+  //   path: ':name/view',
+  //   loadComponent: () => import('./detail/authority-detail.component').then(m => m.AuthorityDetailComponent),
+  //   resolve: {
+  //     authority: AuthorityResolve,
+  //   },
+  //   data: {
+  //     authorities: ['ROLE_ADMIN'],
+  //   },
+  //   canActivate: [UserRouteAccessService],
+  // },
+  // {
+  //   path: 'new',
+  //   loadComponent: () => import('./update/authority-update.component').then(m => m.AuthorityUpdateComponent),
+  //   resolve: {
+  //     authority: AuthorityResolve,
+  //   },
+  //   data: {
+  //     authorities: ['ROLE_ADMIN'],
+  //   },
+  //   canActivate: [UserRouteAccessService],
+  // },
 ];
 
 export default authorityRoute;

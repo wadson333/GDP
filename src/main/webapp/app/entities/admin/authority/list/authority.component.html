@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <h2 id="page-heading" data-cy="AuthorityHeading">
     <span jhiTranslate="gdpApp.adminAuthority.home.title">Authorities</span>
 
@@ -70,4 +70,37 @@
       </table>
     </div>
   }
+</div> -->
+<div class="px-3 py-4">
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (authorities?.length === 0) {
+    <div class="text-center border py-2 font-mono font-semibold text-lg text-blue-400" id="no-result">
+      <span jhiTranslate="gdpApp.adminAuthority.home.notFound">Aucun Authority trouvé</span>
+    </div>
+  }
 </div>
+
+@if (authorities && authorities.length > 0) {
+  <div class="w-card">
+    <p-table [value]="authorities" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="10">
+      <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-end w-full">
+          <p-button icon="pi pi-refresh" [label]="" (onClick)="load()" [disabled]="isLoading" [text]="true" />
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Name</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-authority>
+        <tr>
+          <td>{{ authority.name }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+}

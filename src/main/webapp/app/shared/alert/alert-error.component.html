@@ -1,4 +1,4 @@
-<div class="alerts" role="alert">
+<!-- <div class="alerts" role="alert">
   @for (alert of alerts(); track $index) {
     <div [ngClass]="setClasses(alert)">
       @if (alert.message) {
@@ -8,4 +8,17 @@
       }
     </div>
   }
-</div>
+</div> -->
+@for (alert of alerts(); track $index) {
+  <div
+    class="alert-error flex items-center px-4 py-2 mb-4 rounded-xl border border-red-200 bg-gradient-to-r from-red-50 to-red-100 text-red-700 animate-slideIn"
+    data-cy="loginError"
+  >
+    <span class="pi pi-exclamation-circle text-lg mr-2"></span>
+    <div class="text-wrap">
+      <span>
+        <span [innerHTML]="alert.message"></span>
+      </span>
+    </div>
+  </div>
+}

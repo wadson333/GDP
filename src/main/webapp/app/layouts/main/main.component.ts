@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, RendererFactory2, inject } from '@angular/core';
+import { Component, OnInit, Renderer2, RendererFactory2, inject, signal } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import dayjs from 'dayjs/esm';
@@ -7,16 +7,19 @@ import { AccountService } from 'app/core/auth/account.service';
 import { AppPageTitleStrategy } from 'app/app-page-title-strategy';
 import FooterComponent from '../footer/footer.component';
 import PageRibbonComponent from '../profiles/page-ribbon.component';
+import SidebarComponent from '../sidebar/sidebar.component';
+import { CardModule } from 'primeng/card';
 
 @Component({
   standalone: true,
   selector: 'jhi-main',
   templateUrl: './main.component.html',
   providers: [AppPageTitleStrategy],
-  imports: [RouterOutlet, FooterComponent, PageRibbonComponent],
+  imports: [RouterOutlet, FooterComponent, PageRibbonComponent, SidebarComponent, CardModule],
 })
 export default class MainComponent implements OnInit {
   account = inject(AccountService).trackCurrentAccount();
+  isSidebarCollapsed = signal(false); // On utilise un signal pour l'état de la sidebar
   private renderer: Renderer2;
 
   private router = inject(Router);
@@ -38,5 +41,9 @@ export default class MainComponent implements OnInit {
       dayjs.locale(langChangeEvent.lang);
       this.renderer.setAttribute(document.querySelector('html'), 'lang', langChangeEvent.lang);
     });
+  }
+
+  toggleSidebar(): void {
+    this.isSidebarCollapsed.set(!this.isSidebarCollapsed());
   }
 }

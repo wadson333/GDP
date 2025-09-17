@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-center">
+<!-- <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2 id="myUserLabel" jhiTranslate="userManagement.home.createOrEditLabel">Créer ou éditer un utilisateur</h2>
@@ -142,4 +142,107 @@
       </button>
     </form>
   </div>
-</div>
+</div> -->
+<jhi-alert-error></jhi-alert-error>
+<form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm" class="flex flex-col gap-4">
+  <div [hidden]="!editForm.value.id" class="field">
+    <label for="id" class="block text-sm font-medium mb-1">ID</label>
+    <input pInputText id="id" formControlName="id" readonly class="w-full" />
+  </div>
+
+  <div class="field">
+    <label for="login" class="block text-sm font-medium mb-1" jhiTranslate="userManagement.login">Login</label>
+    <input
+      pInputText
+      id="login"
+      formControlName="login"
+      class="w-full"
+      [ngClass]="{ 'ng-invalid ng-dirty': editForm.get('login')?.invalid && editForm.get('login')?.touched }"
+    />
+    @if (editForm.get('login')?.invalid && editForm.get('login')?.touched) {
+      <small class="p-error block mt-1">
+        @if (editForm.get('login')?.errors?.required) {
+          <span jhiTranslate="entity.validation.required">Ce champ est obligatoire.</span>
+        }
+        @if (editForm.get('login')?.errors?.pattern) {
+          <span jhiTranslate="entity.validation.patternLogin">Format invalide.</span>
+        }
+      </small>
+    }
+  </div>
+
+  <div class="grid grid-cols-2 gap-4">
+    <div class="field">
+      <label for="firstName" class="block text-sm font-medium mb-1" jhiTranslate="userManagement.firstName">Prénom</label>
+      <input pInputText id="firstName" formControlName="firstName" class="w-full" />
+    </div>
+
+    <div class="field">
+      <label for="lastName" class="block text-sm font-medium mb-1" jhiTranslate="userManagement.lastName">Nom</label>
+      <input pInputText id="lastName" formControlName="lastName" class="w-full" />
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="email" class="block text-sm font-medium mb-1" jhiTranslate="userManagement.email">Email</label>
+    <input pInputText id="email" formControlName="email" class="w-full" type="email" />
+    @if (editForm.get('email')?.invalid && editForm.get('email')?.touched) {
+      <small class="p-error block mt-1">
+        @if (editForm.get('email')?.errors?.required) {
+          <span jhiTranslate="entity.validation.required">Ce champ est obligatoire.</span>
+        }
+        @if (editForm.get('email')?.errors?.email) {
+          <span jhiTranslate="global.messages.validate.email.invalid">Email invalide.</span>
+        }
+      </small>
+    }
+  </div>
+
+  <div class="field-checkbox">
+    <p-checkbox [binary]="true" formControlName="activated" [disabled]="editForm.value.id === undefined" inputId="activated"> </p-checkbox>
+    <label for="activated" class="ml-2" jhiTranslate="userManagement.activated">Activé</label>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4">
+    @if (languages && languages.length > 0) {
+      <div class="field">
+        <label for="langKey" class="block text-sm font-medium mb-1" jhiTranslate="userManagement.langKey">Langue</label>
+        <p-dropdown
+          [options]="languages"
+          formControlName="langKey"
+          [showClear]="false"
+          placeholder="Sélectionner une langue"
+          styleClass="w-full"
+        >
+          <ng-template pTemplate="selectedItem">
+            <span>{{ editForm.get('langKey')?.value ?? '' | findLanguageFromKey }}</span>
+          </ng-template>
+          <ng-template let-language pTemplate="item">
+            <span>{{ language | findLanguageFromKey }}</span>
+          </ng-template>
+        </p-dropdown>
+      </div>
+    }
+
+    <div class="field">
+      <label for="authorities" class="block text-sm font-medium mb-1" jhiTranslate="userManagement.profiles">Droits</label>
+      <p-multiSelect
+        [options]="authorities()"
+        formControlName="authorities"
+        defaultLabel="Sélectionner les droits"
+        [virtualScroll]="true"
+        [virtualScrollItemSize]="authorities().length"
+        styleClass="w-full"
+        class="multiselect-custom-virtual-scroll"
+      >
+      </p-multiSelect>
+    </div>
+  </div>
+
+  <div class="flex justify-end gap-2 mt-5">
+    <p-button (click)="cancel()" styleClass="p-button-text" [label]="'entity.action.cancel' | translate" icon="pi pi-times"> </p-button>
+
+    <p-button type="submit" [disabled]="editForm.invalid || isSaving()" [label]="'entity.action.save' | translate" icon="pi pi-save">
+    </p-button>
+  </div>
+</form>

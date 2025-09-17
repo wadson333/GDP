@@ -19,6 +19,8 @@ const userManagementRoute: Routes = [
     loadComponent: () => import('./list/user-management.component'),
     data: {
       defaultSort: 'id,asc',
+      pageTitle: 'userManagement.home.title',
+      breadcrumb: 'Liste des utilisateurs',
     },
   },
   {
@@ -27,12 +29,20 @@ const userManagementRoute: Routes = [
     resolve: {
       user: userManagementResolve,
     },
+    data: {
+      pageTitle: 'userManagement.home.title',
+      breadcrumb: "Détails de l'utilisateur",
+    },
   },
   {
     path: 'new',
     loadComponent: () => import('./update/user-management-update.component'),
     resolve: {
       user: userManagementResolve,
+    },
+    data: {
+      pageTitle: 'userManagement.home.title',
+      breadcrumb: 'Nouvel utilisateur',
     },
   },
   {

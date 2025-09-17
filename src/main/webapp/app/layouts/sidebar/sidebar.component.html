@@ -1,0 +1,18 @@
+<div class="flex flex-col w-64 h-full sidebar">
+  <!-- En-tête avec logo -->
+  <div class="flex items-center px-6 py-2 border-b">
+    <img src="../../../content/images/gdp.png" alt="Logo" class="h-12 w-auto" />
+    <span class="ml-3 text-lg font-semibold">GDP</span>
+  </div>
+
+  <!-- Menu principal -->
+  <div class="flex-grow overflow-y-auto ps-4 py-2">
+    <!-- <p-menu [model]="items" styleClass="border-0 bg-transparent" ></p-menu> -->
+    <p-panelMenu [model]="items" styleClass="w-full md:w-20rem" [multiple]="true" />
+  </div>
+
+  <!-- Section utilisateur -->
+  <div class="px-4 py-3">
+    <p-button label="Deconnexion" (onClick)="logout()" severity="secondary" icon="pi pi-sign-out" styleClass="w-full" />
+  </div>
+</div>

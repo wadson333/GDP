@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-center">
+<!-- <div class="d-flex justify-content-center">
   <div class="col-8">
     @if (user(); as userRef) {
       <div>
@@ -60,4 +60,133 @@
       </div>
     }
   </div>
-</div>
+</div> -->
+
+<!-- @if (user()) {
+      <div class="flex flex-col gap-4 p-4">
+        <div class="flex justify-center mb-4">
+          <p-avatar 
+            [label]="user()?.login?.charAt(0)?.toUpperCase()"
+            styleClass="mr-2" 
+            size="xlarge" 
+            [style]="{ 'background-color': '#ece9fc', color: '#2a1261' }" 
+            shape="circle" />
+        </div>
+        
+        <div class="grid">
+          <div class="col-4 font-semibold">Login:</div>
+          <div class="col-8">{{user()?.login}}</div>
+          
+          <div class="col-4 font-semibold">Email:</div>
+          <div class="col-8">{{user()?.email}}</div>
+          
+          <div class="col-4 font-semibold">Status:</div>
+          <div class="col-8">
+            <p-tag 
+              [value]="user()?.activated ? 'Activé' : 'Désactivé'"
+              [severity]="user()?.activated ? 'success' : 'danger'">
+            </p-tag>
+          </div>
+          
+          <div class="col-4 font-semibold">Langue:</div>
+          <div class="col-8">{{user()?.langKey}}</div>
+          
+          <div class="col-4 font-semibold">Droits:</div>
+          <div class="col-8">
+            <div class="flex flex-wrap gap-2">
+              @for (authority of user()?.authorities; track $index) {
+                <p-tag [value]="authority" severity="info"></p-tag>
+              }
+            </div>
+          </div>
+          
+          <div class="col-4 font-semibold">Créé le:</div>
+          <div class="col-8">{{user()?.createdDate | date:'dd/MM/yy HH:mm'}}</div>
+          
+          <div class="col-4 font-semibold">Modifié le:</div>
+          <div class="col-8">{{user()?.lastModifiedDate | date:'dd/MM/yy HH:mm'}}</div>
+        </div>
+      </div>
+    } -->
+
+@if (user()) {
+  <div class="flex flex-col gap-3 p-1">
+    <!-- Header with Avatar -->
+    <div class="flex flex-row items-center justify-center gap-3 pb-3 border-bottom-1 border-gray-200">
+      <p-avatar [label]="user()?.login?.charAt(0)?.toUpperCase()" styleClass="mr-2" size="xlarge" shape="circle" />
+      <div class="">
+        <h3 class="text-xl font-semibold mb-1">
+          {{ user()?.login }}
+          <p-tag
+            [value]="user()?.activated ? 'Activé' : 'Désactivé'"
+            [severity]="user()?.activated ? 'success' : 'danger'"
+            [rounded]="true"
+          >
+          </p-tag>
+        </h3>
+        <p class="">{{ user()?.email }}</p>
+      </div>
+    </div>
+
+    <!-- User Information Grid -->
+    <div class="grid grid-cols-2 gap-4">
+      <!-- Personal Information -->
+
+      <div class="col-span-2 w-card px-4 rounded-lg py-2">
+        <h4 class="text-sm font-semibold mb-3">Informations Personnelles</h4>
+        <div class="flex flex-col gap-3">
+          <div class="flex items-center gap-2">
+            <i class="pi pi-user"></i>
+            <div>
+              <div class="text-sm">Nom Complet</div>
+              <div class="font-medium">{{ user()?.firstName || '-' }} {{ user()?.lastName || '-' }}</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <i class="pi pi-globe"></i>
+            <div>
+              <div class="text-sm">Langue</div>
+              <div class="font-medium">{{ user()?.langKey | uppercase }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Roles & Permissions -->
+      <div class="col-span-2 w-card px-4 rounded-lg py-2">
+        <h4 class="text-sm font-semibold mb-3">Droits d'accès</h4>
+        <div class="flex flex-wrap gap-2">
+          @for (authority of user()?.authorities; track $index) {
+            <p-tag [value]="authority" severity="secondary" [rounded]="true"> </p-tag>
+          }
+        </div>
+      </div>
+
+      <!-- Creation Info -->
+      <div class="col-span-1 w-card px-4 rounded-lg py-2">
+        <h4 class="text-sm font-semibold mb-3">Création</h4>
+        <div class="flex flex-col gap-2">
+          <div class="text-sm">
+            Par: <span class="font-medium">{{ user()?.createdBy }}</span>
+          </div>
+          <div class="text-sm">
+            Le: <span class="font-medium">{{ user()?.createdDate | date: 'dd/MM/yy HH:mm' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Last Modified Info -->
+      <div class="col-span-1 w-card px-4 rounded-lg py-2">
+        <h4 class="text-sm font-semibold mb-3">Dernière modification</h4>
+        <div class="flex flex-col justify-center gap-2">
+          <div class="text-sm">
+            Par: <span class="font-medium">{{ user()?.lastModifiedBy }}</span>
+          </div>
+          <div class="text-sm">
+            Le: <span class="font-medium">{{ user()?.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject, signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -14,11 +14,13 @@ import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
 import ActiveMenuDirective from './active-menu.directive';
 import NavbarItem from './navbar-item.model';
 import { ThemeService } from 'app/core/theme/theme.service';
-import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { AvatarModule } from 'primeng/avatar';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { BreadcrumbService } from 'app/shared/services/breadcrumb.service';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
   standalone: true,
@@ -30,14 +32,16 @@ import { AvatarModule } from 'primeng/avatar';
     SharedModule,
     HasAnyAuthorityDirective,
     ActiveMenuDirective,
-    DropdownModule,
     FormsModule,
     ButtonModule,
     TieredMenuModule,
     AvatarModule,
+    BreadcrumbModule,
+    DividerModule,
   ],
 })
 export default class NavbarComponent implements OnInit {
+  @Output() sidebarToggle = new EventEmitter<void>();
   inProduction?: boolean;
   isNavbarCollapsed = signal(true);
   languages = LANGUAGES.map(lang => ({
@@ -62,8 +66,7 @@ export default class NavbarComponent implements OnInit {
   ];
   accountMenuItems = [
     { label: 'Profil', icon: 'pi pi-user', command: () => this.router.navigate(['/account/settings']) },
-    { label: 'Mot de passe', icon: 'pi pi-cog', command: () => this.router.navigate(['/account/password']) },
-    { label: 'Déconnexion', icon: 'pi pi-sign-out', command: () => this.logout() },
+    { label: 'setting', icon: 'pi pi-cog', command: () => this.router.navigate(['/account/password']) },
   ];
 
   private loginService = inject(LoginService);
@@ -73,7 +76,7 @@ export default class NavbarComponent implements OnInit {
   private router = inject(Router);
   private themeService = inject(ThemeService);
 
-  constructor() {
+  constructor(public breadcrumbService: BreadcrumbService) {
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : `v${VERSION}`;
     }
@@ -112,5 +115,9 @@ export default class NavbarComponent implements OnInit {
   switchTheme(theme: any): void {
     this.themeService.switchTheme(theme);
     // this.selectedTheme = theme;
+  }
+
+  toggle(): void {
+    this.sidebarToggle.emit();
   }
 }

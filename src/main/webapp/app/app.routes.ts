@@ -29,6 +29,15 @@ const routes: Routes = [
     loadChildren: () => import('./account/account.route'),
   },
   {
+    path: 'd/dashboard',
+    loadComponent: () => import('./dashboard/dashboard.component'),
+    data: {
+      breadcrumb: 'Tableau de bord',
+    },
+    canActivate: [UserRouteAccessService],
+    title: 'dashboard.title',
+  },
+  {
     path: 'login',
     loadComponent: () => import('./login/login.component'),
     title: 'login.title',

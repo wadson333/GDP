@@ -140,3 +140,12 @@
 //     }
 //   }
 // }
+
+::ng-deep .p-breadcrumb {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+nav {
+  border-bottom: 1px solid #686d7220 !important; /* Light gray border on the right */
+}

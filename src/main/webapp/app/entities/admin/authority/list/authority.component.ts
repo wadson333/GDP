@@ -11,6 +11,8 @@ import { DEFAULT_SORT_DATA, ITEM_DELETED_EVENT, SORT } from 'app/config/navigati
 import { IAuthority } from '../authority.model';
 import { AuthorityService, EntityArrayResponseType } from '../service/authority.service';
 import { AuthorityDeleteDialogComponent } from '../delete/authority-delete-dialog.component';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   standalone: true,
@@ -25,6 +27,8 @@ import { AuthorityDeleteDialogComponent } from '../delete/authority-delete-dialo
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
+    TableModule,
+    ButtonModule,
   ],
 })
 export class AuthorityComponent implements OnInit {

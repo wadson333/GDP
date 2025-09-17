@@ -3,12 +3,29 @@ import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import SharedModule from 'app/shared/shared.module';
 
 import { PasswordResetInitService } from './password-reset-init.service';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { PasswordModule } from 'primeng/password';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 @Component({
   standalone: true,
   selector: 'jhi-password-reset-init',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CardModule,
+    InputTextModule,
+    ButtonModule,
+    DropdownModule,
+    PasswordModule,
+    FloatLabelModule,
+  ],
   templateUrl: './password-reset-init.component.html',
+  styleUrls: ['./password-reset-init.component.scss'],
 })
 export default class PasswordResetInitComponent implements AfterViewInit {
   email = viewChild.required<ElementRef>('email');

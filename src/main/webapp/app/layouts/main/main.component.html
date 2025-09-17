@@ -1,18 +1,53 @@
 @let accountRef = account();
 <!-- <jhi-page-ribbon></jhi-page-ribbon> -->
 <div class="h-[98vh] max-h-[98vh] m-0 p-0 overflow-hidden">
+  <!-- <div class="h-screen max-h-screen m-0 p-0 overflow-hidden"> -->
   <!-- @if(accountRef){ -->
 
-  <div class="">
-    <router-outlet name="navbar"></router-outlet>
-  </div>
   <!-- } -->
-  <div class="h-full overflow-hidden">
+  @if (!accountRef) {
+    <div class="">
+      <router-outlet name="navbar"></router-outlet>
+    </div>
+
     <div class="h-full overflow-hidden">
       <router-outlet></router-outlet>
     </div>
-    @if (accountRef) {
-      <jhi-footer></jhi-footer>
-    }
-  </div>
+  } @else {
+    <!-- <div class="flex h-full overflow-hidden">
+      <div>
+        <jhi-sidebar> </jhi-sidebar>
+      </div>
+      <div class="h-full flex-1 flex flex-col">
+        <div class="">
+          <router-outlet name="navbar"></router-outlet>
+        </div>
+
+        <main class="min-h-full flex-1 overflow-x-hidden overflow-y-auto px-3">
+          <p-card header="Simple Card">
+            <router-outlet></router-outlet>
+          </p-card>
+        </main>
+      </div>
+    </div> -->
+    <!-- <jhi-footer></jhi-footer> -->
+    <div class="flex h-full">
+      <!-- Colonne 1: La Sidebar -->
+      <!-- On passera un signal ou une variable pour gérer son état ouvert/fermé -->
+      <!-- <jhi-sidebar [collapsed]="isSidebarCollapsed()"></jhi-sidebar> -->
+      <jhi-sidebar [collapsed]="isSidebarCollapsed()"> </jhi-sidebar>
+
+      <!-- Colonne 2: La zone de contenu principale -->
+      <div class="flex-1 flex flex-col h-screen overflow-y-hidden">
+        <!-- En-tête / Topbar -->
+        <router-outlet name="navbar"></router-outlet>
+
+        <!-- Zone de contenu scrollable -->
+        <!-- C'est ICI que le défilement se produit, et seulement ici -->
+        <main class="flex-1 overflow-y-auto p-4 md:p-6">
+          <router-outlet></router-outlet>
+        </main>
+      </div>
+    </div>
+  }
 </div>

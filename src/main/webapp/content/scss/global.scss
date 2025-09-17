@@ -9,6 +9,39 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  box-sizing: border-box;
+}
+
+// *,
+// *:before,
+// *:after {
+//   box-sizing: border-box;
+// }
+
+.w-card {
+  border: 1px solid #686d7220;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  // box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+.p-paginator,
+.p-datatable-header {
+  background-color: transparent !important;
+  border-bottom-width: 0px !important;
+  border-top-width: 0px !important;
+}
+
+.p-datatable-table {
+  & * {
+    border-bottom-width: 1px !important;
+  }
+  & th,
+  & tr {
+    background-color: transparent !important;
+  }
+}
+
 /* ==============================================================
 Bootstrap tweaks
 ===============================================================*/
@@ -21,7 +54,7 @@ Bootstrap tweaks
 //   font-weight: 300;
 // }
 
-// /* Increase contrast of links to get 100% on Lighthouse Accessibility Audit. Override this color if you want to change the link color, or use a Bootswatch theme */
+/* Increase contrast of links to get 100% on Lighthouse Accessibility Audit. Override this color if you want to change the link color, or use a Bootswatch theme */
 // a {
 //   color: #533f03;
 //   font-weight: bold;
