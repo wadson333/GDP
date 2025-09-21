@@ -143,7 +143,9 @@
     </form>
   </div>
 </div> -->
-<jhi-alert-error></jhi-alert-error>
+<!-- <jhi-alert-error></jhi-alert-error> -->
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
 <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm" class="flex flex-col gap-4">
   <div [hidden]="!editForm.value.id" class="field">
     <label for="id" class="block text-sm font-medium mb-1">ID</label>
@@ -240,9 +242,22 @@
   </div>
 
   <div class="flex justify-end gap-2 mt-5">
-    <p-button (click)="cancel()" styleClass="p-button-text" [label]="'entity.action.cancel' | translate" icon="pi pi-times"> </p-button>
+    <p-button
+      (click)="cancel()"
+      styleClass="p-button-text"
+      [label]="'entity.action.cancel' | translate"
+      icon="pi pi-times"
+      [disabled]="isSaving()"
+    >
+    </p-button>
 
-    <p-button type="submit" [disabled]="editForm.invalid || isSaving()" [label]="'entity.action.save' | translate" icon="pi pi-save">
+    <p-button
+      type="submit"
+      [disabled]="editForm.invalid || isSaving()"
+      [label]="'entity.action.save' | translate"
+      icon="pi pi-save"
+      [loading]="isSaving()"
+    >
     </p-button>
   </div>
 </form>

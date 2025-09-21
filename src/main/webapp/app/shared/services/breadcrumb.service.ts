@@ -1,20 +1,33 @@
-/* eslint-disable prettier/prettier */
-import { Injectable } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
+// Fichier : breadcrumb.service.ts (Version simplifiée et finale)
+
+import { Injectable, OnDestroy } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router, Data } from '@angular/router';
+import { filter, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { MenuItem } from 'primeng/api';
 
 @Injectable({ providedIn: 'root' })
-export class BreadcrumbService {
+export class BreadcrumbService implements OnDestroy {
+  // On revient à un simple tableau public
   items: MenuItem[] = [];
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-  ) {
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
-      this.items = this.createBreadcrumbs(this.route.root);
-    });
+  private destroy$ = new Subject<void>();
+
+  constructor(private router: Router) {
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.destroy$),
+      )
+      .subscribe(() => {
+        // La seule responsabilité du service est de construire le tableau d'items
+        this.items = this.createBreadcrumbs(this.router.routerState.root);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private createBreadcrumbs(route: ActivatedRoute, url = '', breadcrumbs: MenuItem[] = []): MenuItem[] {
@@ -29,15 +42,19 @@ export class BreadcrumbService {
       if (routeURL !== '') {
         url += `/${routeURL}`;
       }
+      const breadcrumbKey = child.snapshot.data['breadcrumb'] as string | undefined;
 
-      const label = child.snapshot.data['breadcrumb'];
-      if (label) {
-        breadcrumbs.push({ label, routerLink: url });
+      if (breadcrumbKey) {
+        // ON NE TRADUIT PAS ICI ! On stocke la clé directement.
+        const item: MenuItem = {
+          label: breadcrumbKey, // Le label est la clé de traduction
+          routerLink: url,
+        };
+        breadcrumbs.push(item);
       }
 
       return this.createBreadcrumbs(child, url, breadcrumbs);
     }
-
     return breadcrumbs;
   }
 }

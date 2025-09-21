@@ -1,4 +1,4 @@
-<!doctype html>
+<!-- <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" lang="en">
   <head>
     <title th:text="#{email.activation.title}">JHipster creation</title>
@@ -16,5 +16,132 @@
       <br />
       <em th:text="#{email.signature}">JHipster.</em>
     </p>
+  </body>
+</html> -->
+
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" lang="en">
+  <head>
+    <title th:text="#{email.creation.title}">GDP Clinic - Création de votre compte</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+      body {
+        font-family: 'Arial', sans-serif;
+        line-height: 1.6;
+        color: #374151;
+        background-color: #f3f4f6;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        border: 1px solid #ccc;
+      }
+
+      .header {
+        background-color: #93c5fd;
+        padding: 24px;
+        border-radius: 8px 8px 0 0;
+        margin: -20px -20px 20px -20px;
+        text-align: center;
+      }
+
+      .header img {
+        height: 40px;
+        margin-bottom: 12px;
+      }
+
+      .header h1 {
+        color: #ffffff;
+        font-size: 24px;
+        margin: 0;
+        font-weight: 600;
+      }
+
+      .content {
+        padding: 0 24px;
+      }
+
+      .button {
+        display: inline-block;
+        padding: 14px 28px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #ffffff;
+        background-color: #93c5fd;
+        border-radius: 8px;
+        text-decoration: none;
+        text-align: center;
+        transition: background-color 0.2s;
+      }
+
+      .button:hover {
+        background-color: #60a5fa;
+      }
+
+      .signature {
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid #e5e7eb;
+        color: #6b7280;
+        font-size: 14px;
+      }
+
+      .footer {
+        margin-top: 32px;
+        text-align: center;
+        color: #6b7280;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <!-- <img src="data:image/png;base64,${logoBase64}" alt="GDP Clinic Logo" /> -->
+        <h1 th:text="#{email.creation.title}">GDP Clinic - Création de votre compte</h1>
+      </div>
+
+      <div class="content">
+        <p th:text="#{email.creation.greeting(${user.login})}" style="font-size: 18px; font-weight: 500">Bonjour [Nom d'utilisateur],</p>
+
+        <p th:text="#{email.creation.text1}">Un compte a été créé pour vous sur la plateforme de la Clinique GDP.</p>
+
+        <p th:text="#{email.creation.text2}">
+          Pour activer votre compte et commencer à l'utiliser, veuillez cliquer sur le bouton ci-dessous pour définir votre mot de passe :
+        </p>
+
+        <p style="margin: 32px 0; text-align: center">
+          <a
+            class="button"
+            th:with="url=(@{|${baseUrl}/account/reset/finish?key=${user.resetKey}|})"
+            th:href="${url}"
+            class="button"
+            th:text="#{email.creation.button}"
+          >
+            Définir mon mot de passe
+          </a>
+        </p>
+
+        <div class="signature">
+          <p>
+            <span th:text="#{email.creation.signature.regards}">Cordialement,</span>
+            <br />
+            <em th:text="#{email.creation.signature.team}">L'équipe de la Clinique GDP.</em>
+          </p>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>© 2025 GDP Clinic. Tous droits réservés.</p>
+        <p>Cet email a été envoyé automatiquement, merci de ne pas y répondre.</p>
+      </div>
+    </div>
   </body>
 </html>

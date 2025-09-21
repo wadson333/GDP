@@ -24,6 +24,11 @@ import { DialogModule } from 'primeng/dialog';
 import { TagModule } from 'primeng/tag';
 import UserManagementDetailComponent from '../detail/user-management-detail.component';
 import UserManagementUpadteComponent from '../update/user-management-update.component';
+import { SkeletonModule } from 'primeng/skeleton';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   standalone: true,
@@ -43,7 +48,11 @@ import UserManagementUpadteComponent from '../update/user-management-update.comp
     TagModule,
     UserManagementDetailComponent,
     UserManagementUpadteComponent,
+    SkeletonModule,
+    ToastModule,
+    ConfirmDialogModule,
   ],
+  providers: [MessageService, ConfirmationService],
 })
 export default class UserManagementComponent implements OnInit {
   currentAccount = inject(AccountService).trackCurrentAccount();
@@ -67,7 +76,9 @@ export default class UserManagementComponent implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
   private sortService = inject(SortService);
-  private modalService = inject(NgbModal);
+  private confirmationService = inject(ConfirmationService);
+  private messageService = inject(MessageService);
+  private translateService = inject(TranslateService);
 
   constructor() {
     this.activatedRoute.queryParams.subscribe(params => {
@@ -84,24 +95,24 @@ export default class UserManagementComponent implements OnInit {
     this.handleNavigation();
   }
 
-  setActive(user: User, isActivated: boolean): void {
-    this.userService.update({ ...user, activated: isActivated }).subscribe(() => this.loadAll());
-  }
+  // setActive(user: User, isActivated: boolean): void {
+  //   this.userService.update({ ...user, activated: isActivated }).subscribe(() => this.loadAll());
+  // }
 
   trackIdentity(item: User): number {
     return item.id!;
   }
 
-  deleteUser(user: User): void {
-    const modalRef = this.modalService.open(UserManagementDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.user = user;
-    // unsubscribe not needed because closed completes on modal close
-    modalRef.closed.subscribe(reason => {
-      if (reason === 'deleted') {
-        this.loadAll();
-      }
-    });
-  }
+  // deleteUser(user: User): void {
+  //   const modalRef = this.modalService.open(UserManagementDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+  //   modalRef.componentInstance.user = user;
+  //   // unsubscribe not needed because closed completes on modal close
+  //   modalRef.closed.subscribe(reason => {
+  //     if (reason === 'deleted') {
+  //       this.loadAll();
+  //     }
+  //   });
+  // }
 
   loadAll(): void {
     this.isLoading.set(true);
@@ -170,9 +181,59 @@ export default class UserManagementComponent implements OnInit {
     this.displayUserFormDialog = false;
     this.selectedUser = null;
     this.isNewUser = false;
-    // Optionally, you can also clear the query parameter if you used it to open the dialog
     this.mergeParameters();
-    if (success) this.loadAll();
+    if (success) {
+      this.loadAll();
+      this.messageService.add({
+        severity: 'success',
+        summary: this.translateService.instant('global.messages.success'),
+        detail: this.translateService.instant('userManagement.messages.success.saved'),
+      });
+    }
+  }
+
+  confirmStateChange(event: any, user: User): void {
+    // Revert the switch state immediately
+    this.confirmationService.confirm({
+      message: this.translateService.instant(
+        event.checked ? 'userManagement.messages.confirm.activate' : 'userManagement.messages.confirm.deactivate',
+      ),
+      header: this.translateService.instant('userManagement.messages.confirm.title'),
+      icon: 'pi pi-exclamation-triangle',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+      rejectButtonStyleClass: 'p-button-text',
+      rejectLabel: this.translateService.instant('userManagement.messages.confirm.cancel'),
+      acceptLabel: this.translateService.instant('userManagement.messages.confirm.confirm'),
+      accept: () => {
+        this.setActive(user, event.checked);
+      },
+      reject: () => {
+        this.loadAll(); // Reload to revert the switch state
+      },
+    });
+  }
+
+  setActive(user: User, isActivated: boolean): void {
+    this.userService.update({ ...user, activated: isActivated }).subscribe({
+      next: () => {
+        this.loadAll();
+        this.messageService.add({
+          severity: 'success',
+          summary: this.translateService.instant('global.messages.success'),
+          detail: this.translateService.instant(
+            isActivated ? 'userManagement.messages.success.activated' : 'userManagement.messages.success.deactivated',
+          ),
+        });
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: this.translateService.instant('global.messages.fail'),
+          detail: this.translateService.instant('userManagement.messages.error.default'),
+        });
+      },
+    });
   }
 
   private mergeParameters(): void {

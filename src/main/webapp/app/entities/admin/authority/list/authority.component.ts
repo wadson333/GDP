@@ -13,6 +13,7 @@ import { AuthorityService, EntityArrayResponseType } from '../service/authority.
 import { AuthorityDeleteDialogComponent } from '../delete/authority-delete-dialog.component';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @Component({
   standalone: true,
@@ -29,6 +30,7 @@ import { ButtonModule } from 'primeng/button';
     FormatMediumDatePipe,
     TableModule,
     ButtonModule,
+    SkeletonModule,
   ],
 })
 export class AuthorityComponent implements OnInit {
@@ -60,17 +62,17 @@ export class AuthorityComponent implements OnInit {
       .subscribe();
   }
 
-  delete(authority: IAuthority): void {
-    const modalRef = this.modalService.open(AuthorityDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.authority = authority;
-    // unsubscribe not needed because closed completes on modal close
-    modalRef.closed
-      .pipe(
-        filter(reason => reason === ITEM_DELETED_EVENT),
-        tap(() => this.load()),
-      )
-      .subscribe();
-  }
+  // delete(authority: IAuthority): void {
+  //   const modalRef = this.modalService.open(AuthorityDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+  //   modalRef.componentInstance.authority = authority;
+  //   // unsubscribe not needed because closed completes on modal close
+  //   modalRef.closed
+  //     .pipe(
+  //       filter(reason => reason === ITEM_DELETED_EVENT),
+  //       tap(() => this.load()),
+  //     )
+  //     .subscribe();
+  // }
 
   load(): void {
     this.queryBackend().subscribe({

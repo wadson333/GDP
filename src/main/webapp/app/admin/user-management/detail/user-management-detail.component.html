@@ -118,7 +118,7 @@
         <h3 class="text-xl font-semibold mb-1">
           {{ user()?.login }}
           <p-tag
-            [value]="user()?.activated ? 'Activé' : 'Désactivé'"
+            [value]="(user()?.activated ? 'userManagement.activated' : 'userManagement.deactivated') | translate"
             [severity]="user()?.activated ? 'success' : 'danger'"
             [rounded]="true"
           >
@@ -133,19 +133,19 @@
       <!-- Personal Information -->
 
       <div class="col-span-2 w-card px-4 rounded-lg py-2">
-        <h4 class="text-sm font-semibold mb-3">Informations Personnelles</h4>
+        <h4 class="text-sm font-semibold mb-3">{{ 'userManagement.detail.personalInfo' | translate }}</h4>
         <div class="flex flex-col gap-3">
           <div class="flex items-center gap-2">
             <i class="pi pi-user"></i>
             <div>
-              <div class="text-sm">Nom Complet</div>
-              <div class="font-medium">{{ user()?.firstName || '-' }} {{ user()?.lastName || '-' }}</div>
+              <div class="text-sm">{{ 'userManagement.detail.completeName' | translate }}</div>
+              <div class="font-medium">{{ user()?.firstName || '-' }} {{ user()?.lastName?.toUpperCase() || '-' }}</div>
             </div>
           </div>
           <div class="flex items-center gap-2">
             <i class="pi pi-globe"></i>
             <div>
-              <div class="text-sm">Langue</div>
+              <div class="text-sm">{{ 'userManagement.langKey' | translate }}</div>
               <div class="font-medium">{{ user()?.langKey | uppercase }}</div>
             </div>
           </div>
@@ -154,7 +154,7 @@
 
       <!-- Roles & Permissions -->
       <div class="col-span-2 w-card px-4 rounded-lg py-2">
-        <h4 class="text-sm font-semibold mb-3">Droits d'accès</h4>
+        <h4 class="text-sm font-semibold mb-3">{{ 'userManagement.profiles' | translate }}</h4>
         <div class="flex flex-wrap gap-2">
           @for (authority of user()?.authorities; track $index) {
             <p-tag [value]="authority" severity="secondary" [rounded]="true"> </p-tag>
@@ -164,26 +164,27 @@
 
       <!-- Creation Info -->
       <div class="col-span-1 w-card px-4 rounded-lg py-2">
-        <h4 class="text-sm font-semibold mb-3">Création</h4>
+        <h4 class="text-sm font-semibold mb-3">{{ 'userManagement.detail.created' | translate }}</h4>
         <div class="flex flex-col gap-2">
           <div class="text-sm">
-            Par: <span class="font-medium">{{ user()?.createdBy }}</span>
+            {{ 'userManagement.detail.for' | translate }} <span class="font-medium">{{ user()?.createdBy }}</span>
           </div>
           <div class="text-sm">
-            Le: <span class="font-medium">{{ user()?.createdDate | date: 'dd/MM/yy HH:mm' }}</span>
+            {{ 'userManagement.detail.on' | translate }} <span class="font-medium">{{ user()?.createdDate | date: 'dd/MM/yy HH:mm' }}</span>
           </div>
         </div>
       </div>
 
       <!-- Last Modified Info -->
       <div class="col-span-1 w-card px-4 rounded-lg py-2">
-        <h4 class="text-sm font-semibold mb-3">Dernière modification</h4>
+        <h4 class="text-sm font-semibold mb-3">{{ 'userManagement.detail.lastModified' | translate }}</h4>
         <div class="flex flex-col justify-center gap-2">
           <div class="text-sm">
-            Par: <span class="font-medium">{{ user()?.lastModifiedBy }}</span>
+            {{ 'userManagement.detail.for' | translate }} <span class="font-medium">{{ user()?.lastModifiedBy }}</span>
           </div>
           <div class="text-sm">
-            Le: <span class="font-medium">{{ user()?.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</span>
+            {{ 'userManagement.detail.on' | translate }}
+            <span class="font-medium">{{ user()?.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</span>
           </div>
         </div>
       </div>

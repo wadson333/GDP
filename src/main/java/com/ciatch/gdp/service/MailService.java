@@ -3,11 +3,14 @@ package com.ciatch.gdp.service;
 import com.ciatch.gdp.domain.User;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -95,6 +98,15 @@ public class MailService {
         Context context = new Context(locale);
         context.setVariable(USER, user);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        // Option 2: Add Base64 encoded logo
+        try {
+            ClassPathResource resource = new ClassPathResource("images/gdp.png");
+            byte[] bytes = resource.getInputStream().readAllBytes();
+            String base64Logo = Base64.getEncoder().encodeToString(bytes);
+            context.setVariable("logoBase64", base64Logo);
+        } catch (IOException e) {
+            LOG.debug("Email doesn't exist for user '{}'", user.getLogin());
+        }
         String content = templateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, locale);
         this.sendEmailSync(user.getEmail(), subject, content, false, true);

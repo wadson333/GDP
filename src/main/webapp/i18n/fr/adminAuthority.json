@@ -17,7 +17,8 @@
       "detail": {
         "title": "Authority"
       },
-      "name": "Name"
+      "name": "Nom",
+      "breadcrumb": "Gestion des Rôles"
     }
   }
 }

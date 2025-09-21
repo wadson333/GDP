@@ -12,6 +12,10 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { ButtonModule } from 'primeng/button';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TranslateService } from '@ngx-translate/core';
 
 const userTemplate = {} as IUser;
 
@@ -33,8 +37,11 @@ const newUser: IUser = {
     DropdownModule,
     MultiSelectModule,
     ButtonModule,
+    ToastModule,
+    ConfirmDialogModule,
   ],
   styleUrls: ['./user-management-update.component.scss'],
+  providers: [MessageService, ConfirmationService],
 })
 export default class UserManagementUpdateComponent implements OnInit {
   @Input() user: User | null = null;
@@ -68,9 +75,12 @@ export default class UserManagementUpdateComponent implements OnInit {
 
   private userService = inject(UserManagementService);
   private route = inject(ActivatedRoute);
+  private confirmationService = inject(ConfirmationService);
+  private messageService = inject(MessageService);
+  private translateService = inject(TranslateService);
 
   ngOnInit(): void {
-    // this.route.data.subscribe(({ user }) => {
+    //  this.route.data.subscribe(({ user }) => {
     if (this.user) {
       this.editForm.reset(this.user);
     } else {
@@ -84,20 +94,47 @@ export default class UserManagementUpdateComponent implements OnInit {
     window.history.back();
   }
 
+  // save(): void {
+  //   this.isSaving.set(true);
+  //   const user = this.editForm.getRawValue();
+  //   if (user.id !== null) {
+  //     this.userService.update(user).subscribe({
+  //       next: () => this.onSaveSuccess(),
+  //       error: () => this.onSaveError(),
+  //     });
+  //   } else {
+  //     this.userService.create(user).subscribe({
+  //       next: () => this.onSaveSuccess(),
+  //       error: () => this.onSaveError(),
+  //     });
+  //   }
+  // }
   save(): void {
-    this.isSaving.set(true);
-    const user = this.editForm.getRawValue();
-    if (user.id !== null) {
-      this.userService.update(user).subscribe({
-        next: () => this.onSaveSuccess(),
-        error: () => this.onSaveError(),
-      });
-    } else {
-      this.userService.create(user).subscribe({
-        next: () => this.onSaveSuccess(),
-        error: () => this.onSaveError(),
-      });
-    }
+    this.confirmationService.confirm({
+      message: this.translateService.instant('userManagement.messages.confirm.save'),
+      header: this.translateService.instant('userManagement.messages.confirm.title'),
+      icon: 'pi pi-exclamation-triangle',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+      rejectButtonStyleClass: 'p-button-text',
+      rejectLabel: this.translateService.instant('userManagement.messages.confirm.cancel'),
+      acceptLabel: this.translateService.instant('userManagement.messages.confirm.confirm'),
+      accept: () => {
+        this.isSaving.set(true);
+        const user = this.editForm.getRawValue();
+        if (user.id !== null) {
+          this.userService.update(user).subscribe({
+            next: () => this.onSaveSuccess(),
+            error: () => this.onSaveError(),
+          });
+        } else {
+          this.userService.create(user).subscribe({
+            next: () => this.onSaveSuccess(),
+            error: () => this.onSaveError(),
+          });
+        }
+      },
+    });
   }
   cancel(): void {
     this.closeEvent.emit(false);
@@ -105,12 +142,20 @@ export default class UserManagementUpdateComponent implements OnInit {
 
   private onSaveSuccess(): void {
     this.isSaving.set(false);
+    this.messageService.add({
+      severity: 'success',
+      summary: this.translateService.instant('global.messages.success'),
+      detail: this.translateService.instant('userManagement.messages.success.saved'),
+    });
     this.closeEvent.emit(true);
-    // this.previousState();
   }
 
   private onSaveError(): void {
     this.isSaving.set(false);
-    // this.closeEvent.emit(false);
+    this.messageService.add({
+      severity: 'error',
+      summary: this.translateService.instant('global.messages.fail'),
+      detail: this.translateService.instant('userManagement.messages.error.default'),
+    });
   }
 }

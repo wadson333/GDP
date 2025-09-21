@@ -150,7 +150,6 @@ public class UserResource {
             throw new LoginAlreadyUsedException();
         }
         Optional<AdminUserDTO> updatedUser = userService.updateUser(userDTO);
-
         return ResponseUtil.wrapOrNotFound(
             updatedUser,
             HeaderUtil.createAlert(applicationName, "userManagement.updated", userDTO.getLogin())

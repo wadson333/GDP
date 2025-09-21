@@ -18,40 +18,40 @@ const userManagementRoute: Routes = [
     path: '',
     loadComponent: () => import('./list/user-management.component'),
     data: {
+      pageTitle: 'userManagement.home.title',
       defaultSort: 'id,asc',
-      pageTitle: 'userManagement.home.title',
-      breadcrumb: 'Liste des utilisateurs',
+      breadcrumb: 'userManagement.breadcrumb',
     },
   },
-  {
-    path: ':login/view',
-    loadComponent: () => import('./detail/user-management-detail.component'),
-    resolve: {
-      user: userManagementResolve,
-    },
-    data: {
-      pageTitle: 'userManagement.home.title',
-      breadcrumb: "Détails de l'utilisateur",
-    },
-  },
-  {
-    path: 'new',
-    loadComponent: () => import('./update/user-management-update.component'),
-    resolve: {
-      user: userManagementResolve,
-    },
-    data: {
-      pageTitle: 'userManagement.home.title',
-      breadcrumb: 'Nouvel utilisateur',
-    },
-  },
-  {
-    path: ':login/edit',
-    loadComponent: () => import('./update/user-management-update.component'),
-    resolve: {
-      user: userManagementResolve,
-    },
-  },
+  // {
+  //   path: ':login/view',
+  //   loadComponent: () => import('./detail/user-management-detail.component'),
+  //   resolve: {
+  //     user: userManagementResolve,
+  //   },
+  //   data: {
+  //     pageTitle: 'userManagement.home.title',
+  //     breadcrumb: "Détails de l'utilisateur",
+  //   },
+  // },
+  // {
+  //   path: 'new',
+  //   loadComponent: () => import('./update/user-management-update.component'),
+  //   resolve: {
+  //     user: userManagementResolve,
+  //   },
+  //   data: {
+  //     pageTitle: 'userManagement.home.title',
+  //     breadcrumb: 'Nouvel utilisateur',
+  //   },
+  // },
+  // {
+  //   path: ':login/edit',
+  //   loadComponent: () => import('./update/user-management-update.component'),
+  //   resolve: {
+  //     user: userManagementResolve,
+  //   },
+  // },
 ];
 
 export default userManagementRoute;

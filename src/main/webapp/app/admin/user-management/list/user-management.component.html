@@ -130,14 +130,25 @@
     </div>
   }
 </div> -->
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
 
+<jhi-alert-error></jhi-alert-error>
+
+<jhi-alert></jhi-alert>
 @if (users()) {
   <div class="w-card">
     <p-table [value]="users() ?? []" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="10">
       <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-end w-full">
           <p-button icon="pi pi-refresh" [label]="" (onClick)="loadAll()" [text]="true" />
-          <p-button icon="pi pi-plus" label="nouvel utilisateur" (onClick)="showAddUserDialog()" class="ml-2" [text]="true" />
+          <p-button
+            icon="pi pi-plus"
+            [label]="'userManagement.home.createLabel' | translate"
+            (onClick)="showAddUserDialog()"
+            class="ml-2"
+            [text]="true"
+          />
           <!-- [routerLink]="['./new']" -->
         </div>
       </ng-template>
@@ -145,35 +156,16 @@
         <tr>
           <th></th>
           <th pSortableColumn="login">
-            Login
+            {{ 'userManagement.login' | translate }}
             <p-sortIcon field="login" />
           </th>
 
           <th pSortableColumn="email">
-            Email
+            {{ 'userManagement.email' | translate }}
             <p-sortIcon field="email" />
           </th>
-          <!-- <th>Status
-                <p-columnFilter field="activated" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
-                  <ng-template pTemplate="header">
-                      <div class="px-3 pt-3 pb-0">
-                          <span class="font-bold">Choisir un statut</span>
-                      </div>
-                  </ng-template>
-                  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                      <p-multiSelect [ngModel]="value" [options]="statusOptions" placeholder="Any" 
-                      (onChange)="filter($event.value)"  optionLabel="option.label">
-                          <ng-template let-option pTemplate="item">
-                              <div class="inline-block vertical-align-middle">
-                                  <span class="ml-1 mt-1">{{ option.label }}</span>
-                              </div>
-                          </ng-template>
-                      </p-multiSelect>
-                  </ng-template>
-                </p-columnFilter>
-              </th> -->
           <th>
-            Status
+            {{ 'userManagement.status' | translate }}
             <p-columnFilter
               field="activated"
               matchMode="in"
@@ -201,12 +193,15 @@
               </ng-template>
             </p-columnFilter>
           </th>
-          <th>Langue</th>
-          <th>Droits</th>
-          <!-- <th>Créé le</th>
-              <th>Modifié par</th>
-              <th>Modifié le</th> -->
-          <th class="text-end">Actions</th>
+          <th>
+            {{ 'userManagement.langKey' | translate }}
+          </th>
+          <th>
+            {{ 'userManagement.profiles' | translate }}
+          </th>
+          <th class="text-end">
+            {{ 'userManagement.actions' | translate }}
+          </th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-user>
@@ -220,15 +215,12 @@
               shape="circle"
             />
           </td>
-          <!-- <td>
-                <a [routerLink]="['./', user.login, 'view']">{{ user.id }}</a>
-              </td> -->
           <td>{{ user.login }}</td>
           <td>{{ user.email }}</td>
           <td>
             <p-inputSwitch
               [ngModel]="user.activated"
-              (onChange)="setActive(user, $event.checked)"
+              (onChange)="confirmStateChange($event, user)"
               [disabled]="!currentAccount() || currentAccount()?.login === user.login"
             >
             </p-inputSwitch>
@@ -242,36 +234,8 @@
               }
             </div>
           </td>
-          <!-- <td>{{ user.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
-              <td>{{ user.lastModifiedBy }}</td>
-              <td>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td> -->
+
           <td class="text-end">
-            <!-- <div class="btn-group">
-                  <button type="submit" [routerLink]="['./', user.login, 'view']" class="btn btn-info btn-sm">
-                    <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
-                  </button>
-
-                  <button
-                    type="submit"
-                    [routerLink]="['./', user.login, 'edit']"
-                    queryParamsHandling="merge"
-                    class="btn btn-primary btn-sm"
-                  >
-                    <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    (click)="deleteUser(user)"
-                    class="btn btn-danger btn-sm"
-                    [disabled]="!currentAccount() || currentAccount()?.login === user.login"
-                  >
-                    <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
-                  </button>
-                </div> -->
             <div class="flex items-center justify-end gap-2">
               <button
                 pButton
@@ -281,6 +245,7 @@
                 (click)="showUserDetails(user)"
                 class="p-button-rounded p-button-text p-button-info"
               ></button>
+
               <button
                 pButton
                 pRipple
@@ -289,83 +254,52 @@
                 (click)="showEditUserDialog(user)"
                 class="p-button-rounded p-button-text"
               ></button>
-              <!-- [routerLink]="['./', user.login, 'edit']" -->
             </div>
           </td>
         </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7">
+            <div class="flex flex-col items-center gap-4 p-6">
+              <i class="pi pi-users text-6xl"></i>
+              <span class="text-lg font-medium">{{ 'userManagement.notFound' | translate }}</span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="loadingbody">
+        @for (item of [1, 2, 3, 4, 5]; track item) {
+          <tr>
+            <td><p-skeleton shape="circle" size="3rem"></p-skeleton></td>
+            <td><p-skeleton width="85%"></p-skeleton></td>
+            <td><p-skeleton width="85%"></p-skeleton></td>
+            <td><p-skeleton width="5rem"></p-skeleton></td>
+            <td><p-skeleton width="4rem"></p-skeleton></td>
+            <td>
+              <div class="flex gap-1">
+                <p-skeleton width="4rem"></p-skeleton>
+                <p-skeleton width="4rem"></p-skeleton>
+              </div>
+            </td>
+            <td>
+              <div class="flex justify-end gap-2">
+                <p-skeleton shape="circle" size="2rem"></p-skeleton>
+                <p-skeleton shape="circle" size="2rem"></p-skeleton>
+              </div>
+            </td>
+          </tr>
+        }
       </ng-template>
     </p-table>
   </div>
 }
 
-<!-- <p-dialog 
-    [(visible)]="displayUserDialog" 
-    [style]="{width: '450px'}" 
-    [header]="'Détails utilisateur'" 
-    [modal]="true" 
-    styleClass="p-fluid">
-    @if (selectedUser) {
-        <div class="flex flex-col gap-4 p-4">
-            <div class="flex justify-center mb-4">
-                <p-avatar 
-                    [label]="selectedUser.login?.charAt(0)?.toUpperCase()"
-                    styleClass="mr-2" 
-                    size="xlarge" 
-                    [style]="{ 'background-color': '#ece9fc', color: '#2a1261' }" 
-                    shape="circle" />
-            </div>
-            
-            <div class="grid">
-                <div class="col-4 font-semibold">Login:</div>
-                <div class="col-8">{{selectedUser.login}}</div>
-                
-                <div class="col-4 font-semibold">Email:</div>
-                <div class="col-8">{{selectedUser.email}}</div>
-                
-                <div class="col-4 font-semibold">Status:</div>
-                <div class="col-8">
-                    <p-tag 
-                        [value]="selectedUser.activated ? 'Activé' : 'Désactivé'"
-                        [severity]="selectedUser.activated ? 'success' : 'danger'">
-                    </p-tag>
-                </div>
-                
-                <div class="col-4 font-semibold">Langue:</div>
-                <div class="col-8">{{selectedUser.langKey}}</div>
-                
-                <div class="col-4 font-semibold">Droits:</div>
-                <div class="col-8">
-                    <div class="flex flex-wrap gap-2">
-                        @for (authority of selectedUser.authorities; track $index) {
-                            <p-tag [value]="authority" severity="info"></p-tag>
-                        }
-                    </div>
-                </div>
-                
-                <div class="col-4 font-semibold">Créé le:</div>
-                <div class="col-8">{{selectedUser.createdDate | date:'dd/MM/yy HH:mm'}}</div>
-                
-                <div class="col-4 font-semibold">Modifié le:</div>
-                <div class="col-8">{{selectedUser.lastModifiedDate | date:'dd/MM/yy HH:mm'}}</div>
-            </div>
-        </div>
-    }
-    
-    <ng-template pTemplate="footer">
-        <div class="flex justify-end gap-2">
-            <p-button 
-                (click)="closeDialog()" 
-                label="Fermer" 
-                styleClass="p-button-text">
-            </p-button>
-        </div>
-    </ng-template>
-</p-dialog> -->
-
 <p-dialog
   [(visible)]="displayUserDetailDialog"
   [style]="{ width: '650px' }"
-  [header]="'Détails utilisateur'"
+  [header]="'userManagement.home.detailLabel' | translate"
   [modal]="true"
   styleClass="p-fluid"
   (onHide)="closeDetailDialog()"
@@ -374,15 +308,17 @@
 
   <ng-template pTemplate="footer">
     <div class="flex justify-end gap-2">
-      <p-button (click)="closeDetailDialog()" label="Fermer" styleClass="p-button-text"> </p-button>
+      <p-button (click)="closeDetailDialog()" [label]="'userManagement.home.popCloseLabel' | translate" styleClass="p-button-text">
+      </p-button>
     </div>
   </ng-template>
 </p-dialog>
+
 @if (selectedUser) {
   <p-dialog
     [(visible)]="displayUserFormDialog"
     [style]="{ width: '650px' }"
-    [header]="'Modifier un utilisateur'"
+    [header]="'userManagement.home.updatedPoplabel' | translate"
     [modal]="true"
     styleClass="p-fluid"
     (onHide)="closeFormDialog(false)"
@@ -393,7 +329,7 @@
   <p-dialog
     [(visible)]="displayUserFormDialog"
     [style]="{ width: '650px' }"
-    header="Créer un utilisateur"
+    [header]="'userManagement.home.createdPoplabel' | translate"
     [modal]="true"
     styleClass="p-fluid"
     (onHide)="closeFormDialog(false)"

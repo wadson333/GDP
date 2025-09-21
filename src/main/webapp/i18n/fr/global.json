@@ -90,7 +90,9 @@
           "maxlength": "Votre email ne doit pas comporter plus de 50 caractères.",
           "invalid": "Votre email n'est pas valide."
         }
-      }
+      },
+      "success": "Opération réussie",
+      "fail": "Opération échouée"
     },
     "field": {
       "id": "ID"

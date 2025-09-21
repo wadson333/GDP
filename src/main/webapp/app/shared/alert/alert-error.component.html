@@ -10,7 +10,7 @@
   }
 </div> -->
 @for (alert of alerts(); track $index) {
-  <div
+  <!-- <div
     class="alert-error flex items-center px-4 py-2 mb-4 rounded-xl border border-red-200 bg-gradient-to-r from-red-50 to-red-100 text-red-700 animate-slideIn"
     data-cy="loginError"
   >
@@ -20,5 +20,12 @@
         <span [innerHTML]="alert.message"></span>
       </span>
     </div>
+  </div> -->
+  <div>
+    <p-messages
+      [value]="alert.message ? [{ severity: 'error', summary: '', detail: alert.message }] : []"
+      [enableService]="false"
+      severity="error"
+    />
   </div>
 }

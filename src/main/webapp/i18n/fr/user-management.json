@@ -3,8 +3,12 @@
     "home": {
       "title": "Utilisateurs",
       "refreshListLabel": "Actualiser la liste",
-      "createLabel": "Créer un nouvel utilisateur",
-      "createOrEditLabel": "Créer ou éditer un utilisateur"
+      "createLabel": "nouvel utilisateur",
+      "createOrEditLabel": "Créer ou éditer un utilisateur",
+      "createdPoplabel": "Créer un utilisateur",
+      "updatedPoplabel": "Modifier un utilisateur",
+      "detailLabel": "Détails utilisateur",
+      "popCloseLabel": "Fermer"
     },
     "created": "L'utilisateur {{ param }} a été créé.",
     "updated": "L'utilisateur {{ param }} a été mis à jour.",
@@ -13,8 +17,35 @@
       "question": "Etes-vous certain de vouloir supprimer l'utilisateur {{ login }} ?"
     },
     "detail": {
-      "title": "Utilisateur"
+      "title": "Utilisateur",
+      "personalInfo": "Informations personnelles",
+      "completeName": "Nom complet",
+      "created": "Création",
+      "lastModified": "Dernière modification",
+      "for": "Par :",
+      "on": "Le :"
     },
+    "messages": {
+      "default": "",
+      "success": {
+        "activated": "L'utilisateur a été activé avec succès",
+        "deactivated": "L'utilisateur a été désactivé avec succès",
+        "saved": "Opération effectuée avec succès"
+      },
+      "error": {
+        "default": "Une erreur est survenue",
+        "save": "Erreur lors de la sauvegarde"
+      },
+      "confirm": {
+        "activate": "Êtes-vous sûr de vouloir activer cet utilisateur ?",
+        "deactivate": "Êtes-vous sûr de vouloir désactiver cet utilisateur ?",
+        "save": "Êtes-vous sûr de vouloir sauvegarder cet utilisateur ?",
+        "title": "Confirmation",
+        "cancel": "Annuler",
+        "confirm": "Confirmer"
+      }
+    },
+    "notFound": "Aucun utilisateur trouvé",
     "login": "Login",
     "firstName": "Prénom",
     "lastName": "Nom",
@@ -22,10 +53,13 @@
     "activated": "Activé",
     "deactivated": "Désactivé",
     "profiles": "Droits",
+    "actions": "Actions",
+    "status": "Statut",
     "langKey": "Langue",
     "createdBy": "Créé par",
     "createdDate": "Créé le",
     "lastModifiedBy": "Modifié par",
-    "lastModifiedDate": "Modifié le"
+    "lastModifiedDate": "Modifié le",
+    "breadcrumb": "Gestion des utilisateurs"
   }
 }

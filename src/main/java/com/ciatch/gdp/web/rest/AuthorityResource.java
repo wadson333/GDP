@@ -70,20 +70,19 @@ public class AuthorityResource {
         LOG.debug("REST request to get all Authorities");
         return authorityRepository.findAll();
     }
-
     /**
      * {@code GET  /authorities/:id} : get the "id" authority.
      *
      * @param id the id of the authority to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the authority, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Authority> getAuthority(@PathVariable("id") String id) {
-        LOG.debug("REST request to get Authority : {}", id);
-        Optional<Authority> authority = authorityRepository.findById(id);
-        return ResponseUtil.wrapOrNotFound(authority);
-    }
+    // @GetMapping("/{id}")
+    // @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    // public ResponseEntity<Authority> getAuthority(@PathVariable("id") String id) {
+    //     LOG.debug("REST request to get Authority : {}", id);
+    //     Optional<Authority> authority = authorityRepository.findById(id);
+    //     return ResponseUtil.wrapOrNotFound(authority);
+    // }
 
     /**
      * {@code DELETE  /authorities/:id} : delete the "id" authority.
@@ -91,11 +90,11 @@ public class AuthorityResource {
      * @param id the id of the authority to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Void> deleteAuthority(@PathVariable("id") String id) {
-        LOG.debug("REST request to delete Authority : {}", id);
-        authorityRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
-    }
+    // @DeleteMapping("/{id}")
+    // @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    // public ResponseEntity<Void> deleteAuthority(@PathVariable("id") String id) {
+    //     LOG.debug("REST request to delete Authority : {}", id);
+    //     authorityRepository.deleteById(id);
+    //     return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
+    // }
 }

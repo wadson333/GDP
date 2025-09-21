@@ -8,12 +8,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { Alert, AlertService } from 'app/core/util/alert.service';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { AlertError } from './alert-error.model';
+import { MessagesModule } from 'primeng/messages';
 
 @Component({
   standalone: true,
   selector: 'jhi-alert-error',
   templateUrl: './alert-error.component.html',
-  imports: [CommonModule, NgbModule],
+  imports: [CommonModule, NgbModule, MessagesModule],
 })
 export class AlertErrorComponent implements OnDestroy {
   alerts = signal<Alert[]>([]);

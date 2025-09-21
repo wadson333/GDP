@@ -3,8 +3,12 @@
     "home": {
       "title": "Users",
       "refreshListLabel": "Refresh list",
-      "createLabel": "Create a new user",
-      "createOrEditLabel": "Create or edit a user"
+      "createLabel": "new user",
+      "createOrEditLabel": "Create or edit a user",
+      "createdPoplabel": "Create a user",
+      "updatedPoplabel": "Edit a user",
+      "detailLabel": "User details",
+      "popCloseLabel": "Close"
     },
     "created": "A new user is created with identifier {{ param }}",
     "updated": "A user is updated with identifier {{ param }}",
@@ -13,19 +17,48 @@
       "question": "Are you sure you want to delete user {{ login }}?"
     },
     "detail": {
-      "title": "User"
+      "title": "User",
+      "personalInfo": "Personal Informations",
+      "completeName": "Complete Name",
+      "created": "Created",
+      "lastModified": "Last Modified",
+      "for": "By :",
+      "on": "On :"
     },
+    "messages": {
+      "success": {
+        "activated": "User has been activated successfully",
+        "deactivated": "User has been deactivated successfully",
+        "saved": "Operation completed successfully"
+      },
+      "error": {
+        "default": "An error has occurred",
+        "save": "Error while saving"
+      },
+      "confirm": {
+        "activate": "Are you sure you want to activate this user?",
+        "deactivate": "Are you sure you want to deactivate this user?",
+        "save": "Are you sure you want to save this user?",
+        "title": "Confirmation",
+        "cancel": "cancel",
+        "confirm": "confirm"
+      }
+    },
+    "notFound": "No user found",
     "login": "Login",
     "firstName": "First name",
     "lastName": "Last name",
     "email": "Email",
     "activated": "Activated",
     "deactivated": "Deactivated",
+    "actions": "Actions",
+    "status": "Status",
     "profiles": "Profiles",
     "langKey": "Language",
     "createdBy": "Created by",
     "createdDate": "Created date",
     "lastModifiedBy": "Modified by",
-    "lastModifiedDate": "Modified date"
+    "lastModifiedDate": "Modified date",
+    "breadcrumb": "User Management"
   }
 }

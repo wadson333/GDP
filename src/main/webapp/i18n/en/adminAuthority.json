@@ -17,7 +17,8 @@
       "detail": {
         "title": "Authority"
       },
-      "name": "Name"
+      "name": "Name",
+      "breadcrumb": "Roles Management"
     }
   }
 }
