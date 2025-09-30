@@ -1,13 +1,27 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+
+import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { ILabTestCatalog, NewLabTestCatalog } from '../lab-test-catalog.model';
+import { SearchCriteria } from '../search-criteria.model';
 
 export type PartialUpdateLabTestCatalog = Partial<ILabTestCatalog> & Pick<ILabTestCatalog, 'id'>;
+
+type RestOf<T extends ILabTestCatalog | NewLabTestCatalog> = Omit<T, 'validFrom' | 'validTo'> & {
+  validFrom?: string | null;
+  validTo?: string | null;
+};
+
+export type RestLabTestCatalog = RestOf<ILabTestCatalog>;
+
+export type NewRestLabTestCatalog = RestOf<NewLabTestCatalog>;
+
+export type PartialUpdateRestLabTestCatalog = RestOf<PartialUpdateLabTestCatalog>;
 
 export type EntityResponseType = HttpResponse<ILabTestCatalog>;
 export type EntityArrayResponseType = HttpResponse<ILabTestCatalog[]>;
@@ -20,28 +34,58 @@ export class LabTestCatalogService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/lab-test-catalogs');
 
   create(labTestCatalog: NewLabTestCatalog): Observable<EntityResponseType> {
-    return this.http.post<ILabTestCatalog>(this.resourceUrl, labTestCatalog, { observe: 'response' });
+    const copy = this.convertDateFromClient(labTestCatalog);
+    return this.http
+      .post<RestLabTestCatalog>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   update(labTestCatalog: ILabTestCatalog): Observable<EntityResponseType> {
-    return this.http.put<ILabTestCatalog>(`${this.resourceUrl}/${this.getLabTestCatalogIdentifier(labTestCatalog)}`, labTestCatalog, {
-      observe: 'response',
-    });
+    const copy = this.convertDateFromClient(labTestCatalog);
+    return this.http
+      .put<RestLabTestCatalog>(`${this.resourceUrl}/${this.getLabTestCatalogIdentifier(labTestCatalog)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   partialUpdate(labTestCatalog: PartialUpdateLabTestCatalog): Observable<EntityResponseType> {
-    return this.http.patch<ILabTestCatalog>(`${this.resourceUrl}/${this.getLabTestCatalogIdentifier(labTestCatalog)}`, labTestCatalog, {
-      observe: 'response',
-    });
+    const copy = this.convertDateFromClient(labTestCatalog);
+    return this.http
+      .patch<RestLabTestCatalog>(`${this.resourceUrl}/${this.getLabTestCatalogIdentifier(labTestCatalog)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   find(id: number): Observable<EntityResponseType> {
-    return this.http.get<ILabTestCatalog>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    return this.http
+      .get<RestLabTestCatalog>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<ILabTestCatalog[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http
+      .get<RestLabTestCatalog[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  search(req?: any): Observable<EntityArrayResponseType> {
+    const params = createRequestOption(req);
+
+    return this.http
+      .get<RestLabTestCatalog[]>(`${this.resourceUrl}/search`, {
+        params,
+        observe: 'response',
+      })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  getLatestVersions(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<RestLabTestCatalog[]>(`${this.resourceUrl}/latest`, {
+        params: options,
+        observe: 'response',
+      })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
@@ -76,5 +120,35 @@ export class LabTestCatalogService {
       return [...labTestCatalogsToAdd, ...labTestCatalogCollection];
     }
     return labTestCatalogCollection;
+  }
+
+  protected convertDateFromClient<T extends ILabTestCatalog | NewLabTestCatalog | PartialUpdateLabTestCatalog>(
+    labTestCatalog: T,
+  ): RestOf<T> {
+    return {
+      ...labTestCatalog,
+      validFrom: labTestCatalog.validFrom?.toJSON() ?? null,
+      validTo: labTestCatalog.validTo?.toJSON() ?? null,
+    };
+  }
+
+  protected convertDateFromServer(restLabTestCatalog: RestLabTestCatalog): ILabTestCatalog {
+    return {
+      ...restLabTestCatalog,
+      validFrom: restLabTestCatalog.validFrom ? dayjs(restLabTestCatalog.validFrom) : undefined,
+      validTo: restLabTestCatalog.validTo ? dayjs(restLabTestCatalog.validTo) : undefined,
+    };
+  }
+
+  protected convertResponseFromServer(res: HttpResponse<RestLabTestCatalog>): HttpResponse<ILabTestCatalog> {
+    return res.clone({
+      body: res.body ? this.convertDateFromServer(res.body) : null,
+    });
+  }
+
+  protected convertResponseArrayFromServer(res: HttpResponse<RestLabTestCatalog[]>): HttpResponse<ILabTestCatalog[]> {
+    return res.clone({
+      body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
+    });
   }
 }

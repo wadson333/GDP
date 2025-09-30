@@ -1,11 +1,11 @@
-id;name;unit;reference_range_low;reference_range_high
-1;ah référer marron;incalculable pis;20954.06;12580.73
-2;encore;hi rencontrer;3411;24569.72
-3;ronron;tant que à l'encontre de;23347;7956.64
-4;horrible police parce que;pendant que âcre;20339.53;5167.76
-5;auparavant bè aujourd'hui;mince maigre;21579.47;17608.42
-6;au-dedans de tellement glouglou;négliger malade;18074.41;14761.46
-7;rectangulaire malade;si bien que;26096.99;14001.21
-8;aimer d'avec quitter;spécialiste athlète de peur que;21912.86;2184.41
-9;bien maintenant;probablement euh mince;3615.62;20403.27
-10;présidence;membre titulaire;501.84;5624.49
+id;name;unit;description;version;valid_from;valid_to;method;sample_type;reference_range_low;reference_range_high;active;type;loinc_code;cost;turnaround_time
+1;ah référer marron;incalculable pis;transporter d'entre;17928;2025-07-15T22:25:44;2025-07-16T07:13:09;COLORIMETRIC;SERUM;23534.52;14837.83;false;GENETIC;si bien que de la part de présidence;13157.78;20493
+2;rafraîchir livrer;depuis;gâcher;20834;2025-07-15T21:13:46;2025-07-16T16:38:38;SPECTROMETRY;URINE;25567.97;9646.43;false;IMMUNOLOGY;ah;22724.58;1412
+3;bè aujourd'hui;mince maigre;foule monter;3368;2025-07-16T10:54:12;2025-07-16T11:07:14;PCR;BLOOD;10609.98;5613.02;true;MICROBIOLOGY;négliger malade;18074.41;14761
+4;rectangulaire malade;si bien que;rose badaboum perdre;19794;2025-07-16T11:29:04;2025-07-16T13:55:59;SPECTROMETRY;BLOOD;12780.29;6546.45;true;MICROBIOLOGY;athlète de peur que;21912.86;2184
+5;bien maintenant;probablement euh mince;proche de;4322;2025-07-16T16:08:54;2025-07-16T02:53:12;SPECTROMETRY;SALIVA;20608.8;22891.57;false;HEMATOLOGY;boum aux environs de;2201.89;6999
+6;crac;contre au défaut de;modeler exprès jusqu’à ce que;16764;2025-07-16T17:11:19;2025-07-16T12:38:50;PCR;URINE;26340.07;31658.55;false;BIOCHEMISTRY;vibrer;10556.34;24320
+7;avant que;si;tellement hebdomadaire ouf;28731;2025-07-16T16:18:10;2025-07-16T06:49:01;OTHER;STOOL;209.94;18140.64;true;IMMUNOLOGY;âcre parlementaire jeune enfant;15975.03;12346
+8;quand;nonobstant placer;cuicui tant depuis;15922;2025-07-15T21:03:08;2025-07-16T15:31:30;IMMUNOASSAY;STOOL;24878.26;16283.81;true;BIOCHEMISTRY;parce que;14223.65;27456
+9;interroger;ferme fort infime;communauté étudiante;8097;2025-07-16T18:05:38;2025-07-16T05:38:42;COLORIMETRIC;PLASMA;1948.13;13019.62;false;GENETIC;de façon que garantir;5893.39;22723
+10;magnifique incalculable tant;pêcher ouf à cause de;pendant secouriste;16361;2025-07-15T23:41:50;2025-07-16T13:59:06;OTHER;PLASMA;15957.6;4108.5;false;IMMUNOLOGY;songer police;791.27;741

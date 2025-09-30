@@ -82,7 +82,7 @@ export default class UserManagementComponent implements OnInit {
 
   constructor() {
     this.activatedRoute.queryParams.subscribe(params => {
-      this.displayUserDetailDialog = params['dialog'] === 'user-details' && this.selectedUser !== null;
+      this.displayUserDetailDialog = params['dialog'] === 'view-user-details' && this.selectedUser !== null;
       this.displayUserFormDialog = params['dialog'] === 'add-user' || (params['dialog'] === 'edit-user' && this.selectedUser !== null);
       // this.displayUserDialog = params['dialog'] === 'add-user';
       if (!this.displayUserDetailDialog && !this.displayUserFormDialog) {
@@ -145,7 +145,7 @@ export default class UserManagementComponent implements OnInit {
     this.selectedUser = user;
     this.displayUserDetailDialog = true;
     this.router.navigate([], {
-      queryParams: { dialog: 'user-details', 'selected-user': user.id },
+      queryParams: { dialog: 'view-user-details', 'selected-user': user.id },
       queryParamsHandling: 'merge',
     });
   }

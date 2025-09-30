@@ -60,6 +60,7 @@
     "createdDate": "Créé le",
     "lastModifiedBy": "Modifié par",
     "lastModifiedDate": "Modifié le",
-    "breadcrumb": "Gestion des utilisateurs"
+    "breadcrumb": "Gestion des utilisateurs",
+    "statusFilterLabel": "Choisir un statut"
   }
 }

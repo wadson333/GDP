@@ -59,6 +59,7 @@
     "createdDate": "Created date",
     "lastModifiedBy": "Modified by",
     "lastModifiedDate": "Modified date",
-    "breadcrumb": "User Management"
+    "breadcrumb": "User Management",
+    "statusFilterLabel": "Choose a status"
   }
 }

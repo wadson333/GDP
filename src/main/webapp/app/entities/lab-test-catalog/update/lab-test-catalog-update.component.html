@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-center">
+<!-- <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2
@@ -46,6 +46,87 @@
         </div>
 
         <div class="mb-3">
+          <label class="form-label" for="field_description" jhiTranslate="gdpApp.labTestCatalog.description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+        </div>
+
+        @let versionRef = editForm.get('version')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_version" jhiTranslate="gdpApp.labTestCatalog.version">Version</label>
+          <input type="number" class="form-control" name="version" id="field_version" data-cy="version" formControlName="version" />
+          @if (versionRef.invalid && (versionRef.dirty || versionRef.touched)) {
+            <div>
+              @if (editForm.get('version')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('version')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Ce champ doit être un nombre.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_validFrom" jhiTranslate="gdpApp.labTestCatalog.validFrom">Valid From</label>
+          <div class="d-flex">
+            <input
+              id="field_validFrom"
+              data-cy="validFrom"
+              type="datetime-local"
+              class="form-control"
+              name="validFrom"
+              formControlName="validFrom"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_validTo" jhiTranslate="gdpApp.labTestCatalog.validTo">Valid To</label>
+          <div class="d-flex">
+            <input
+              id="field_validTo"
+              data-cy="validTo"
+              type="datetime-local"
+              class="form-control"
+              name="validTo"
+              formControlName="validTo"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_method" jhiTranslate="gdpApp.labTestCatalog.method">Method</label>
+          <select class="form-control" name="method" formControlName="method" id="field_method" data-cy="method">
+            <option [ngValue]="null">{{ 'gdpApp.LabTestMethod.null' | translate }}</option>
+            @for (labTestMethod of labTestMethodValues; track $index) {
+              <option [value]="labTestMethod">{{ 'gdpApp.LabTestMethod.' + labTestMethod | translate }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_sampleType" jhiTranslate="gdpApp.labTestCatalog.sampleType">Sample Type</label>
+          <select class="form-control" name="sampleType" formControlName="sampleType" id="field_sampleType" data-cy="sampleType">
+            <option [ngValue]="null">{{ 'gdpApp.SampleType.null' | translate }}</option>
+            @for (sampleType of sampleTypeValues; track $index) {
+              <option [value]="sampleType">{{ 'gdpApp.SampleType.' + sampleType | translate }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
           <label class="form-label" for="field_referenceRangeLow" jhiTranslate="gdpApp.labTestCatalog.referenceRangeLow"
             >Reference Range Low</label
           >
@@ -72,6 +153,43 @@
             formControlName="referenceRangeHigh"
           />
         </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_active" jhiTranslate="gdpApp.labTestCatalog.active">Active</label>
+          <input type="checkbox" class="form-check" name="active" id="field_active" data-cy="active" formControlName="active" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_type" jhiTranslate="gdpApp.labTestCatalog.type">Type</label>
+          <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
+            <option [ngValue]="null">{{ 'gdpApp.LabTestType.null' | translate }}</option>
+            @for (labTestType of labTestTypeValues; track $index) {
+              <option [value]="labTestType">{{ 'gdpApp.LabTestType.' + labTestType | translate }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_loincCode" jhiTranslate="gdpApp.labTestCatalog.loincCode">Loinc Code</label>
+          <input type="text" class="form-control" name="loincCode" id="field_loincCode" data-cy="loincCode" formControlName="loincCode" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_cost" jhiTranslate="gdpApp.labTestCatalog.cost">Cost</label>
+          <input type="number" class="form-control" name="cost" id="field_cost" data-cy="cost" formControlName="cost" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_turnaroundTime" jhiTranslate="gdpApp.labTestCatalog.turnaroundTime">Turnaround Time</label>
+          <input
+            type="number"
+            class="form-control"
+            name="turnaroundTime"
+            id="field_turnaroundTime"
+            data-cy="turnaroundTime"
+            formControlName="turnaroundTime"
+          />
+        </div>
       </div>
 
       <div>
@@ -91,4 +209,244 @@
       </div>
     </form>
   </div>
-</div>
+</div> -->
+<jhi-alert-error></jhi-alert-error>
+
+<jhi-alert></jhi-alert>
+
+<form [formGroup]="editForm" (ngSubmit)="save()" class="p-fluid">
+  <!-- Required fields notice -->
+  <div class="text-sm text-surface-600 mb-4">
+    <i class="pi pi-info-circle mr-1"></i>
+    {{ 'gdpApp.labTestCatalog.confirmation.required' | translate }}
+  </div>
+
+  <!-- Loading Overlay -->
+  <div *ngIf="isSaving" class="absolute inset-0 bg-black/50 flex items-center justify-center z-50">
+    <p-progressSpinner strokeWidth="4" />
+  </div>
+
+  <!-- Basic Information Section -->
+  <div class="card mb-4">
+    <h5 class="mb-3 flex items-center text-primary">
+      <i class="pi pi-info-circle mr-2"></i>
+      {{ 'gdpApp.labTestCatalog.detail.section.general' | translate }}
+    </h5>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Name -->
+      <div class="field">
+        <label for="name" class="block">
+          {{ 'gdpApp.labTestCatalog.name' | translate }}
+          <span class="text-red-500 ml-1" pTooltip="{{ 'gdpApp.labTestCatalog.form.tooltip' | translate }}">*</span>
+        </label>
+        <span class="p-input-icon-right w-full mt-2">
+          <i class="pi pi-exclamation-circle text-red-500" *ngIf="editForm.get('name')?.invalid && showValidationErrors"></i>
+          <input pInputText id="name" formControlName="name" [placeholder]="'gdpApp.labTestCatalog.placeholders.name' | translate" />
+        </span>
+        <small class="p-error" *ngIf="editForm.get('name')?.invalid && showValidationErrors">
+          {{ 'gdpApp.labTestCatalog.validation.nameRequired' | translate }}
+        </small>
+      </div>
+
+      <!-- Unit -->
+      <div class="field">
+        <label for="unit" class="block">
+          {{ 'gdpApp.labTestCatalog.unit' | translate }}
+          <span class="text-red-500 ml-1" pTooltip="{{ 'gdpApp.labTestCatalog.form.tooltip' | translate }}">*</span>
+        </label>
+        <span class="p-input-icon-right w-full mt-2">
+          <i class="pi pi-exclamation-circle text-red-500" *ngIf="editForm.get('unit')?.invalid && showValidationErrors"></i>
+          <input pInputText id="unit" formControlName="unit" [placeholder]="'gdpApp.labTestCatalog.placeholders.unit' | translate" />
+        </span>
+        <small class="p-error" *ngIf="editForm.get('unit')?.invalid && showValidationErrors">
+          {{ 'gdpApp.labTestCatalog.validation.unitRequired' | translate }}
+        </small>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="field mt-4">
+      <label for="description">
+        {{ 'gdpApp.labTestCatalog.description' | translate }}
+      </label>
+      <textarea
+        pInputTextarea
+        id="description"
+        formControlName="description"
+        rows="3"
+        cols="30"
+        [autoResize]="true"
+        [placeholder]="'gdpApp.labTestCatalog.placeholders.description' | translate"
+        class="mt-2"
+      ></textarea>
+    </div>
+  </div>
+
+  <!-- Technical Details Section -->
+  <div class="card mb-4">
+    <h5 class="mb-3 flex items-center text-primary">
+      <i class="pi pi-cog mr-2"></i>
+      {{ 'gdpApp.labTestCatalog.detail.section.technical' | translate }}
+    </h5>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- Method -->
+      <div class="field">
+        <label for="method">{{ 'gdpApp.labTestCatalog.method' | translate }}</label>
+        <p-dropdown
+          id="method"
+          formControlName="method"
+          [options]="methodsOptions"
+          optionLabel="label"
+          optionValue="value"
+          [placeholder]="'gdpApp.labTestCatalog.placeholders.method' | translate"
+        ></p-dropdown>
+      </div>
+
+      <!-- Sample Type -->
+      <div class="field">
+        <label for="sampleType">{{ 'gdpApp.labTestCatalog.sampleType' | translate }}</label>
+        <p-dropdown
+          id="sampleType"
+          formControlName="sampleType"
+          [options]="sampleTypeOptions"
+          optionLabel="label"
+          optionValue="value"
+          [placeholder]="'gdpApp.labTestCatalog.placeholders.sampleType' | translate"
+        ></p-dropdown>
+      </div>
+
+      <!-- Type -->
+      <div class="field">
+        <label for="type">{{ 'gdpApp.labTestCatalog.type' | translate }}</label>
+        <p-dropdown
+          id="type"
+          formControlName="type"
+          [options]="typesOptions"
+          optionLabel="label"
+          optionValue="value"
+          [placeholder]="'gdpApp.labTestCatalog.placeholders.type' | translate"
+        ></p-dropdown>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reference Values Section -->
+  <div class="card mb-4">
+    <h5 class="mb-3 flex items-center text-primary">
+      <i class="pi pi-chart-line mr-2"></i>
+      {{ 'gdpApp.labTestCatalog.detail.section.reference' | translate }}
+    </h5>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Reference Range Low -->
+      <div class="field">
+        <label for="referenceRangeLow">
+          {{ 'gdpApp.labTestCatalog.referenceRangeLow' | translate }}
+        </label>
+        <p-inputNumber
+          id="referenceRangeLow"
+          formControlName="referenceRangeLow"
+          [minFractionDigits]="2"
+          [maxFractionDigits]="2"
+        ></p-inputNumber>
+      </div>
+
+      <!-- Reference Range High -->
+      <div class="field">
+        <label for="referenceRangeHigh">
+          {{ 'gdpApp.labTestCatalog.referenceRangeHigh' | translate }}
+        </label>
+        <p-inputNumber
+          id="referenceRangeHigh"
+          formControlName="referenceRangeHigh"
+          [minFractionDigits]="2"
+          [maxFractionDigits]="2"
+        ></p-inputNumber>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional Information Section -->
+  <div class="card mb-4">
+    <h5 class="mb-3 flex items-center text-primary">
+      <i class="pi pi-list mr-2"></i>
+      {{ 'gdpApp.labTestCatalog.detail.section.additional' | translate }}
+    </h5>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- LOINC Code -->
+      <div class="field">
+        <label for="loincCode">{{ 'gdpApp.labTestCatalog.loincCode' | translate }}</label>
+        <input
+          pInputText
+          id="loincCode"
+          formControlName="loincCode"
+          [placeholder]="'gdpApp.labTestCatalog.placeholders.loincCode' | translate"
+        />
+      </div>
+
+      <!-- Cost -->
+      <div class="field">
+        <label for="cost">{{ 'gdpApp.labTestCatalog.cost' | translate }}</label>
+        <p-inputNumber
+          id="cost"
+          formControlName="cost"
+          mode="currency"
+          currency="HTG"
+          locale="fr-HT"
+          [minFractionDigits]="2"
+          [maxFractionDigits]="2"
+        ></p-inputNumber>
+      </div>
+
+      <!-- Turnaround Time -->
+      <div class="field">
+        <label for="turnaroundTime">
+          {{ 'gdpApp.labTestCatalog.turnaroundTime' | translate }}
+        </label>
+        <p-inputNumber id="turnaroundTime" formControlName="turnaroundTime" suffix=" min" [showButtons]="true" [min]="0"></p-inputNumber>
+      </div>
+    </div>
+  </div>
+  <p-divider></p-divider>
+  <!-- Form Actions -->
+  <div class="flex justify-between gap-2 bg-surface-500">
+    <div class="flex gap-2">
+      <!-- Show these buttons only when editing -->
+      <ng-container *ngIf="editForm.get('id')?.value">
+        <p-button
+          *ngIf="editForm.get('active')?.value"
+          icon="pi pi-power-off"
+          severity="danger"
+          [label]="'gdpApp.labTestCatalog.actions.deactivate' | translate"
+          pTooltip="{{ 'gdpApp.labTestCatalog.deactivateTooltip' | translate }}"
+          [text]="true"
+          size="small"
+          class="mr-2"
+        ></p-button>
+        <p-button
+          icon="pi pi-copy"
+          severity="info"
+          [label]="'gdpApp.labTestCatalog.actions.newVersion' | translate"
+          pTooltip="{{ 'gdpApp.labTestCatalog.newVersionTooltip' | translate }}"
+          [text]="true"
+          size="small"
+          class="mr-2"
+        ></p-button>
+      </ng-container>
+    </div>
+    <!-- (onClick)="previousState()" -->
+    <div class="flex gap-2">
+      <p-button icon="pi pi-times" [label]="'entity.action.cancel' | translate" (click)="cancel()" [text]="true"></p-button>
+      <p-button
+        [disabled]="editForm.invalid || isSaving"
+        icon="pi pi-save"
+        type="submit"
+        [label]="'entity.action.save' | translate"
+        [loading]="isSaving"
+      ></p-button>
+    </div>
+  </div>
+</form>

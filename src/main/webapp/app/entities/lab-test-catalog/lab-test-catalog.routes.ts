@@ -10,33 +10,34 @@ const labTestCatalogRoute: Routes = [
     loadComponent: () => import('./list/lab-test-catalog.component').then(m => m.LabTestCatalogComponent),
     data: {
       defaultSort: `id,${ASC}`,
+      breadcrumb: 'gdpApp.labTestCatalog.breadcrumb',
     },
     canActivate: [UserRouteAccessService],
   },
-  {
-    path: ':id/view',
-    loadComponent: () => import('./detail/lab-test-catalog-detail.component').then(m => m.LabTestCatalogDetailComponent),
-    resolve: {
-      labTestCatalog: LabTestCatalogResolve,
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: 'new',
-    loadComponent: () => import('./update/lab-test-catalog-update.component').then(m => m.LabTestCatalogUpdateComponent),
-    resolve: {
-      labTestCatalog: LabTestCatalogResolve,
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: ':id/edit',
-    loadComponent: () => import('./update/lab-test-catalog-update.component').then(m => m.LabTestCatalogUpdateComponent),
-    resolve: {
-      labTestCatalog: LabTestCatalogResolve,
-    },
-    canActivate: [UserRouteAccessService],
-  },
+  // {
+  //   path: ':id/view',
+  //   loadComponent: () => import('./detail/lab-test-catalog-detail.component').then(m => m.LabTestCatalogDetailComponent),
+  //   resolve: {
+  //     labTestCatalog: LabTestCatalogResolve,
+  //   },
+  //   canActivate: [UserRouteAccessService],
+  // },
+  // {
+  //   path: 'new',
+  //   loadComponent: () => import('./update/lab-test-catalog-update.component').then(m => m.LabTestCatalogUpdateComponent),
+  //   resolve: {
+  //     labTestCatalog: LabTestCatalogResolve,
+  //   },
+  //   canActivate: [UserRouteAccessService],
+  // },
+  // {
+  //   path: ':id/edit',
+  //   loadComponent: () => import('./update/lab-test-catalog-update.component').then(m => m.LabTestCatalogUpdateComponent),
+  //   resolve: {
+  //     labTestCatalog: LabTestCatalogResolve,
+  //   },
+  //   canActivate: [UserRouteAccessService],
+  // },
 ];
 
 export default labTestCatalogRoute;

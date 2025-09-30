@@ -1,0 +1,13 @@
+{
+  "gdpApp": {
+    "LabTestType": {
+      "null": "",
+      "BIOCHEMISTRY": "BIOCHEMISTRY",
+      "HEMATOLOGY": "HEMATOLOGY",
+      "MICROBIOLOGY": "MICROBIOLOGY",
+      "IMMUNOLOGY": "IMMUNOLOGY",
+      "GENETIC": "GENETIC",
+      "OTHER": "OTHER"
+    }
+  }
+}

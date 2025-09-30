@@ -12,6 +12,7 @@
       "fieldValidateRules": ["required"]
     }
   ],
+  "incrementalChangelog": false,
   "name": "Prescription",
   "relationships": [
     {

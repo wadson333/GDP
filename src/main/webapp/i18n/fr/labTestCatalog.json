@@ -2,26 +2,126 @@
   "gdpApp": {
     "labTestCatalog": {
       "home": {
-        "title": "LabTestCatalogs",
+        "title": "Catalogue des examens de laboratoire",
         "refreshListLabel": "Actualiser la liste",
-        "createLabel": "Créer un nouveau Lab Test Catalog",
-        "createOrEditLabel": "Créer ou éditer un Lab Test Catalog",
-        "notFound": "Aucun Lab Test Catalog trouvé"
+        "createLabel": "examen",
+        "createTootltip": "Créer un nouvel examen de laboratoire",
+        "createOrEditLabel": "Créer ou éditer un examen de laboratoire",
+        "notFound": "Aucun examen de laboratoire trouvé"
       },
-      "created": "Un nouveau Lab Test Catalog a été créé avec l'identifiant {{ param }}",
-      "updated": "Le Lab Test Catalog avec l'identifiant {{ param }} a été mis à jour",
-      "deleted": "Le Lab Test Catalog avec l'identifiant {{ param }} a été supprimé",
+      "created": "Un nouvel examen de laboratoire a été créé avec l'identifiant {{ param }}",
+      "updated": "L'examen de laboratoire avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "L'examen de laboratoire avec l'identifiant {{ param }} a été supprimé",
       "delete": {
-        "question": "Êtes-vous certain de vouloir supprimer le Lab Test Catalog {{ id }} ?"
+        "question": "Êtes-vous certain de vouloir supprimer l'examen de laboratoire {{ id }} ?"
+      },
+      "export": {
+        "label": "Exporter",
+        "excel": "Exporter vers Excel",
+        "csv": "Exporter vers CSV",
+        "pdf": "Exporter vers PDF"
       },
       "detail": {
-        "title": "Lab Test Catalog"
+        "title": "Détail de l'examen de laboratoire",
+        "section": {
+          "general": "Informations générales",
+          "technical": "Détails techniques",
+          "reference": "Plage de référence",
+          "additional": "Informations supplémentaires"
+        },
+        "tabs": {
+          "details": "Détails",
+          "history": "Historique"
+        }
       },
-      "id": "ID",
-      "name": "Name",
-      "unit": "Unit",
-      "referenceRangeLow": "Reference Range Low",
-      "referenceRangeHigh": "Reference Range High"
+      "placeholders": {
+        "name": "Entrez le nom du test",
+        "unit": "Entrez l'unité de mesure",
+        "description": "Entrez la description du test",
+        "method": "Sélectionnez la méthode",
+        "sampleType": "Sélectionnez le type d'échantillon",
+        "type": "Sélectionnez le type de test",
+        "loincCode": "Entrez le code LOINC",
+        "search": "Rechercher..."
+      },
+      "validation": {
+        "loincCodeExists": "Un test avec ce code LOINC existe déjà",
+        "nameExists": "Un test avec ce nom existe déjà. Veuillez créer une nouvelle version.",
+        "required": "Ce champ est obligatoire",
+        "nameRequired": "Le nom du test est obligatoire",
+        "unitRequired": "L'unité est obligatoire",
+        "versionRequired": "La version est obligatoire"
+      },
+      "errors": {
+        "nameExists": "Le nom du test existe déjà",
+        "loincCodeExists": "Le code LOINC existe déjà"
+      },
+      "confirmation": {
+        "header": "Confirmer l'enregistrement",
+        "save": "Êtes-vous sûr de vouloir enregistrer cet examen ?",
+        "required": "Les champs marqués d'un * sont obligatoires"
+      },
+      "toast": {
+        "saveSuccess": {
+          "title": "Succès",
+          "detail": "Examen enregistré avec succès"
+        },
+        "saveError": {
+          "title": "Erreur",
+          "detail": "Une erreur est survenue lors de l'enregistrement"
+        }
+      },
+      "form": {
+        "requiredField": "Ce champ est obligatoire",
+        "tooltip": "Champ obligatoire"
+      },
+      "id": "Identifiant",
+      "name": "Nom",
+      "unit": "Unité",
+      "description": "Description",
+      "version": "Version",
+      "validFrom": "Valide à partir du",
+      "validTo": "Valide jusqu'au",
+      "method": "Méthode",
+      "sampleType": "Type d'échantillon",
+      "referenceRangeLow": "Plage de référence basse",
+      "referenceRangeHigh": "Plage de référence haute",
+      "active": "Actif",
+      "type": "Type",
+      "loincCode": "Code LOINC",
+      "cost": "Coût",
+      "turnaroundTime": "Délai de rendu",
+      "state": "État",
+      "actions": {
+        "view": "View",
+        "edit": "Edit",
+        "deactivate": "Désactiver",
+        "activate": "Activer",
+        "renew": "Renouveler",
+        "newVersion": "Nouvelle version"
+      },
+      "view": "Voir",
+      "edit": "Éditer",
+      "table": {
+        "pageDescription": "Affichage de {{ first }} à {{ last }} sur {{ totalRecords }} entrées"
+      },
+      "breadcrumb": "Gestion des catalogues d'examens de laboratoire",
+      "typeFilterLabel": "Choisir un type",
+      "methodFilterLabel": "Choisir une méthode",
+      "activeFilterLabel": "Choisir un statut",
+      "toggleViewTooltip": "Basculer le mode d'affichage",
+      "latestOnlyTooltip": "Afficher uniquement les dernières versions",
+      "allVersionsTooltip": "Afficher toutes les versions",
+      "searchLabel": "Rechercher",
+      "clearSearchLabel": "Effacer la recherche",
+      "viewDetailLabel": "Voir les détails",
+      "detailDialogTitle": "Détails de l'examen de laboratoire",
+      "editLabel": "Modifier l'examen de laboratoire",
+      "addLabel": "Ajouter un nouvel examen de laboratoire",
+      "newVersionTooltip": "Créer une nouvelle version de cet examen",
+      "deactivateTooltip": "ésactiver cet examen",
+      "activateTooltip": "Activer cet examen",
+      "actionLabel": "Actions"
     }
   }
 }

@@ -89,6 +89,7 @@
       "fieldType": "TextBlob"
     }
   ],
+  "incrementalChangelog": false,
   "name": "Patient",
   "pagination": "pagination",
   "relationships": [

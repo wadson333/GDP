@@ -21,6 +21,7 @@
       "fieldValidateRules": ["required"]
     }
   ],
+  "incrementalChangelog": false,
   "name": "UserConfiguration",
   "relationships": [
     {

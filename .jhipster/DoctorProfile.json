@@ -26,6 +26,7 @@
       "fieldValidateRules": ["required"]
     }
   ],
+  "incrementalChangelog": false,
   "name": "DoctorProfile",
   "relationships": [
     {

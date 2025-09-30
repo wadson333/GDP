@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-center">
+<!-- <div class="d-flex justify-content-center">
   <div class="col-8">
     @if (labTestCatalog(); as labTestCatalogRef) {
       <div>
@@ -23,6 +23,51 @@
           <dd>
             <span>{{ labTestCatalogRef.unit }}</span>
           </dd>
+          <dt><span jhiTranslate="gdpApp.labTestCatalog.description">Description</span></dt>
+          <dd>
+            <span>{{ labTestCatalogRef.description }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.labTestCatalog.version">Version</span></dt>
+          <dd>
+            <span>{{ labTestCatalogRef.version }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.labTestCatalog.validFrom">Valid From</span></dt>
+          <dd>
+            <span>{{ labTestCatalogRef.validFrom | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.labTestCatalog.validTo">Valid To</span></dt>
+          <dd>
+            <span>{{ labTestCatalogRef.validTo | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.labTestCatalog.method">Method</span></dt>
+          <dd>
+            <span [jhiTranslate]="'gdpApp.LabTestMethod.' + (labTestCatalogRef.method ?? 'null')">{{
+              {
+                null: '',
+                COLORIMETRIC: 'COLORIMETRIC',
+                PCR: 'PCR',
+                SPECTROMETRY: 'SPECTROMETRY',
+                MICROBIOLOGY: 'MICROBIOLOGY',
+                IMMUNOASSAY: 'IMMUNOASSAY',
+                OTHER: 'OTHER',
+              }[labTestCatalogRef.method ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.labTestCatalog.sampleType">Sample Type</span></dt>
+          <dd>
+            <span [jhiTranslate]="'gdpApp.SampleType.' + (labTestCatalogRef.sampleType ?? 'null')">{{
+              {
+                null: '',
+                BLOOD: 'BLOOD',
+                URINE: 'URINE',
+                STOOL: 'STOOL',
+                SALIVA: 'SALIVA',
+                PLASMA: 'PLASMA',
+                SERUM: 'SERUM',
+                OTHER: 'OTHER',
+              }[labTestCatalogRef.sampleType ?? 'null']
+            }}</span>
+          </dd>
           <dt><span jhiTranslate="gdpApp.labTestCatalog.referenceRangeLow">Reference Range Low</span></dt>
           <dd>
             <span>{{ labTestCatalogRef.referenceRangeLow }}</span>
@@ -30,6 +75,36 @@
           <dt><span jhiTranslate="gdpApp.labTestCatalog.referenceRangeHigh">Reference Range High</span></dt>
           <dd>
             <span>{{ labTestCatalogRef.referenceRangeHigh }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.labTestCatalog.active">Active</span></dt>
+          <dd>
+            <span>{{ labTestCatalogRef.active }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.labTestCatalog.type">Type</span></dt>
+          <dd>
+            <span [jhiTranslate]="'gdpApp.LabTestType.' + (labTestCatalogRef.type ?? 'null')">{{
+              {
+                null: '',
+                BIOCHEMISTRY: 'BIOCHEMISTRY',
+                HEMATOLOGY: 'HEMATOLOGY',
+                MICROBIOLOGY: 'MICROBIOLOGY',
+                IMMUNOLOGY: 'IMMUNOLOGY',
+                GENETIC: 'GENETIC',
+                OTHER: 'OTHER',
+              }[labTestCatalogRef.type ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.labTestCatalog.loincCode">Loinc Code</span></dt>
+          <dd>
+            <span>{{ labTestCatalogRef.loincCode }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.labTestCatalog.cost">Cost</span></dt>
+          <dd>
+            <span>{{ labTestCatalogRef.cost }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.labTestCatalog.turnaroundTime">Turnaround Time</span></dt>
+          <dd>
+            <span>{{ labTestCatalogRef.turnaroundTime }}</span>
           </dd>
         </dl>
 
@@ -43,4 +118,142 @@
       </div>
     }
   </div>
-</div>
+</div> -->
+
+<jhi-alert-error></jhi-alert-error>
+<jhi-alert></jhi-alert>
+
+@if (labTestCatalog(); as labTestCatalogRef) {
+  <div class="card surface-0">
+    <!-- Tabs -->
+    <p-tabView (activeIndexChange)="onTabChange($event)" [activeIndex]="activeTab()">
+      <!-- Details Tab -->
+      <p-tabPanel header="{{ 'gdpApp.labTestCatalog.detail.tabs.details' | translate }}">
+        <!-- Main Content -->
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-base font-semibold m-0">
+            <i class="pi pi-info-circle mr-2"></i>
+            <span jhiTranslate="gdpApp.labTestCatalog.detail.section.general"></span>
+          </h2>
+          <p-tag [value]="'Version ' + labTestCatalogRef.version" severity="info"></p-tag>
+        </div>
+
+        <p-divider></p-divider>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Basic Information -->
+          <div class="col-span-2 md:col-span-1">
+            <div class="space-y-4">
+              <div class="field">
+                <label class="block text-sm font-bold mb-1" jhiTranslate="gdpApp.labTestCatalog.name">Name</label>
+                <div class="text-lg">{{ labTestCatalogRef.name }}</div>
+              </div>
+
+              <div class="field">
+                <label class="block text-sm font-bold mb-1" jhiTranslate="gdpApp.labTestCatalog.description">Description</label>
+                <div class="text-base">{{ labTestCatalogRef.description }}</div>
+              </div>
+
+              <div class="field">
+                <label class="block text-sm font-bold mb-1" jhiTranslate="gdpApp.labTestCatalog.unit">Unit</label>
+                <div class="text-base">{{ labTestCatalogRef.unit }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Technical Details -->
+          <div class="col-span-2 md:col-span-1">
+            <div class="space-y-4">
+              <div class="field">
+                <label class="block text-sm font-bold mb-1">Status</label>
+                <p-chip
+                  [label]="labTestCatalogRef.active ? 'Active' : 'Inactive'"
+                  [styleClass]="labTestCatalogRef.active ? 'text-green-600' : 'text-red-600'"
+                >
+                </p-chip>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div class="field mr-2">
+                  <label class="block text-sm font-bold mb-1" jhiTranslate="gdpApp.labTestCatalog.method">Method</label>
+                  <p-chip [label]="labTestCatalogRef.method || 'N/A'"></p-chip>
+                </div>
+                <div class="field">
+                  <label class="block text-sm font-bold mb-1" jhiTranslate="gdpApp.labTestCatalog.sampleType">Sample Type</label>
+                  <p-chip [label]="labTestCatalogRef.sampleType || 'N/A'"></p-chip>
+                </div>
+              </div>
+              <div class="field">
+                <label class="block text-sm font-bold mb-1" jhiTranslate="gdpApp.labTestCatalog.type">Type</label>
+                <p-chip [label]="labTestCatalogRef.type || 'N/A'"></p-chip>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reference Range -->
+          <div class="col-span-2">
+            <h2 class="text-base font-semibold m-0">
+              <i class="pi pi-info-circle mr-2"></i>
+              <span jhiTranslate="gdpApp.labTestCatalog.detail.section.reference"></span>
+            </h2>
+            <p-divider></p-divider>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="field">
+                <label class="block text-sm font-bold mb-1" jhiTranslate="gdpApp.labTestCatalog.referenceRangeLow"
+                  >Reference Range Low</label
+                >
+                <div class="text-base">{{ labTestCatalogRef.referenceRangeLow }}</div>
+              </div>
+              <div class="field">
+                <label class="block text-sm font-bold mb-1" jhiTranslate="gdpApp.labTestCatalog.referenceRangeHigh"
+                  >Reference Range High</label
+                >
+                <div class="text-base">{{ labTestCatalogRef.referenceRangeHigh }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Additional Information -->
+          <div class="col-span-2">
+            <h2 class="text-base font-semibold m-0">
+              <i class="pi pi-info-circle mr-2 text-info"></i>
+              <span jhiTranslate="gdpApp.labTestCatalog.detail.section.additional"></span>
+            </h2>
+            <p-divider></p-divider>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="field">
+                <label class="block text-sm font-bold mb-1" jhiTranslate="gdpApp.labTestCatalog.loincCode">LOINC Code</label>
+                <div class="text-base">{{ labTestCatalogRef.loincCode || 'N/A' }}</div>
+              </div>
+              <div class="field">
+                <label class="block text-sm font-bold mb-1" jhiTranslate="gdpApp.labTestCatalog.cost">Cost</label>
+                <div class="text-base">{{ labTestCatalogRef.cost }}</div>
+              </div>
+              <div class="field">
+                <label class="block text-sm font-bold mb-1" jhiTranslate="gdpApp.labTestCatalog.turnaroundTime">Turnaround Time</label>
+                <div class="text-base">{{ labTestCatalogRef.turnaroundTime }} min</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+
+      <!-- History Tab -->
+      <!-- History Tab -->
+      <p-tabPanel header="{{ 'gdpApp.labTestCatalog.detail.tabs.history' | translate }}">
+        <p-timeline [value]="labTestCatalogRef?.version ? [labTestCatalogRef] : []" align="alternate">
+          <ng-template pTemplate="content" let-version>
+            <div class="card shadow-sm p-3">
+              <small class="text-secondary">{{ version.name }}</small>
+              <h5 class="mt-2 mb-1">Version {{ version.number }}</h5>
+              <p class="m-0">{{ version.description }}</p>
+            </div>
+          </ng-template>
+        </p-timeline>
+      </p-tabPanel>
+    </p-tabView>
+
+    <!-- Footer Actions -->
+    <!-- <p-divider></p-divider> -->
+  </div>
+}

@@ -10,12 +10,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.ciatch.gdp.IntegrationTest;
 import com.ciatch.gdp.domain.LabTestCatalog;
+import com.ciatch.gdp.domain.enumeration.LabTestMethod;
+import com.ciatch.gdp.domain.enumeration.LabTestType;
+import com.ciatch.gdp.domain.enumeration.SampleType;
 import com.ciatch.gdp.repository.LabTestCatalogRepository;
 import com.ciatch.gdp.service.dto.LabTestCatalogDTO;
 import com.ciatch.gdp.service.mapper.LabTestCatalogMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.AfterEach;
@@ -42,11 +47,44 @@ class LabTestCatalogResourceIT {
     private static final String DEFAULT_UNIT = "AAAAAAAAAA";
     private static final String UPDATED_UNIT = "BBBBBBBBBB";
 
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+
+    private static final Integer DEFAULT_VERSION = 1;
+    private static final Integer UPDATED_VERSION = 2;
+
+    private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Instant DEFAULT_VALID_TO = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_TO = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final LabTestMethod DEFAULT_METHOD = LabTestMethod.COLORIMETRIC;
+    private static final LabTestMethod UPDATED_METHOD = LabTestMethod.PCR;
+
+    private static final SampleType DEFAULT_SAMPLE_TYPE = SampleType.BLOOD;
+    private static final SampleType UPDATED_SAMPLE_TYPE = SampleType.URINE;
+
     private static final BigDecimal DEFAULT_REFERENCE_RANGE_LOW = new BigDecimal(1);
     private static final BigDecimal UPDATED_REFERENCE_RANGE_LOW = new BigDecimal(2);
 
     private static final BigDecimal DEFAULT_REFERENCE_RANGE_HIGH = new BigDecimal(1);
     private static final BigDecimal UPDATED_REFERENCE_RANGE_HIGH = new BigDecimal(2);
+
+    private static final Boolean DEFAULT_ACTIVE = false;
+    private static final Boolean UPDATED_ACTIVE = true;
+
+    private static final LabTestType DEFAULT_TYPE = LabTestType.BIOCHEMISTRY;
+    private static final LabTestType UPDATED_TYPE = LabTestType.HEMATOLOGY;
+
+    private static final String DEFAULT_LOINC_CODE = "AAAAAAAAAA";
+    private static final String UPDATED_LOINC_CODE = "BBBBBBBBBB";
+
+    private static final BigDecimal DEFAULT_COST = new BigDecimal(1);
+    private static final BigDecimal UPDATED_COST = new BigDecimal(2);
+
+    private static final Integer DEFAULT_TURNAROUND_TIME = 1;
+    private static final Integer UPDATED_TURNAROUND_TIME = 2;
 
     private static final String ENTITY_API_URL = "/api/lab-test-catalogs";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -83,8 +121,19 @@ class LabTestCatalogResourceIT {
         return new LabTestCatalog()
             .name(DEFAULT_NAME)
             .unit(DEFAULT_UNIT)
+            .description(DEFAULT_DESCRIPTION)
+            .version(DEFAULT_VERSION)
+            .validFrom(DEFAULT_VALID_FROM)
+            .validTo(DEFAULT_VALID_TO)
+            .method(DEFAULT_METHOD)
+            .sampleType(DEFAULT_SAMPLE_TYPE)
             .referenceRangeLow(DEFAULT_REFERENCE_RANGE_LOW)
-            .referenceRangeHigh(DEFAULT_REFERENCE_RANGE_HIGH);
+            .referenceRangeHigh(DEFAULT_REFERENCE_RANGE_HIGH)
+            .active(DEFAULT_ACTIVE)
+            .type(DEFAULT_TYPE)
+            .loincCode(DEFAULT_LOINC_CODE)
+            .cost(DEFAULT_COST)
+            .turnaroundTime(DEFAULT_TURNAROUND_TIME);
     }
 
     /**
@@ -97,8 +146,19 @@ class LabTestCatalogResourceIT {
         return new LabTestCatalog()
             .name(UPDATED_NAME)
             .unit(UPDATED_UNIT)
+            .description(UPDATED_DESCRIPTION)
+            .version(UPDATED_VERSION)
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO)
+            .method(UPDATED_METHOD)
+            .sampleType(UPDATED_SAMPLE_TYPE)
             .referenceRangeLow(UPDATED_REFERENCE_RANGE_LOW)
-            .referenceRangeHigh(UPDATED_REFERENCE_RANGE_HIGH);
+            .referenceRangeHigh(UPDATED_REFERENCE_RANGE_HIGH)
+            .active(UPDATED_ACTIVE)
+            .type(UPDATED_TYPE)
+            .loincCode(UPDATED_LOINC_CODE)
+            .cost(UPDATED_COST)
+            .turnaroundTime(UPDATED_TURNAROUND_TIME);
     }
 
     @BeforeEach
@@ -192,6 +252,23 @@ class LabTestCatalogResourceIT {
 
     @Test
     @Transactional
+    void checkVersionIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        labTestCatalog.setVersion(null);
+
+        // Create the LabTestCatalog, which fails.
+        LabTestCatalogDTO labTestCatalogDTO = labTestCatalogMapper.toDto(labTestCatalog);
+
+        restLabTestCatalogMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(labTestCatalogDTO)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllLabTestCatalogs() throws Exception {
         // Initialize the database
         insertedLabTestCatalog = labTestCatalogRepository.saveAndFlush(labTestCatalog);
@@ -204,8 +281,19 @@ class LabTestCatalogResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(labTestCatalog.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].unit").value(hasItem(DEFAULT_UNIT)))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].version").value(hasItem(DEFAULT_VERSION)))
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())))
+            .andExpect(jsonPath("$.[*].method").value(hasItem(DEFAULT_METHOD.toString())))
+            .andExpect(jsonPath("$.[*].sampleType").value(hasItem(DEFAULT_SAMPLE_TYPE.toString())))
             .andExpect(jsonPath("$.[*].referenceRangeLow").value(hasItem(sameNumber(DEFAULT_REFERENCE_RANGE_LOW))))
-            .andExpect(jsonPath("$.[*].referenceRangeHigh").value(hasItem(sameNumber(DEFAULT_REFERENCE_RANGE_HIGH))));
+            .andExpect(jsonPath("$.[*].referenceRangeHigh").value(hasItem(sameNumber(DEFAULT_REFERENCE_RANGE_HIGH))))
+            .andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())))
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].loincCode").value(hasItem(DEFAULT_LOINC_CODE)))
+            .andExpect(jsonPath("$.[*].cost").value(hasItem(sameNumber(DEFAULT_COST))))
+            .andExpect(jsonPath("$.[*].turnaroundTime").value(hasItem(DEFAULT_TURNAROUND_TIME)));
     }
 
     @Test
@@ -222,8 +310,19 @@ class LabTestCatalogResourceIT {
             .andExpect(jsonPath("$.id").value(labTestCatalog.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.unit").value(DEFAULT_UNIT))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
+            .andExpect(jsonPath("$.version").value(DEFAULT_VERSION))
+            .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
+            .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()))
+            .andExpect(jsonPath("$.method").value(DEFAULT_METHOD.toString()))
+            .andExpect(jsonPath("$.sampleType").value(DEFAULT_SAMPLE_TYPE.toString()))
             .andExpect(jsonPath("$.referenceRangeLow").value(sameNumber(DEFAULT_REFERENCE_RANGE_LOW)))
-            .andExpect(jsonPath("$.referenceRangeHigh").value(sameNumber(DEFAULT_REFERENCE_RANGE_HIGH)));
+            .andExpect(jsonPath("$.referenceRangeHigh").value(sameNumber(DEFAULT_REFERENCE_RANGE_HIGH)))
+            .andExpect(jsonPath("$.active").value(DEFAULT_ACTIVE.booleanValue()))
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
+            .andExpect(jsonPath("$.loincCode").value(DEFAULT_LOINC_CODE))
+            .andExpect(jsonPath("$.cost").value(sameNumber(DEFAULT_COST)))
+            .andExpect(jsonPath("$.turnaroundTime").value(DEFAULT_TURNAROUND_TIME));
     }
 
     @Test
@@ -248,8 +347,19 @@ class LabTestCatalogResourceIT {
         updatedLabTestCatalog
             .name(UPDATED_NAME)
             .unit(UPDATED_UNIT)
+            .description(UPDATED_DESCRIPTION)
+            .version(UPDATED_VERSION)
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO)
+            .method(UPDATED_METHOD)
+            .sampleType(UPDATED_SAMPLE_TYPE)
             .referenceRangeLow(UPDATED_REFERENCE_RANGE_LOW)
-            .referenceRangeHigh(UPDATED_REFERENCE_RANGE_HIGH);
+            .referenceRangeHigh(UPDATED_REFERENCE_RANGE_HIGH)
+            .active(UPDATED_ACTIVE)
+            .type(UPDATED_TYPE)
+            .loincCode(UPDATED_LOINC_CODE)
+            .cost(UPDATED_COST)
+            .turnaroundTime(UPDATED_TURNAROUND_TIME);
         LabTestCatalogDTO labTestCatalogDTO = labTestCatalogMapper.toDto(updatedLabTestCatalog);
 
         restLabTestCatalogMockMvc
@@ -339,7 +449,13 @@ class LabTestCatalogResourceIT {
         LabTestCatalog partialUpdatedLabTestCatalog = new LabTestCatalog();
         partialUpdatedLabTestCatalog.setId(labTestCatalog.getId());
 
-        partialUpdatedLabTestCatalog.unit(UPDATED_UNIT).referenceRangeHigh(UPDATED_REFERENCE_RANGE_HIGH);
+        partialUpdatedLabTestCatalog
+            .name(UPDATED_NAME)
+            .unit(UPDATED_UNIT)
+            .validTo(UPDATED_VALID_TO)
+            .method(UPDATED_METHOD)
+            .sampleType(UPDATED_SAMPLE_TYPE)
+            .type(UPDATED_TYPE);
 
         restLabTestCatalogMockMvc
             .perform(
@@ -373,8 +489,19 @@ class LabTestCatalogResourceIT {
         partialUpdatedLabTestCatalog
             .name(UPDATED_NAME)
             .unit(UPDATED_UNIT)
+            .description(UPDATED_DESCRIPTION)
+            .version(UPDATED_VERSION)
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO)
+            .method(UPDATED_METHOD)
+            .sampleType(UPDATED_SAMPLE_TYPE)
             .referenceRangeLow(UPDATED_REFERENCE_RANGE_LOW)
-            .referenceRangeHigh(UPDATED_REFERENCE_RANGE_HIGH);
+            .referenceRangeHigh(UPDATED_REFERENCE_RANGE_HIGH)
+            .active(UPDATED_ACTIVE)
+            .type(UPDATED_TYPE)
+            .loincCode(UPDATED_LOINC_CODE)
+            .cost(UPDATED_COST)
+            .turnaroundTime(UPDATED_TURNAROUND_TIME);
 
         restLabTestCatalogMockMvc
             .perform(

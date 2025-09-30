@@ -8,19 +8,7 @@
       "entities": {
         "main": "Entities",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
-        "appointment": "Appointment",
-        "consultation": "Consultation",
-        "doctorProfile": "Doctor Profile",
-        "hospitalization": "Hospitalization",
-        "labTestCatalog": "Lab Test Catalog",
-        "labTestResult": "Lab Test Result",
-        "medicalDocument": "Medical Document",
-        "medication": "Medication",
-        "notification": "Notification",
-        "patient": "Patient",
-        "prescription": "Prescription",
-        "prescriptionItem": "Prescription Item",
-        "userConfiguration": "User Configuration"
+        "labTestCatalog": "Lab Test Catalog"
       },
       "account": {
         "main": "Account",
@@ -90,9 +78,7 @@
           "minlength": "Your email is required to be at least 5 characters.",
           "maxlength": "Your email cannot be longer than 50 characters."
         }
-      },
-      "success": "Success",
-      "fail": "Fail"
+      }
     },
     "field": {
       "id": "ID"

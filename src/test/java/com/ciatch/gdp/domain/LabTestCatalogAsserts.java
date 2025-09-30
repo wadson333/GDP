@@ -50,6 +50,12 @@ public class LabTestCatalogAsserts {
             .as("Verify LabTestCatalog relevant properties")
             .satisfies(e -> assertThat(e.getName()).as("check name").isEqualTo(actual.getName()))
             .satisfies(e -> assertThat(e.getUnit()).as("check unit").isEqualTo(actual.getUnit()))
+            .satisfies(e -> assertThat(e.getDescription()).as("check description").isEqualTo(actual.getDescription()))
+            .satisfies(e -> assertThat(e.getVersion()).as("check version").isEqualTo(actual.getVersion()))
+            .satisfies(e -> assertThat(e.getValidFrom()).as("check validFrom").isEqualTo(actual.getValidFrom()))
+            .satisfies(e -> assertThat(e.getValidTo()).as("check validTo").isEqualTo(actual.getValidTo()))
+            .satisfies(e -> assertThat(e.getMethod()).as("check method").isEqualTo(actual.getMethod()))
+            .satisfies(e -> assertThat(e.getSampleType()).as("check sampleType").isEqualTo(actual.getSampleType()))
             .satisfies(e ->
                 assertThat(e.getReferenceRangeLow())
                     .as("check referenceRangeLow")
@@ -61,7 +67,12 @@ public class LabTestCatalogAsserts {
                     .as("check referenceRangeHigh")
                     .usingComparator(bigDecimalCompareTo)
                     .isEqualTo(actual.getReferenceRangeHigh())
-            );
+            )
+            .satisfies(e -> assertThat(e.getActive()).as("check active").isEqualTo(actual.getActive()))
+            .satisfies(e -> assertThat(e.getType()).as("check type").isEqualTo(actual.getType()))
+            .satisfies(e -> assertThat(e.getLoincCode()).as("check loincCode").isEqualTo(actual.getLoincCode()))
+            .satisfies(e -> assertThat(e.getCost()).as("check cost").usingComparator(bigDecimalCompareTo).isEqualTo(actual.getCost()))
+            .satisfies(e -> assertThat(e.getTurnaroundTime()).as("check turnaroundTime").isEqualTo(actual.getTurnaroundTime()));
     }
 
     /**

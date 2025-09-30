@@ -20,6 +20,7 @@
       "fieldType": "TextBlob"
     }
   ],
+  "incrementalChangelog": false,
   "name": "Consultation",
   "pagination": "pagination",
   "relationships": [

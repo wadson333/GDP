@@ -88,14 +88,17 @@
     "@ngx-translate/http-loader": "8.0.0",
     "@popperjs/core": "2.11.8",
     "@primeng/themes": "^20.0.0",
+    "@types/pdfmake": "^0.2.11",
     "bootstrap": "5.3.3",
     "dayjs": "1.11.13",
     "ngx-infinite-scroll": "18.0.0",
+    "pdfmake": "^0.2.20",
     "primeicons": "^7.0.0",
     "primeng": "^17.18.0",
     "rxjs": "7.8.1",
     "tailwindcss-primeui": "^0.6.1",
     "tslib": "2.7.0",
+    "xlsx": "^0.18.5",
     "zone.js": "0.14.10"
   },
   "devDependencies": {

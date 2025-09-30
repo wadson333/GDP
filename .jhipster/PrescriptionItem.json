@@ -20,6 +20,7 @@
       "fieldType": "String"
     }
   ],
+  "incrementalChangelog": false,
   "name": "PrescriptionItem",
   "relationships": [
     {

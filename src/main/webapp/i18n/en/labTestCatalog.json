@@ -4,7 +4,8 @@
       "home": {
         "title": "Lab Test Catalogs",
         "refreshListLabel": "Refresh list",
-        "createLabel": "Create a new Lab Test Catalog",
+        "createLabel": "Lab",
+        "createTootltip": "Create a new Lab Test Catalog",
         "createOrEditLabel": "Create or edit a Lab Test Catalog",
         "notFound": "No Lab Test Catalogs found"
       },
@@ -14,14 +15,111 @@
       "delete": {
         "question": "Are you sure you want to delete Lab Test Catalog {{ id }}?"
       },
+      "export": {
+        "label": "Export",
+        "excel": "Export to Excel",
+        "csv": "Export to CSV",
+        "pdf": "Export to PDF"
+      },
       "detail": {
-        "title": "Lab Test Catalog"
+        "title": "Lab Test Catalog",
+        "section": {
+          "general": "General Information",
+          "technical": "Technical Details",
+          "reference": "Reference Range",
+          "additional": "Additional Information"
+        },
+        "tabs": {
+          "details": "Details",
+          "history": "History"
+        }
+      },
+      "placeholders": {
+        "name": "Enter test name",
+        "unit": "Enter measurement unit",
+        "description": "Enter test description",
+        "method": "Select method",
+        "sampleType": "Select sample type",
+        "type": "Select test type",
+        "loincCode": "Enter LOINC code",
+        "search": "Search..."
+      },
+      "validation": {
+        "loincCodeExists": "A test with this LOINC code already exists",
+        "nameExists": "A test with this name already exists. Please create a new version instead.",
+        "required": "This field is required",
+        "nameRequired": "Test name is required",
+        "unitRequired": "Unit is required",
+        "versionRequired": "Version is required"
+      },
+      "errors": {
+        "nameExists": "Test name already exists",
+        "loincCodeExists": "LOINC code already exists"
+      },
+      "form": {
+        "requiredField": "This field is required",
+        "tooltip": "Required field"
+      },
+      "toast": {
+        "saveSuccess": {
+          "title": "Success",
+          "detail": "Lab test saved successfully"
+        },
+        "saveError": {
+          "title": "Error",
+          "detail": "An error occurred while saving the lab test"
+        }
+      },
+      "confirmation": {
+        "header": "Confirm Save",
+        "save": "Are you sure you want to save this lab test?",
+        "required": "Fields marked with * are required"
       },
       "id": "ID",
       "name": "Name",
       "unit": "Unit",
+      "description": "Description",
+      "version": "Version",
+      "validFrom": "Valid From",
+      "validTo": "Valid To",
+      "method": "Method",
+      "sampleType": "Sample Type",
       "referenceRangeLow": "Reference Range Low",
-      "referenceRangeHigh": "Reference Range High"
+      "referenceRangeHigh": "Reference Range High",
+      "active": "Active",
+      "type": "Type",
+      "loincCode": "Loinc Code",
+      "cost": "Cost",
+      "turnaroundTime": "Turnaround Time",
+      "state": "State",
+      "actions": {
+        "view": "View",
+        "edit": "Edit",
+        "deactivate": "Deactivate",
+        "activate": "Activate",
+        "renew": "Renew",
+        "newVersion": "New Version"
+      },
+      "table": {
+        "pageDescription": "Showing {{ first }} to {{ last }} of {{ totalRecords }} entries"
+      },
+      "breadcrumb": "Lab Test Catalog Management",
+      "typeFilterLabel": "Choose a type",
+      "methodFilterLabel": "Choose a method",
+      "activeFilterLabel": "Choose a status",
+      "toggleViewTooltip": "Toggle View Mode",
+      "latestOnlyTooltip": "Show Latest Versions Only",
+      "allVersionsTooltip": "Show All Versions",
+      "searchLabel": "Search",
+      "clearSearchLabel": "Clear Search",
+      "viewDetailLabel": "View Details",
+      "detailDialogTitle": "Lab Test Catalog Details",
+      "editLabel": "Edit Lab Test Catalog",
+      "addLabel": "Add a new Lab Test Catalog",
+      "newVersionTooltip": "Create a new version of this lab test",
+      "deactivateTooltip": "Deactivate this lab test",
+      "activateTooltip": "Activate this lab test",
+      "actionLabel": "Actions"
     }
   }
 }

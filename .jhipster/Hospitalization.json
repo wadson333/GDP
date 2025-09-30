@@ -20,6 +20,7 @@
       "fieldType": "TextBlob"
     }
   ],
+  "incrementalChangelog": false,
   "name": "Hospitalization",
   "pagination": "pagination",
   "relationships": [

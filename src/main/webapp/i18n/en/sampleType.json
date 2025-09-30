@@ -1,0 +1,14 @@
+{
+  "gdpApp": {
+    "SampleType": {
+      "null": "",
+      "BLOOD": "BLOOD",
+      "URINE": "URINE",
+      "STOOL": "STOOL",
+      "SALIVA": "SALIVA",
+      "PLASMA": "PLASMA",
+      "SERUM": "SERUM",
+      "OTHER": "OTHER"
+    }
+  }
+}

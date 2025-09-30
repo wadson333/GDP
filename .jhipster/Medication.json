@@ -16,6 +16,7 @@
       "fieldType": "TextBlob"
     }
   ],
+  "incrementalChangelog": false,
   "name": "Medication",
   "relationships": [],
   "searchEngine": "no",

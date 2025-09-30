@@ -32,6 +32,7 @@
       "fieldType": "Long"
     }
   ],
+  "incrementalChangelog": false,
   "name": "Notification",
   "pagination": "pagination",
   "relationships": [

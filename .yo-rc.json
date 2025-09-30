@@ -31,6 +31,7 @@
       "UserConfiguration"
     ],
     "feignClient": null,
+    "incrementalChangelog": true,
     "jhipsterVersion": "8.7.1",
     "jwtSecretKey": "NTRhYWZkNzM3NjQyZDg3ZWRhZDdmNmY1MDdiNmM2NjhiMmEzZDg0YWYzMjgyMTlkYTJhZmM5MTZhNWI4MWRlYjIzZWRmYTNiZjM1M2YwZDYzYzg2ZjFjNjQ2ZTMxZmY0OGFmYjA5NzZlZTA0NjVmOWMxNTE3NDM3MTU4OTIzZmY=",
     "languages": ["fr", "en"],

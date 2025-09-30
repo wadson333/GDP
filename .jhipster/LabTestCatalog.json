@@ -3,7 +3,6 @@
     "changelogDate": "20250716190747"
   },
   "applications": "*",
-  "documentation": "Catalogue des types d'analyses de laboratoire disponibles.",
   "dto": "mapstruct",
   "fields": [
     {
@@ -17,15 +16,65 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "version",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "validFrom",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "validTo",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "method",
+      "fieldType": "LabTestMethod",
+      "fieldValues": "COLORIMETRIC,PCR,SPECTROMETRY,MICROBIOLOGY,IMMUNOASSAY,OTHER"
+    },
+    {
+      "fieldName": "sampleType",
+      "fieldType": "SampleType",
+      "fieldValues": "BLOOD,URINE,STOOL,SALIVA,PLASMA,SERUM,OTHER"
+    },
+    {
       "fieldName": "referenceRangeLow",
       "fieldType": "BigDecimal"
     },
     {
       "fieldName": "referenceRangeHigh",
       "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "active",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "LabTestType",
+      "fieldValues": "BIOCHEMISTRY,HEMATOLOGY,MICROBIOLOGY,IMMUNOLOGY,GENETIC,OTHER"
+    },
+    {
+      "fieldName": "loincCode",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "cost",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "turnaroundTime",
+      "fieldType": "Integer"
     }
   ],
+  "incrementalChangelog": false,
   "name": "LabTestCatalog",
+  "pagination": "pagination",
   "relationships": [],
   "searchEngine": "no",
   "service": "serviceClass"

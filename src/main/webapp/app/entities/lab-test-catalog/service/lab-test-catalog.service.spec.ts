@@ -5,10 +5,12 @@ import { provideHttpClient } from '@angular/common/http';
 import { ILabTestCatalog } from '../lab-test-catalog.model';
 import { sampleWithFullData, sampleWithNewData, sampleWithPartialData, sampleWithRequiredData } from '../lab-test-catalog.test-samples';
 
-import { LabTestCatalogService } from './lab-test-catalog.service';
+import { LabTestCatalogService, RestLabTestCatalog } from './lab-test-catalog.service';
 
-const requireRestSample: ILabTestCatalog = {
+const requireRestSample: RestLabTestCatalog = {
   ...sampleWithRequiredData,
+  validFrom: sampleWithRequiredData.validFrom?.toJSON(),
+  validTo: sampleWithRequiredData.validTo?.toJSON(),
 };
 
 describe('LabTestCatalog Service', () => {

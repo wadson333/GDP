@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <h2 id="page-heading" data-cy="LabTestCatalogHeading">
     <span jhiTranslate="gdpApp.labTestCatalog.home.title">LabTestCatalogs</span>
 
@@ -56,6 +56,48 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="description">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.labTestCatalog.description">Description</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="version">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.labTestCatalog.version">Version</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="validFrom">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.labTestCatalog.validFrom">Valid From</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="validTo">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.labTestCatalog.validTo">Valid To</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="method">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.labTestCatalog.method">Method</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="sampleType">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.labTestCatalog.sampleType">Sample Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="referenceRangeLow">
               <div class="d-flex">
                 <span jhiTranslate="gdpApp.labTestCatalog.referenceRangeLow">Reference Range Low</span>
@@ -66,6 +108,41 @@
             <th scope="col" jhiSortBy="referenceRangeHigh">
               <div class="d-flex">
                 <span jhiTranslate="gdpApp.labTestCatalog.referenceRangeHigh">Reference Range High</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="active">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.labTestCatalog.active">Active</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="type">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.labTestCatalog.type">Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="loincCode">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.labTestCatalog.loincCode">Loinc Code</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="cost">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.labTestCatalog.cost">Cost</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="turnaroundTime">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.labTestCatalog.turnaroundTime">Turnaround Time</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -81,8 +158,56 @@
               </td>
               <td>{{ labTestCatalog.name }}</td>
               <td>{{ labTestCatalog.unit }}</td>
+              <td>{{ labTestCatalog.description }}</td>
+              <td>{{ labTestCatalog.version }}</td>
+              <td>{{ labTestCatalog.validFrom | formatMediumDatetime }}</td>
+              <td>{{ labTestCatalog.validTo | formatMediumDatetime }}</td>
+              <td [jhiTranslate]="'gdpApp.LabTestMethod.' + (labTestCatalog.method ?? 'null')">
+                {{
+                  {
+                    null: '',
+                    COLORIMETRIC: 'COLORIMETRIC',
+                    PCR: 'PCR',
+                    SPECTROMETRY: 'SPECTROMETRY',
+                    MICROBIOLOGY: 'MICROBIOLOGY',
+                    IMMUNOASSAY: 'IMMUNOASSAY',
+                    OTHER: 'OTHER',
+                  }[labTestCatalog.method ?? 'null']
+                }}
+              </td>
+              <td [jhiTranslate]="'gdpApp.SampleType.' + (labTestCatalog.sampleType ?? 'null')">
+                {{
+                  {
+                    null: '',
+                    BLOOD: 'BLOOD',
+                    URINE: 'URINE',
+                    STOOL: 'STOOL',
+                    SALIVA: 'SALIVA',
+                    PLASMA: 'PLASMA',
+                    SERUM: 'SERUM',
+                    OTHER: 'OTHER',
+                  }[labTestCatalog.sampleType ?? 'null']
+                }}
+              </td>
               <td>{{ labTestCatalog.referenceRangeLow }}</td>
               <td>{{ labTestCatalog.referenceRangeHigh }}</td>
+              <td>{{ labTestCatalog.active }}</td>
+              <td [jhiTranslate]="'gdpApp.LabTestType.' + (labTestCatalog.type ?? 'null')">
+                {{
+                  {
+                    null: '',
+                    BIOCHEMISTRY: 'BIOCHEMISTRY',
+                    HEMATOLOGY: 'HEMATOLOGY',
+                    MICROBIOLOGY: 'MICROBIOLOGY',
+                    IMMUNOLOGY: 'IMMUNOLOGY',
+                    GENETIC: 'GENETIC',
+                    OTHER: 'OTHER',
+                  }[labTestCatalog.type ?? 'null']
+                }}
+              </td>
+              <td>{{ labTestCatalog.loincCode }}</td>
+              <td>{{ labTestCatalog.cost }}</td>
+              <td>{{ labTestCatalog.turnaroundTime }}</td>
               <td class="text-end">
                 <div class="btn-group">
                   <a
@@ -115,4 +240,538 @@
       </table>
     </div>
   }
+  @if (labTestCatalogs && labTestCatalogs.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div> -->
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<jhi-alert-error></jhi-alert-error>
+
+<jhi-alert></jhi-alert>
+<div class="card">
+  <p-toolbar>
+    <div class="p-toolbar-group-left">
+      <!-- Search and Filters -->
+      <div class="flex items-center gap-2 lab-test-search-container">
+        <!-- Type Dropdown -->
+        <p-dropdown
+          [(ngModel)]="searchCriteria.type"
+          [options]="typesOptions"
+          [placeholder]="'Type'"
+          (onChange)="search()"
+          styleClass="text-sm border-0 filter-dropdown"
+          class="min-w-[110px] filter-dropdown"
+        ></p-dropdown>
+        <p-divider layout="vertical" />
+        <!-- Method Dropdown -->
+        <p-dropdown
+          [(ngModel)]="searchCriteria.method"
+          [options]="methodsOptions"
+          [placeholder]="'Method'"
+          (onChange)="search()"
+          styleClass="text-sm border-0 filter-dropdown"
+          class="min-w-[110px] filter-dropdown"
+        ></p-dropdown>
+        <p-divider layout="vertical" />
+        <!-- Status Dropdown -->
+        <p-dropdown
+          [(ngModel)]="searchCriteria.active"
+          [options]="statusOptions"
+          [placeholder]="'Status'"
+          (onChange)="search()"
+          styleClass="text-sm border-0 filter-dropdown"
+          class="min-w-[100px] filter-dropdown"
+        ></p-dropdown>
+
+        <!-- Divider -->
+        <p-divider layout="vertical" />
+        <!-- Search Input -->
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="searchCriteria.name"
+          (keyup.enter)="search()"
+          [placeholder]="'gdpApp.labTestCatalog.placeholders.search' | translate"
+          class="flex-grow border-0 bg-transparent text-sm focus:outline-none focus:ring-0 min-w-[110px] max-w-[150px]"
+        />
+        <!-- Clear Button -->
+        <p-button
+          (click)="clearSearch()"
+          size="small"
+          styleClass="p-button-text"
+          icon="pi pi-times"
+          [pTooltip]="'gdpApp.labTestCatalog.clearSearchLabel' | translate"
+          tooltipPosition="bottom"
+          [style.visibility]="hasActiveFilters() ? 'visible' : 'hidden'"
+        ></p-button>
+
+        <!-- Search Button -->
+        <p-button
+          (click)="search()"
+          size="small"
+          styleClass="p-button-info"
+          icon="pi pi-search"
+          tooltipPosition="bottom"
+          [pTooltip]="'gdpApp.labTestCatalog.searchLabel' | translate"
+          [disabled]="!hasActiveFilters()"
+        ></p-button>
+      </div>
+    </div>
+    <div class="p-toolbar-group-right">
+      <!-- <p-dropdown
+      *ngIf="viewMode === 'card'"
+      [options]="gridOptions"
+      [(ngModel)]="gridColumns"
+      styleClass="mr-2"
+      [pTooltip]="'Adjust grid size'"
+      tooltipPosition="bottom"
+    ></p-dropdown> -->
+      <!-- refresh button -->
+      <p-button
+        icon="pi pi-refresh"
+        class="mr-1"
+        (click)="searchWithCriteria()"
+        [text]="true"
+        tooltipPosition="bottom"
+        [pTooltip]="'gdpApp.labTestCatalog.home.refreshListLabel' | translate"
+      />
+      <p-menu #menu [popup]="true" [model]="menuItems"></p-menu>
+      <!-- export button -->
+      <p-button
+        icon="pi pi-file-export"
+        class="mr-1"
+        (click)="menu.toggle($event)"
+        [text]="true"
+        tooltipPosition="bottom"
+        [pTooltip]="'gdpApp.labTestCatalog.export.label' | translate"
+      />
+      <!-- View Toggle -->
+      <p-button
+        [icon]="viewMode === 'table' ? 'pi pi-th-large' : 'pi pi-table'"
+        (click)="toggleView()"
+        styleClass="mr-1"
+        [text]="true"
+        [pTooltip]="'gdpApp.labTestCatalog.toggleViewTooltip' | translate"
+        tooltipPosition="bottom"
+      ></p-button>
+      <!-- Latest Version Toggle  onLabel="{{ 'gdpApp.labTestCatalog.latestOnlyTooltip' | translate }}"
+        offLabel="{{ 'gdpApp.labTestCatalog.allVersionsTooltip' | translate }}"-->
+      <p-toggleButton
+        [(ngModel)]="showLatestOnly"
+        [onIcon]="'pi pi-clock'"
+        offIcon="pi pi-history"
+        styleClass="mr-3"
+        (onChange)="search()"
+        [pTooltip]="(showLatestOnly ? 'gdpApp.labTestCatalog.latestOnlyTooltip' : 'gdpApp.labTestCatalog.allVersionsTooltip') | translate"
+        tooltipPosition="bottom"
+      ></p-toggleButton>
+
+      <!-- create button -->
+      <p-button
+        icon="pi pi-plus"
+        class="mr-1"
+        [label]="'gdpApp.labTestCatalog.home.createLabel' | translate"
+        tooltipPosition="bottom"
+        [pTooltip]="'gdpApp.labTestCatalog.home.createTootltip' | translate"
+        (click)="showAddLabTestCatalogDialog()"
+      />
+    </div>
+  </p-toolbar>
+  <!------------------------------ Table View ----------------------------------->
+  <div *ngIf="viewMode === 'table'">
+    <p-table
+      #dt
+      [value]="labTestCatalogs ?? []"
+      [rows]="10"
+      [paginator]="true"
+      [globalFilterFields]="['name', 'type', 'method', 'unit', 'loincCode']"
+      [rowHover]="true"
+      dataKey="id"
+      [(selection)]="selectedCatalog"
+      selectionMode="single"
+      [metaKeySelection]="metaKey"
+      [loading]="isLoading"
+      [showCurrentPageReport]="true"
+      [responsive]="true"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      styleClass="p-datatable-sm"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>
+            {{ 'gdpApp.labTestCatalog.active' | translate }}
+            <p-columnFilter
+              field="active"
+              matchMode="in"
+              display="menu"
+              [showMatchModes]="false"
+              [showOperator]="false"
+              [showAddButton]="false"
+            >
+              <ng-template pTemplate="header">
+                <div class="px-3 pt-1 pb-0">
+                  <span class="font-bold">{{ 'gdpApp.labTestCatalog.activeFilterLabel' | translate }}</span>
+                </div>
+              </ng-template>
+
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-multiSelect
+                  [ngModel]="value"
+                  [options]="statusOptions"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Any"
+                  (onChange)="filter($event.value)"
+                >
+                </p-multiSelect>
+              </ng-template>
+            </p-columnFilter>
+          </th>
+          <th pSortableColumn="name">
+            {{ 'gdpApp.labTestCatalog.name' | translate }}
+            <p-sortIcon field="name" />
+          </th>
+          <th>
+            {{ 'gdpApp.labTestCatalog.type' | translate }}
+            <p-columnFilter
+              field="type"
+              matchMode="in"
+              display="menu"
+              [showMatchModes]="false"
+              [showOperator]="false"
+              [showAddButton]="false"
+            >
+              <ng-template pTemplate="header">
+                <div class="px-3 pt-1 pb-0">
+                  <span class="font-bold">{{ 'gdpApp.labTestCatalog.typeFilterLabel' | translate }}</span>
+                </div>
+              </ng-template>
+
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-multiSelect
+                  [ngModel]="value"
+                  [options]="typesOptions"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Any"
+                  (onChange)="filter($event.value)"
+                >
+                </p-multiSelect>
+              </ng-template>
+            </p-columnFilter>
+          </th>
+          <th>
+            {{ 'gdpApp.labTestCatalog.method' | translate }}
+            <p-columnFilter
+              field="method"
+              matchMode="in"
+              display="menu"
+              [showMatchModes]="false"
+              [showOperator]="false"
+              [showAddButton]="false"
+            >
+              <ng-template pTemplate="header">
+                <div class="px-3 pt-1 pb-0">
+                  <span class="font-bold">{{ 'gdpApp.labTestCatalog.methodFilterLabel' | translate }}</span>
+                </div>
+              </ng-template>
+
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-multiSelect
+                  [ngModel]="value"
+                  [options]="methodsOptions"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Any"
+                  (onChange)="filter($event.value)"
+                >
+                </p-multiSelect>
+              </ng-template>
+            </p-columnFilter>
+          </th>
+          <th pSortableColumn="unit">
+            {{ 'gdpApp.labTestCatalog.unit' | translate }}
+            <p-sortIcon field="unit" />
+          </th>
+          <th pSortableColumn="version">
+            {{ 'gdpApp.labTestCatalog.version' | translate }}
+            <p-sortIcon field="version" />
+          </th>
+          <th class="text-end">
+            {{ 'gdpApp.labTestCatalog.actionLabel' | translate }}
+          </th>
+        </tr>
+        <!-- <tr>
+          <th>
+            <p-columnFilter type="text" field="name"></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter field="type" matchMode="equals" [showMenu]="false">
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-dropdown 
+                  [options]="labTestTypeValues"
+                  [showClear]="true"
+                  placeholder="Tous"
+                  (onChange)="filter($event.value)">
+                </p-dropdown>
+              </ng-template>
+            </p-columnFilter>
+          </th>
+        
+        </tr> -->
+      </ng-template>
+
+      <ng-template pTemplate="body" let-catalog>
+        <tr [pSelectableRow]="catalog">
+          <td>
+            <p-chip
+              [label]="catalog.active ? 'Actif' : 'Inactif'"
+              [styleClass]="catalog.active ? 'text-green-600' : 'text-red-600'"
+            ></p-chip>
+          </td>
+          <td>{{ catalog.name }}</td>
+          <td>{{ catalog.type }}</td>
+          <td>{{ catalog.method }}</td>
+          <td>{{ catalog.unit }}</td>
+          <td>{{ catalog.version }}</td>
+          <td class="text-end">
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-eye"
+              class="p-button-rounded p-button-text"
+              [pTooltip]="'gdpApp.labTestCatalog.viewDetailLabel' | translate"
+              tooltipPosition="bottom"
+              (click)="showDetailsDialog(catalog)"
+            ></button>
+
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-pencil"
+              class="p-button-rounded p-button-text"
+              [pTooltip]="'gdpApp.labTestCatalog.editLabel' | translate"
+              tooltipPosition="bottom"
+              (click)="showEditLabTestCatalogDialog(catalog)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7">
+            <div class="flex flex-col items-center gap-4 p-6">
+              <i class="pi pi- text-6xl"></i>
+              <span class="text-lg font-medium">{{ 'gdpApp.labTestCatalog.home.notFound' | translate }}</span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="loadingbody">
+        @for (item of [1, 2, 3, 4, 5]; track item) {
+          <tr>
+            <td><p-skeleton width="4rem"></p-skeleton></td>
+            <!-- Active status -->
+            <td><p-skeleton width="60%"></p-skeleton></td>
+            <!-- Name -->
+            <td><p-skeleton width="40%"></p-skeleton></td>
+            <!-- Type -->
+            <td><p-skeleton width="40%"></p-skeleton></td>
+            <!-- Method -->
+            <td><p-skeleton width="30%"></p-skeleton></td>
+            <!-- Unit -->
+            <td><p-skeleton width="3rem"></p-skeleton></td>
+            <!-- Version -->
+            <td>
+              <div class="flex justify-end gap-2">
+                <p-skeleton shape="circle" size="2rem"></p-skeleton>
+                <p-skeleton shape="circle" size="2rem"></p-skeleton>
+                <p-skeleton shape="circle" size="2rem"></p-skeleton>
+              </div>
+            </td>
+          </tr>
+        }
+      </ng-template>
+    </p-table>
+  </div>
+  <!------------------------------ Card View ----------------------------------->
+  <!-- Card View Section -->
+  <div *ngIf="viewMode === 'card'" class="mt-4">
+    <div [class]="'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'">
+      <div
+        *ngFor="let catalog of labTestCatalogs"
+        class="transition-all duration-300 hover:-translate-y-1 hover:shadow-lg border lab-test-card rounded-lg"
+      >
+        <div class="bg-surface-card flex flex-col border border-surface-border rounded-lg h-full">
+          <!-- Header -->
+          <div class="py-2 px-4 border-b border-surface-border">
+            <div class="flex items-center justify-between">
+              <div class="flex-grow min-w-0">
+                <h3 class="text-lg font-semibold truncate">{{ catalog.name }}</h3>
+                <span class="text-sm text-surface-500">Version {{ catalog.version }}</span>
+              </div>
+              <span
+                [class]="
+                  'ml-2 py-1 px-3 rounded-full text-xs font-medium ' +
+                  (catalog.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800')
+                "
+              >
+                {{ catalog.active ? 'Active' : 'Inactive' }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="px-4 py-2 space-y-2 lab-test-card-content flex-grow">
+            <!-- Type and Method -->
+            <div class="flex flex-wrap gap-2">
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-primary-100 text-primary-800">
+                <i class="pi pi-tag mr-2 text-sm"></i>
+                {{ catalog.type }}
+              </span>
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-primary-100 text-primary-800">
+                <i class="pi pi-cog mr-2 text-sm"></i>
+                {{ catalog.method }}
+              </span>
+            </div>
+
+            <!-- Description -->
+            <div *ngIf="catalog.description" class="min-h-[2rem]">
+              <p class="text-sm text-surface-600 line-clamp-2">{{ catalog.description }}</p>
+            </div>
+
+            <!-- Details Grid -->
+            <div class="grid grid-cols-2 gap-2">
+              <div class="bg-surface-ground rounded-lg py-1 px-2 flex items-center">
+                <i class="pi pi-calculator text-primary-500 mr-2"></i>
+                <div class="min-w-0">
+                  <p class="text-xs text-surface-500">Unit</p>
+                  <p class="font-medium truncate">{{ catalog.unit || '-' }}</p>
+                </div>
+              </div>
+              <div class="bg-surface-ground rounded-lg py-1 px-2 flex items-center">
+                <i class="pi pi-dollar text-primary-500 mr-2"></i>
+                <div class="min-w-0">
+                  <p class="text-xs text-surface-500">Cost</p>
+                  <p class="font-medium truncate">{{ catalog.cost || '-' }}</p>
+                </div>
+              </div>
+              <div class="bg-surface-ground rounded-lg py-1 px-2 flex items-center">
+                <i class="pi pi-clock text-primary-500 mr-2"></i>
+                <div class="min-w-0">
+                  <p class="text-xs text-surface-500">TAT</p>
+                  <p class="font-medium truncate">{{ catalog.turnaroundTime || '-' }}h</p>
+                </div>
+              </div>
+              <div class="bg-surface-ground rounded-lg py-1 px-2 flex items-center">
+                <i class="pi pi-id-card text-primary-500 mr-2"></i>
+                <div class="min-w-0">
+                  <p class="text-xs text-surface-500">LOINC</p>
+                  <p class="font-medium truncate">{{ catalog.loincCode || '-' }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="py-1 lab-test-card-footer border-surface-border flex justify-between">
+            <button
+              pButton
+              class="p-button-text hover:bg-surface-100"
+              icon="pi pi-eye"
+              [label]="'gdpApp.labTestCatalog.view' | translate"
+              (click)="showDetailsDialog(catalog)"
+              [pTooltip]="'gdpApp.labTestCatalog.viewDetailLabel' | translate"
+              tooltipPosition="bottom"
+            ></button>
+            <button
+              pButton
+              class="p-button-text hover:bg-surface-100"
+              icon="pi pi-pencil"
+              [label]="'gdpApp.labTestCatalog.edit' | translate"
+              [pTooltip]="'gdpApp.labTestCatalog.editLabel' | translate"
+              tooltipPosition="bottom"
+              (click)="showEditLabTestCatalogDialog(catalog)"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="flex justify-content-center">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+
+    <!-- No Results -->
+    <div *ngIf="!isLoading && (!labTestCatalogs || labTestCatalogs.length === 0)" class="flex justify-content-center p-5 text-xl">
+      <p class="text-center">{{ 'gdpApp.labTestCatalog.home.notFound' | translate }}</p>
+    </div>
+  </div>
 </div>
+
+<!-- Dialog pour la visualisation des détails et l'historique d'un examen de laboratoire -->
+<p-dialog
+  [(visible)]="displayVersionDialog"
+  [style]="{ width: '680px' }"
+  [header]="'gdpApp.labTestCatalog.detail.title' | translate"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="closeDetailDialog()"
+>
+  <jhi-lab-test-catalog-detail [labTestCatalog]="selectedCatalog"></jhi-lab-test-catalog-detail>
+  <ng-template pTemplate="footer">
+    <div class="flex justify-end gap-2">
+      <p-button (click)="closeDetailDialog()" [label]="'userManagement.home.popCloseLabel' | translate" styleClass="p-button-text">
+      </p-button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<!-- Dialog pour l'édition d'un examen de laboratoire -->
+@if (selectedCatalog) {
+  <p-dialog
+    [(visible)]="displayFormDialog"
+    [style]="{ width: '850px' }"
+    [header]="'gdpApp.labTestCatalog.editLabel' | translate"
+    [modal]="true"
+    styleClass="p-fluid"
+    (onHide)="closeFormDialog(false)"
+  >
+    <jhi-lab-test-catalog-update [labTestCatalog]="selectedCatalog" (closeEvent)="closeFormDialog($event)"></jhi-lab-test-catalog-update>
+  </p-dialog>
+} @else {
+  <!-- dialog pour l'ajout d'un examen de laboratoire -->
+  <p-dialog
+    [(visible)]="displayFormDialog"
+    [style]="{ width: '850px' }"
+    [header]="'gdpApp.labTestCatalog.addLabel' | translate"
+    [modal]="true"
+    styleClass="p-fluid"
+    (onHide)="closeFormDialog(false)"
+  >
+    <jhi-lab-test-catalog-update (closeEvent)="closeFormDialog($event)"></jhi-lab-test-catalog-update>
+  </p-dialog>
+}

@@ -30,6 +30,7 @@
       "fieldType": "String"
     }
   ],
+  "incrementalChangelog": false,
   "name": "MedicalDocument",
   "pagination": "pagination",
   "relationships": [

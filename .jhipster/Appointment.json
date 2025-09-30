@@ -27,6 +27,7 @@
       "fieldType": "TextBlob"
     }
   ],
+  "incrementalChangelog": false,
   "name": "Appointment",
   "pagination": "pagination",
   "relationships": [

@@ -1,5 +1,7 @@
 package com.ciatch.gdp.web.rest;
 
+import com.ciatch.gdp.domain.enumeration.LabTestMethod;
+import com.ciatch.gdp.domain.enumeration.LabTestType;
 import com.ciatch.gdp.repository.LabTestCatalogRepository;
 import com.ciatch.gdp.service.LabTestCatalogService;
 import com.ciatch.gdp.service.dto.LabTestCatalogDTO;
@@ -14,9 +16,14 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -134,12 +141,17 @@ public class LabTestCatalogResource {
     /**
      * {@code GET  /lab-test-catalogs} : get all the labTestCatalogs.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of labTestCatalogs in body.
      */
     @GetMapping("")
-    public List<LabTestCatalogDTO> getAllLabTestCatalogs() {
-        LOG.debug("REST request to get all LabTestCatalogs");
-        return labTestCatalogService.findAll();
+    public ResponseEntity<List<LabTestCatalogDTO>> getAllLabTestCatalogs(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get a page of LabTestCatalogs");
+        Page<LabTestCatalogDTO> page = labTestCatalogService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -168,5 +180,41 @@ public class LabTestCatalogResource {
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * Searches for lab test catalogs based on optional filter criteria such as name, type, method, and active status.
+     * Supports pagination of results.
+     *
+     * @param name the name of the lab test catalog to search for (optional)
+     * @param type the type of the lab test (optional)
+     * @param method the method of the lab test (optional)
+     * @param active the active status of the lab test catalog (optional)
+     * @param pageable the pagination information
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of matching labTestCatalogs in the body
+     */
+    @GetMapping("/search")
+    public ResponseEntity<List<LabTestCatalogDTO>> search(
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) LabTestType type,
+        @RequestParam(required = false) LabTestMethod method,
+        @RequestParam(required = false) Boolean active,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        Page<LabTestCatalogDTO> page = labTestCatalogService.search(name, type, method, active, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * Retrieves the latest versions of lab test catalogs with pagination support.
+     *
+     * @param pageable the pagination information provided by the client
+     * @return a {@link ResponseEntity} containing a list of {@link LabTestCatalogDTO} representing the latest versions of lab test catalogs
+     */
+    @GetMapping("/latest")
+    public ResponseEntity<List<LabTestCatalogDTO>> getLatestVersions(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        List<LabTestCatalogDTO> results = labTestCatalogService.findLatestVersions(pageable);
+        return ResponseEntity.ok().body(results);
     }
 }
