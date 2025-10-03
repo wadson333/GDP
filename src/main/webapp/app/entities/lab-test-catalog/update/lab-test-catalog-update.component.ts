@@ -25,6 +25,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { TooltipModule } from 'primeng/tooltip';
 import { DividerModule } from 'primeng/divider';
+import { ChipModule } from 'primeng/chip';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   standalone: true,
@@ -51,13 +53,18 @@ import { DividerModule } from 'primeng/divider';
     ProgressSpinnerModule,
     TooltipModule,
     DividerModule,
+    ChipModule,
+    TagModule,
   ],
 })
 export class LabTestCatalogUpdateComponent implements OnInit {
   @Input() labTestCatalog: ILabTestCatalog | null = null;
+  @Input() isRenew = false;
+
   @Output() closeEvent = new EventEmitter<boolean>();
+  @Output() saveNewLabVersionEvent = new EventEmitter<ILabTestCatalog>();
   isSaving = false;
-  //loading = false;
+  // loading = false;
   showValidationErrors = false;
   typesOptions = Object.values(LabTestType).map(type => ({ label: type, value: type }));
   methodsOptions = Object.values(LabTestMethod).map(method => ({ label: method, value: method }));
@@ -78,14 +85,11 @@ export class LabTestCatalogUpdateComponent implements OnInit {
   editForm: LabTestCatalogFormGroup = this.labTestCatalogFormService.createLabTestCatalogFormGroup();
 
   ngOnInit(): void {
-    // this.activatedRoute.data.subscribe(({ labTestCatalog }) => {
-    //   this.labTestCatalog = labTestCatalog;
-    //   if (labTestCatalog) {
-    //     this.updateForm(labTestCatalog);
-    //   }
-    // });
     if (this.labTestCatalog) {
       this.updateForm(this.labTestCatalog);
+      if (this.isRenew) {
+        this.editForm.get('name')?.disable();
+      }
     }
   }
 
@@ -114,8 +118,23 @@ export class LabTestCatalogUpdateComponent implements OnInit {
         if (labTestCatalog.id === null) {
           labTestCatalog.active = true; // New or updated tests are active by default
         }
+        if (labTestCatalog.referenceRangeLow && labTestCatalog.referenceRangeHigh) {
+          if (labTestCatalog.referenceRangeLow >= labTestCatalog.referenceRangeHigh) {
+            this.isSaving = false;
+            this.messageService.add({
+              severity: 'error',
+              summary: this.translateService.instant('gdpApp.labTestCatalog.toast.saveError.title'),
+              detail: this.translateService.instant('gdpApp.labTestCatalog.toast.saveError.referenceRangeError'),
+            });
+            return;
+          }
+        }
         labTestCatalog.version = labTestCatalog.version ?? 1; // Handle null version for new entities
-        if (labTestCatalog.id !== null) {
+
+        if (this.isRenew && this.labTestCatalog !== null) {
+          const newLabTestCatalog = { ...labTestCatalog, id: null };
+          this.subscribeToSaveResponse(this.labTestCatalogService.createNewVersion(this.labTestCatalog.id, newLabTestCatalog));
+        } else if (labTestCatalog.id !== null) {
           this.subscribeToSaveResponse(this.labTestCatalogService.update(labTestCatalog), true);
         } else {
           this.subscribeToSaveResponse(this.labTestCatalogService.create(labTestCatalog));
@@ -124,24 +143,44 @@ export class LabTestCatalogUpdateComponent implements OnInit {
     });
   }
 
+  // createNewVersion(ltc: ILabTestCatalog): void {
+  //   this.labTestCatalogService.prepareNewVersion(ltc.id).subscribe({
+  //     next: res => {
+  //       if (res.body) {
+  //         this.saveNewLabVersionEvent.emit(res.body);
+  //       }
+  //     },
+  //     error: () => {
+  //       this.messageService.add({
+  //         severity: 'error',
+  //         summary: this.translateService.instant('gdpApp.labTestCatalog.newVersion.error.title'),
+  //         detail: this.translateService.instant('gdpApp.labTestCatalog.newVersion.error.detail'),
+  //       });
+  //     },
+  //   });
+  // }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ILabTestCatalog>>, isNew = false): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
-      next: () => this.onSaveSuccess(isNew),
+      next: response => this.onSaveSuccess(isNew, response.body ?? undefined),
       error: () => this.onSaveError(),
     });
   }
 
-  protected onSaveSuccess(isNew: boolean): void {
+  protected onSaveSuccess(isNew: boolean, labTestCatalog?: ILabTestCatalog): void {
     this.messageService.add({
       severity: 'success',
       summary: this.translateService.instant('gdpApp.labTestCatalog.toast.saveSuccess.title'),
-      detail: this.translateService.instant('gdpApp.labTestCatalog.toast.saveSuccess.detail'),
+      detail: this.isRenew
+        ? this.translateService.instant('gdpApp.labTestCatalog.toast.saveSuccess.detail')
+        : this.translateService.instant('gdpApp.labTestCatalog.newVersion.success.detail'),
     });
 
     // Reset form but keep dialog open
     this.editForm = this.labTestCatalogFormService.createLabTestCatalogFormGroup();
     this.saveAtLeastOneLabTest = true;
     if (isNew) this.closeEvent.emit(this.saveAtLeastOneLabTest);
+    if (this.isRenew) this.saveNewLabVersionEvent.emit(labTestCatalog);
   }
 
   protected onSaveError(): void {
@@ -149,7 +188,9 @@ export class LabTestCatalogUpdateComponent implements OnInit {
     this.messageService.add({
       severity: 'error',
       summary: this.translateService.instant('gdpApp.labTestCatalog.toast.saveError.title'),
-      detail: this.translateService.instant('gdpApp.labTestCatalog.toast.saveError.detail'),
+      detail: this.isRenew
+        ? this.translateService.instant('gdpApp.labTestCatalog.toast.saveError.detail')
+        : this.translateService.instant('gdpApp.labTestCatalog.newVersion.error.detail'),
     });
   }
 

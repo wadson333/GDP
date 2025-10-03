@@ -228,9 +228,22 @@
 
   <!-- Basic Information Section -->
   <div class="card mb-4">
-    <h5 class="mb-3 flex items-center text-primary">
-      <i class="pi pi-info-circle mr-2"></i>
-      {{ 'gdpApp.labTestCatalog.detail.section.general' | translate }}
+    <h5 class="mb-3 flex items-center justify-between text-primary">
+      <span
+        ><i class="pi pi-info-circle mr-2"></i>
+        {{ 'gdpApp.labTestCatalog.detail.section.general' | translate }}
+      </span>
+      <span *ngIf="editForm.get('id')?.value">
+        <p-tag [value]="'Version ' + editForm.get('version')?.value" severity="info"></p-tag>
+        <p-tag
+          [value]="(editForm.get('active')?.value ? 'gdpApp.labTestCatalog.actif' : 'gdpApp.labTestCatalog.inactif') | translate"
+          [severity]="editForm.get('active')?.value ? 'success' : 'danger'"
+        ></p-tag>
+        <!-- <p-chip 
+          [label]="(editForm.get('active')?.value ? 'gdpApp.labTestCatalog.actif' : 'gdpApp.labTestCatalog.inactif') | translate"
+          [styleClass]="editForm.get('active')?.value ? 'text-green-600 mx-2' : 'text-red-600 mx-2'"
+        ></p-chip> -->
+      </span>
     </h5>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -412,31 +425,7 @@
   </div>
   <p-divider></p-divider>
   <!-- Form Actions -->
-  <div class="flex justify-between gap-2 bg-surface-500">
-    <div class="flex gap-2">
-      <!-- Show these buttons only when editing -->
-      <ng-container *ngIf="editForm.get('id')?.value">
-        <p-button
-          *ngIf="editForm.get('active')?.value"
-          icon="pi pi-power-off"
-          severity="danger"
-          [label]="'gdpApp.labTestCatalog.actions.deactivate' | translate"
-          pTooltip="{{ 'gdpApp.labTestCatalog.deactivateTooltip' | translate }}"
-          [text]="true"
-          size="small"
-          class="mr-2"
-        ></p-button>
-        <p-button
-          icon="pi pi-copy"
-          severity="info"
-          [label]="'gdpApp.labTestCatalog.actions.newVersion' | translate"
-          pTooltip="{{ 'gdpApp.labTestCatalog.newVersionTooltip' | translate }}"
-          [text]="true"
-          size="small"
-          class="mr-2"
-        ></p-button>
-      </ng-container>
-    </div>
+  <div class="flex justify-end gap-2 bg-surface-500">
     <!-- (onClick)="previousState()" -->
     <div class="flex gap-2">
       <p-button icon="pi pi-times" [label]="'entity.action.cancel' | translate" (click)="cancel()" [text]="true"></p-button>

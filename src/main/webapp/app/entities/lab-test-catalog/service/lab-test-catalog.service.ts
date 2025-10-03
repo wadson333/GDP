@@ -92,12 +92,31 @@ export class LabTestCatalogService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  deactivate(id: number): Observable<EntityResponseType> {
+    return this.http
+      .patch<RestLabTestCatalog>(`${this.resourceUrl}/deactivate/${id}`, {}, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
+  }
+
   getLabTestCatalogIdentifier(labTestCatalog: Pick<ILabTestCatalog, 'id'>): number {
     return labTestCatalog.id;
   }
 
   compareLabTestCatalog(o1: Pick<ILabTestCatalog, 'id'> | null, o2: Pick<ILabTestCatalog, 'id'> | null): boolean {
     return o1 && o2 ? this.getLabTestCatalogIdentifier(o1) === this.getLabTestCatalogIdentifier(o2) : o1 === o2;
+  }
+
+  prepareNewVersion(id: number): Observable<EntityResponseType> {
+    return this.http
+      .get<RestLabTestCatalog>(`${this.resourceUrl}/new-version/${id}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
+  }
+
+  createNewVersion(id: number, labTestCatalog: NewLabTestCatalog): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(labTestCatalog);
+    return this.http
+      .post<RestLabTestCatalog>(`${this.resourceUrl}/new-version/${id}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   addLabTestCatalogToCollectionIfMissing<Type extends Pick<ILabTestCatalog, 'id'>>(
@@ -120,6 +139,15 @@ export class LabTestCatalogService {
       return [...labTestCatalogsToAdd, ...labTestCatalogCollection];
     }
     return labTestCatalogCollection;
+  }
+
+  /**
+   * Get all versions of a lab test catalog by name
+   */
+  getHistory(name: string): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<RestLabTestCatalog[]>(`${this.resourceUrl}/history/${encodeURIComponent(name)}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   protected convertDateFromClient<T extends ILabTestCatalog | NewLabTestCatalog | PartialUpdateLabTestCatalog>(

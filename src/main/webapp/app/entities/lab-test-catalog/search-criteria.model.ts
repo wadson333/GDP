@@ -7,4 +7,5 @@ export interface SearchCriteria {
   type?: LabTestType;
   method?: LabTestMethod;
   active?: boolean;
+  isLatestOnly?: boolean;
 }

@@ -35,6 +35,9 @@
     <include file="config/liquibase/changelog/20250716190752_added_entity_constraints_Patient.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20250716190754_added_entity_constraints_PrescriptionItem.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20250716190755_added_entity_constraints_UserConfiguration.xml" relativeToChangelogFile="false"/>
+        <!-- ... existing includes ... -->
+    <!-- <include file="config/liquibase/changelog/20250930000000_remove_name_unique_constraint.xml" relativeToChangelogFile="false"/> -->
+    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

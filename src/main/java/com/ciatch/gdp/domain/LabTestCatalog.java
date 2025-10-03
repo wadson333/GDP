@@ -29,7 +29,7 @@ public class LabTestCatalog implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false)
     @Size(min = 3)
     private String name;
 

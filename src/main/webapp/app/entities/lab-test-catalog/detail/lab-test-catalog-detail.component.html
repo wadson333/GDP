@@ -123,15 +123,41 @@
 <jhi-alert-error></jhi-alert-error>
 <jhi-alert></jhi-alert>
 
-@if (labTestCatalog(); as labTestCatalogRef) {
+@if (labTestCatalog; as labTestCatalogRef) {
   <div class="card surface-0">
+    <div class="py-2 flex justify-end">
+      <!-- Show these buttons only when editing -->
+      @if (labTestCatalogRef.active) {
+        <p-button
+          icon="pi pi-power-off"
+          severity="danger"
+          [label]="'gdpApp.labTestCatalog.actions.deactivate' | translate"
+          pTooltip="{{ 'gdpApp.labTestCatalog.deactivateTooltip' | translate }}"
+          [text]="true"
+          styleClass="mr-2"
+          (click)="deactivate(labTestCatalogRef)"
+        ></p-button>
+      }
+      @if (isLastversion(labTestCatalogRef)) {
+        <p-button
+          icon="pi pi-copy"
+          severity="info"
+          [label]="'gdpApp.labTestCatalog.actions.newVersion' | translate"
+          pTooltip="{{ 'gdpApp.labTestCatalog.newVersionTooltip' | translate }}"
+          [text]="true"
+          class="mr-2"
+          (click)="showNewVersionDialog(labTestCatalogRef)"
+        ></p-button>
+      }
+    </div>
+    <!-- <p-divider></p-divider> -->
     <!-- Tabs -->
     <p-tabView (activeIndexChange)="onTabChange($event)" [activeIndex]="activeTab()">
       <!-- Details Tab -->
       <p-tabPanel header="{{ 'gdpApp.labTestCatalog.detail.tabs.details' | translate }}">
         <!-- Main Content -->
         <!-- Header -->
-        <div class="flex justify-between items-center mb-4">
+        <div class="flex justify-between items-center mb-2">
           <h2 class="text-base font-semibold m-0">
             <i class="pi pi-info-circle mr-2"></i>
             <span jhiTranslate="gdpApp.labTestCatalog.detail.section.general"></span>
@@ -241,19 +267,81 @@
       <!-- History Tab -->
       <!-- History Tab -->
       <p-tabPanel header="{{ 'gdpApp.labTestCatalog.detail.tabs.history' | translate }}">
-        <p-timeline [value]="labTestCatalogRef?.version ? [labTestCatalogRef] : []" align="alternate">
-          <ng-template pTemplate="content" let-version>
-            <div class="card shadow-sm p-3">
-              <small class="text-secondary">{{ version.name }}</small>
-              <h5 class="mt-2 mb-1">Version {{ version.number }}</h5>
-              <p class="m-0">{{ version.description }}</p>
-            </div>
-          </ng-template>
-        </p-timeline>
+        <div class="relative">
+          <!-- Loading Overlay -->
+          <div *ngIf="loading()" class="absolute inset-0 flex items-center justify-center bg-surface-100/50">
+            <p-progressSpinner strokeWidth="4"></p-progressSpinner>
+          </div>
+
+          <!-- Timeline -->
+          <p-timeline [value]="versions" align="alternate" styleClass="mt-4">
+            <ng-template pTemplate="marker" let-version>
+              <span class="flex w-8 h-8 rounded-full items-center justify-center">
+                {{ version.version }}
+              </span>
+            </ng-template>
+            <ng-template pTemplate="content" let-version>
+              <div class="card shadow-sm p-4 border-round">
+                <div class="flex items-center mb-2">
+                  @if (version.id == labTestCatalogRef.id) {
+                    <i class="pi pi-eye mr-1 text-blue-400"></i>
+                    <!-- <p-chip label="" icon="pi pi-eye" [styleClass]="'m-0 px-1bg-transparent text-blue-400'"></p-chip> -->
+                  }
+                  <h5 class="mr-1">{{ version.name }}</h5>
+                  <p-tag
+                    [value]="(version.active ? 'gdpApp.labTestCatalog.actif' : 'gdpApp.labTestCatalog.inactif') | translate"
+                    [severity]="version.active ? 'success' : 'warning'"
+                  >
+                  </p-tag>
+                </div>
+                <div class="text-sm text-surface-600">
+                  <div class="mb-2">
+                    <i class="pi pi-calendar mr-1"></i>
+                    <span class="font-semibold mr-2" jhiTranslate="gdpApp.labTestCatalog.validFrom">validFrom:</span> :
+                    {{ version.validFrom | date: 'medium' }}
+                  </div>
+                  <div class="mb-2" *ngIf="version.description">
+                    <i class="pi pi-info-circle mr-1"></i>
+                    <span class="font-semibold mr-2" jhiTranslate="gdpApp.labTestCatalog.description">description:</span> :
+                    {{ version.description }}
+                  </div>
+
+                  <div class="mb-2">
+                    <i class="pi pi-tag mr-1"></i>
+                    <span class="font-semibold mr-2" jhiTranslate="gdpApp.labTestCatalog.type">type:</span> :
+                    {{ version.type }}
+                  </div>
+
+                  <div class="">
+                    <i class="pi pi-cog mr-1"></i>
+                    <span class="font-semibold mr-2" jhiTranslate="gdpApp.labTestCatalog.method">method:</span>
+                    {{ version.method }}
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </p-timeline>
+        </div>
       </p-tabPanel>
     </p-tabView>
-
-    <!-- Footer Actions -->
-    <!-- <p-divider></p-divider> -->
   </div>
+}
+
+@if (labTestCatalog && isLastversion(labTestCatalog)) {
+  <p-dialog
+    *ngIf="displayFormDialog"
+    [header]="'gdpApp.labTestCatalog.newVersion.title' | translate: { name: labTestCatalog.name }"
+    [(visible)]="displayFormDialog"
+    [modal]="true"
+    [style]="{ width: '80vw', maxWidth: '900px' }"
+    [draggable]="false"
+    (onHide)="onDialogHide()"
+  >
+    <jhi-lab-test-catalog-update
+      [labTestCatalog]="labTestCatalog"
+      (saveNewLabVersionEvent)="onDialogHide($event)"
+      [isRenew]="true"
+      (closeEvent)="onDialogHide()"
+    ></jhi-lab-test-catalog-update>
+  </p-dialog>
 }

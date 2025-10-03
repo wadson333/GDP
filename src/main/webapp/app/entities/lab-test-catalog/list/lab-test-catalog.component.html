@@ -400,20 +400,27 @@
     <p-table
       #dt
       [value]="labTestCatalogs ?? []"
-      [rows]="10"
+      [rows]="itemsPerPage"
       [paginator]="true"
       [globalFilterFields]="['name', 'type', 'method', 'unit', 'loincCode']"
       [rowHover]="true"
       dataKey="id"
-      [(selection)]="selectedCatalog"
       selectionMode="single"
       [metaKeySelection]="metaKey"
       [loading]="isLoading"
       [showCurrentPageReport]="true"
       [responsive]="true"
-      [rowsPerPageOptions]="[10, 25, 50]"
+      [rowsPerPageOptions]="[20, 35, 50, 100]"
       styleClass="p-datatable-sm"
+      [totalRecords]="totalItems"
+      [(first)]="first"
+      (onLazyLoad)="onPageChange($event)"
+      [currentPageReportTemplate]="
+        'gdpApp.labTestCatalog.table.pageDescription' | translate: { first: '{first}', last: '{last}', totalRecords: '{totalRecords}' }
+      "
+      [lazy]="true"
     >
+      <!-- (onPage)="onPageChange($event)" -->
       <ng-template pTemplate="header">
         <tr>
           <th>
@@ -519,31 +526,13 @@
             {{ 'gdpApp.labTestCatalog.actionLabel' | translate }}
           </th>
         </tr>
-        <!-- <tr>
-          <th>
-            <p-columnFilter type="text" field="name"></p-columnFilter>
-          </th>
-          <th>
-            <p-columnFilter field="type" matchMode="equals" [showMenu]="false">
-              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                <p-dropdown 
-                  [options]="labTestTypeValues"
-                  [showClear]="true"
-                  placeholder="Tous"
-                  (onChange)="filter($event.value)">
-                </p-dropdown>
-              </ng-template>
-            </p-columnFilter>
-          </th>
-        
-        </tr> -->
       </ng-template>
 
       <ng-template pTemplate="body" let-catalog>
         <tr [pSelectableRow]="catalog">
           <td>
             <p-chip
-              [label]="catalog.active ? 'Actif' : 'Inactif'"
+              [label]="(catalog.active ? 'gdpApp.labTestCatalog.actif' : 'gdpApp.labTestCatalog.inactif') | translate"
               [styleClass]="catalog.active ? 'text-green-600' : 'text-red-600'"
             ></p-chip>
           </td>
@@ -554,17 +543,7 @@
           <td>{{ catalog.version }}</td>
           <td class="text-end">
             <button
-              pButton
-              pRipple
-              type="button"
-              icon="pi pi-eye"
-              class="p-button-rounded p-button-text"
-              [pTooltip]="'gdpApp.labTestCatalog.viewDetailLabel' | translate"
-              tooltipPosition="bottom"
-              (click)="showDetailsDialog(catalog)"
-            ></button>
-
-            <button
+              *ngIf="catalog.active"
               pButton
               pRipple
               type="button"
@@ -573,6 +552,17 @@
               [pTooltip]="'gdpApp.labTestCatalog.editLabel' | translate"
               tooltipPosition="bottom"
               (click)="showEditLabTestCatalogDialog(catalog)"
+            ></button>
+
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-eye"
+              class="p-button-rounded p-button-text"
+              [pTooltip]="'gdpApp.labTestCatalog.viewDetailLabel' | translate"
+              tooltipPosition="bottom"
+              (click)="showDetailsDialog(catalog)"
             ></button>
           </td>
         </tr>
@@ -638,7 +628,7 @@
                   (catalog.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800')
                 "
               >
-                {{ catalog.active ? 'Active' : 'Inactive' }}
+                {{ (catalog.active ? 'gdpApp.labTestCatalog.actif' : 'gdpApp.labTestCatalog.inactif') | translate }}
               </span>
             </div>
           </div>
@@ -707,6 +697,7 @@
               tooltipPosition="bottom"
             ></button>
             <button
+              *ngIf="catalog.active"
               pButton
               class="p-button-text hover:bg-surface-100"
               icon="pi pi-pencil"
@@ -729,27 +720,43 @@
     <div *ngIf="!isLoading && (!labTestCatalogs || labTestCatalogs.length === 0)" class="flex justify-content-center p-5 text-xl">
       <p class="text-center">{{ 'gdpApp.labTestCatalog.home.notFound' | translate }}</p>
     </div>
+    <p-divider></p-divider>
+    <!-- Paginator -->
+    <div class="flex justify-center items-center">
+      <p-paginator
+        [rows]="itemsPerPage"
+        [totalRecords]="totalItems"
+        [rowsPerPageOptions]="[20, 35, 50, 100]"
+        (onPageChange)="onPageChange($event)"
+        [showCurrentPageReport]="true"
+        [first]="first"
+        [currentPageReportTemplate]="
+          'gdpApp.labTestCatalog.table.pageDescription' | translate: { first: '{first}', last: '{last}', totalRecords: '{totalRecords}' }
+        "
+      ></p-paginator>
+    </div>
   </div>
 </div>
 
 <!-- Dialog pour la visualisation des détails et l'historique d'un examen de laboratoire -->
-<p-dialog
-  [(visible)]="displayVersionDialog"
-  [style]="{ width: '680px' }"
-  [header]="'gdpApp.labTestCatalog.detail.title' | translate"
-  [modal]="true"
-  styleClass="p-fluid"
-  (onHide)="closeDetailDialog()"
->
-  <jhi-lab-test-catalog-detail [labTestCatalog]="selectedCatalog"></jhi-lab-test-catalog-detail>
-  <ng-template pTemplate="footer">
-    <div class="flex justify-end gap-2">
-      <p-button (click)="closeDetailDialog()" [label]="'userManagement.home.popCloseLabel' | translate" styleClass="p-button-text">
-      </p-button>
-    </div>
-  </ng-template>
-</p-dialog>
-
+@if (selectedCatalog) {
+  <p-dialog
+    [(visible)]="displayVersionDialog"
+    [style]="{ width: '680px' }"
+    [header]="'gdpApp.labTestCatalog.detail.title' | translate"
+    [modal]="true"
+    styleClass="p-fluid"
+    (onHide)="closeDetailDialog()"
+  >
+    <jhi-lab-test-catalog-detail [labTestCatalog]="selectedCatalog"></jhi-lab-test-catalog-detail>
+    <ng-template pTemplate="footer">
+      <div class="flex justify-end gap-2">
+        <p-button (click)="closeDetailDialog()" [label]="'userManagement.home.popCloseLabel' | translate" styleClass="p-button-text">
+        </p-button>
+      </div>
+    </ng-template>
+  </p-dialog>
+}
 <!-- Dialog pour l'édition d'un examen de laboratoire -->
 @if (selectedCatalog) {
   <p-dialog

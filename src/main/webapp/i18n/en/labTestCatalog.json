@@ -50,7 +50,8 @@
         "required": "This field is required",
         "nameRequired": "Test name is required",
         "unitRequired": "Unit is required",
-        "versionRequired": "Version is required"
+        "versionRequired": "Version is required",
+        "alreadyInactive": "This test version is already inactive"
       },
       "errors": {
         "nameExists": "Test name already exists",
@@ -67,7 +68,8 @@
         },
         "saveError": {
           "title": "Error",
-          "detail": "An error occurred while saving the lab test"
+          "detail": "An error occurred while saving the lab test",
+          "referenceRangeError": "Reference range low must be less than reference range high"
         }
       },
       "confirmation": {
@@ -101,7 +103,34 @@
         "newVersion": "New Version"
       },
       "table": {
-        "pageDescription": "Showing {{ first }} to {{ last }} of {{ totalRecords }} entries"
+        "pageDescription": "Showing {{first}} to {{last}} of {{totalRecords}} entries"
+      },
+      "deactivate": {
+        "title": "Deactivate Test",
+        "confirmation": "Are you sure you want to deactivate this test version?",
+        "button": "Deactivate",
+        "success": {
+          "title": "Success",
+          "detail": "Test version has been deactivated"
+        },
+        "error": {
+          "title": "Error",
+          "detail": "Could not deactivate test version"
+        }
+      },
+      "newVersion": {
+        "title": "Create New Version",
+        "button": "New Version",
+        "nameTooltip": "Name cannot be changed when creating a new version",
+        "success": {
+          "title": "Success",
+          "detail": "New version created successfully"
+        },
+        "error": {
+          "title": "Error",
+          "detail": "Could not create new version",
+          "oldVersion": "Cannot create new version from old version"
+        }
       },
       "breadcrumb": "Lab Test Catalog Management",
       "typeFilterLabel": "Choose a type",
@@ -119,7 +148,9 @@
       "newVersionTooltip": "Create a new version of this lab test",
       "deactivateTooltip": "Deactivate this lab test",
       "activateTooltip": "Activate this lab test",
-      "actionLabel": "Actions"
+      "actionLabel": "Actions",
+      "actif": "Active",
+      "inactif": "Inactive"
     }
   }
 }

@@ -50,7 +50,8 @@
         "required": "Ce champ est obligatoire",
         "nameRequired": "Le nom du test est obligatoire",
         "unitRequired": "L'unité est obligatoire",
-        "versionRequired": "La version est obligatoire"
+        "versionRequired": "La version est obligatoire",
+        "alreadyInactive": "Cette version du test est déjà inactive"
       },
       "errors": {
         "nameExists": "Le nom du test existe déjà",
@@ -68,7 +69,8 @@
         },
         "saveError": {
           "title": "Erreur",
-          "detail": "Une erreur est survenue lors de l'enregistrement"
+          "detail": "Une erreur est survenue lors de l'enregistrement",
+          "referenceRangeError": "La plage de référence basse doit être inférieure à la plage de référence haute"
         }
       },
       "form": {
@@ -103,7 +105,34 @@
       "view": "Voir",
       "edit": "Éditer",
       "table": {
-        "pageDescription": "Affichage de {{ first }} à {{ last }} sur {{ totalRecords }} entrées"
+        "pageDescription": "Affichage de {{first}} à {{last}} sur {{totalRecords}} entrées"
+      },
+      "deactivate": {
+        "title": "Désactiver le test",
+        "confirmation": "Êtes-vous sûr de vouloir désactiver cette version du test ?",
+        "button": "Désactiver",
+        "success": {
+          "title": "Succès",
+          "detail": "La version du test a été désactivée"
+        },
+        "error": {
+          "title": "Erreur",
+          "detail": "Impossible de désactiver la version du test"
+        }
+      },
+      "newVersion": {
+        "title": "Créer une nouvelle version",
+        "button": "Nouvelle version",
+        "nameTooltip": "Le nom ne peut pas être modifié lors de la création d'une nouvelle version",
+        "success": {
+          "title": "Succès",
+          "detail": "Nouvelle version créée avec succès"
+        },
+        "error": {
+          "title": "Erreur",
+          "detail": "Impossible de créer une nouvelle version",
+          "oldVersion": "Impossible de créer une nouvelle version à partir d'une ancienne version"
+        }
       },
       "breadcrumb": "Gestion des catalogues d'examens de laboratoire",
       "typeFilterLabel": "Choisir un type",
@@ -119,9 +148,11 @@
       "editLabel": "Modifier l'examen de laboratoire",
       "addLabel": "Ajouter un nouvel examen de laboratoire",
       "newVersionTooltip": "Créer une nouvelle version de cet examen",
-      "deactivateTooltip": "ésactiver cet examen",
+      "deactivateTooltip": "Désactiver cet examen",
       "activateTooltip": "Activer cet examen",
-      "actionLabel": "Actions"
+      "actionLabel": "Actions",
+      "actif": "Actif",
+      "inactif": "Inactif"
     }
   }
 }

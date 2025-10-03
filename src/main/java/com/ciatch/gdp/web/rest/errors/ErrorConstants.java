@@ -13,6 +13,7 @@ public final class ErrorConstants {
     public static final URI EMAIL_ALREADY_USED_TYPE = URI.create(PROBLEM_BASE_URL + "/email-already-used");
     public static final URI LOGIN_ALREADY_USED_TYPE = URI.create(PROBLEM_BASE_URL + "/login-already-used");
     public static final URI LAB_TEST_NAME_ALREADY_USED_TYPE = URI.create(PROBLEM_BASE_URL + "/lab-test-name-already-used");
+    public static final URI LAB_TEST_ALREADY_INACTIVE = URI.create(PROBLEM_BASE_URL + "/lab-test-already-inactive");
 
     private ErrorConstants() {}
 }

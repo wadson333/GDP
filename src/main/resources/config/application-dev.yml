@@ -43,6 +43,7 @@ spring:
     contexts: dev, faker
     # drop-first: true
     # clear-checksums: true
+    # enabled: true
   mail:
     host: smtp.gmail.com
     port: 587

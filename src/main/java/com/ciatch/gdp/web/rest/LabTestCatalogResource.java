@@ -1,11 +1,14 @@
 package com.ciatch.gdp.web.rest;
 
+import com.ciatch.gdp.domain.LabTestCatalog;
 import com.ciatch.gdp.domain.enumeration.LabTestMethod;
 import com.ciatch.gdp.domain.enumeration.LabTestType;
 import com.ciatch.gdp.repository.LabTestCatalogRepository;
 import com.ciatch.gdp.service.LabTestCatalogService;
 import com.ciatch.gdp.service.dto.LabTestCatalogDTO;
 import com.ciatch.gdp.web.rest.errors.BadRequestAlertException;
+import com.ciatch.gdp.web.rest.errors.LabTestAlreadyInactiveException;
+import com.ciatch.gdp.web.rest.errors.LabTestNameAlreadyUsedException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
@@ -60,9 +63,30 @@ public class LabTestCatalogResource {
     public ResponseEntity<LabTestCatalogDTO> createLabTestCatalog(@Valid @RequestBody LabTestCatalogDTO labTestCatalogDTO)
         throws URISyntaxException {
         LOG.debug("REST request to save LabTestCatalog : {}", labTestCatalogDTO);
+
         if (labTestCatalogDTO.getId() != null) {
             throw new BadRequestAlertException("A new labTestCatalog cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        // Check if name already exists
+        if (labTestCatalogDTO.getId() == null && labTestCatalogRepository.findLatestVersionByName(labTestCatalogDTO.getName()) != null) {
+            throw new LabTestNameAlreadyUsedException();
+        }
+
+        // Set default values for new entries
+        if (labTestCatalogDTO.getId() == null) {
+            labTestCatalogDTO.setActive(true);
+            labTestCatalogDTO.setVersion(1);
+        }
+
+        if (labTestCatalogDTO.getValidFrom() == null) {
+            labTestCatalogDTO.setValidFrom(java.time.Instant.now());
+        }
+
+        if (labTestCatalogDTO.getVersion() == null) {
+            labTestCatalogDTO.setVersion(1);
+        }
+
         labTestCatalogDTO = labTestCatalogService.save(labTestCatalogDTO);
         return ResponseEntity.created(new URI("/api/lab-test-catalogs/" + labTestCatalogDTO.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, labTestCatalogDTO.getId().toString()))
@@ -199,9 +223,10 @@ public class LabTestCatalogResource {
         @RequestParam(required = false) LabTestType type,
         @RequestParam(required = false) LabTestMethod method,
         @RequestParam(required = false) Boolean active,
+        @RequestParam(required = false) Boolean isLatestOnly,
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
-        Page<LabTestCatalogDTO> page = labTestCatalogService.search(name, type, method, active, pageable);
+        Page<LabTestCatalogDTO> page = labTestCatalogService.search(name, type, method, active, pageable, isLatestOnly);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -214,7 +239,77 @@ public class LabTestCatalogResource {
      */
     @GetMapping("/latest")
     public ResponseEntity<List<LabTestCatalogDTO>> getLatestVersions(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        List<LabTestCatalogDTO> results = labTestCatalogService.findLatestVersions(pageable);
-        return ResponseEntity.ok().body(results);
+        Page<LabTestCatalogDTO> page = labTestCatalogService.findLatestVersions(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /lab-test-catalogs/history/:name} : get all versions of a lab test catalog by name.
+     *
+     * @param name the name of the lab test catalog
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of versions in body.
+     */
+    @GetMapping("/history/{name}")
+    public ResponseEntity<List<LabTestCatalogDTO>> getLabTestCatalogHistory(@PathVariable String name) {
+        LOG.debug("REST request to get LabTestCatalog history for name : {}", name);
+        List<LabTestCatalogDTO> versions = labTestCatalogService.findAllVersionsByName(name);
+        return ResponseEntity.ok().body(versions);
+    }
+
+    /**
+     * {@code PATCH  /lab-test-catalogs/:id/deactivate} : Deactivate an existing labTestCatalog.
+     *
+     * @param id the id of the labTestCatalog to deactivate
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated labTestCatalogDTO
+     */
+    @PatchMapping("/deactivate/{id}")
+    public ResponseEntity<LabTestCatalogDTO> deactivateLabTestCatalog(@PathVariable(value = "id") final Long id) {
+        LOG.debug("REST request to deactivate LabTestCatalog : {}", id);
+
+        LabTestCatalog labTestCatalog = labTestCatalogRepository
+            .findById(id)
+            .orElseThrow(() -> new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+
+        if (!labTestCatalog.getActive()) {
+            throw new LabTestAlreadyInactiveException();
+        }
+
+        LabTestCatalogDTO result = labTestCatalogService.deactivate(labTestCatalog);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .body(result);
+    }
+
+    /**
+     * {@code GET  /lab-test-catalogs/new-version/:id} : prepare a new version of an existing lab test catalog.
+     *
+     * @param id the id of the lab test catalog to create new version from
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and pre-filled DTO
+     */
+    @GetMapping("/new-version/{id}")
+    public ResponseEntity<LabTestCatalogDTO> prepareNewVersion(@PathVariable Long id) {
+        LOG.debug("REST request to prepare new version of LabTestCatalog : {}", id);
+        LabTestCatalogDTO result = labTestCatalogService.prepareNewVersion(id);
+        return ResponseEntity.ok().body(result);
+    }
+
+    /**
+     * {@code POST  /lab-test-catalogs/new-version/:id} : create a new version of a lab test catalog.
+     *
+     * @param id the id of the original lab test catalog
+     * @param labTestCatalogDTO the new version to create
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and the new version
+     */
+    @PostMapping("/new-version/{id}")
+    public ResponseEntity<LabTestCatalogDTO> createNewVersion(
+        @PathVariable Long id,
+        @Valid @RequestBody LabTestCatalogDTO labTestCatalogDTO
+    ) {
+        LOG.debug("REST request to create new version of LabTestCatalog : {}", labTestCatalogDTO);
+        LabTestCatalogDTO result = labTestCatalogService.createNewVersion(labTestCatalogDTO, id);
+        return ResponseEntity.created(
+            ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(result.getId()).toUri()
+        ).body(result);
     }
 }

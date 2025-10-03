@@ -46,6 +46,8 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { InputTextModule } from 'primeng/inputtext';
 import { DividerModule } from 'primeng/divider';
 import { ExportService } from 'app/shared/services/export-file.service';
+import { UserPreferencesService } from 'app/shared/services/list-view-preferences.service';
+import { PaginatorModule } from 'primeng/paginator';
 
 interface DialogParams {
   dialog?: 'view-ltc' | 'add-ltc' | 'edit-ltc';
@@ -90,10 +92,12 @@ interface DialogParams {
     ToggleButtonModule,
     InputTextModule,
     DividerModule,
+    PaginatorModule,
   ],
   providers: [MessageService, ConfirmationService],
 })
 export class LabTestCatalogComponent implements OnInit {
+  readonly STORAGE_KEY = 'lab-test-catalog-preferences';
   subscription: Subscription | null = null;
   labTestCatalogs?: ILabTestCatalog[];
   isLoading = false;
@@ -140,21 +144,39 @@ export class LabTestCatalogComponent implements OnInit {
     { label: '5 Columns', value: 5 },
   ];
 
+  first = 0;
+
   public router = inject(Router);
+  // Expose Math to the template
+  public Math = Math;
   protected labTestCatalogService = inject(LabTestCatalogService);
   protected activatedRoute = inject(ActivatedRoute);
   protected sortService = inject(SortService);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
-  private exportService = inject(ExportService);
+  protected exportService = inject(ExportService);
+  protected userPreferences = inject(UserPreferencesService);
 
   trackId = (item: ILabTestCatalog): number => this.labTestCatalogService.getLabTestCatalogIdentifier(item);
 
   ngOnInit(): void {
+    const preferences = this.userPreferences.getViewPreferences(this.STORAGE_KEY);
+    this.viewMode = preferences.viewMode;
+    // this.itemsPerPage = preferences.itemsPerPage;
+    this.gridColumns = preferences.gridColumns;
+
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
       .pipe(
         tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
-        tap(() => this.load()),
+        tap(() => {
+          if (this.hasActiveFilters()) {
+            this.searchWithCriteria();
+          } else if (this.showLatestOnly) {
+            this.loadLatestVersions();
+          } else {
+            this.load();
+          }
+        }),
       )
       .subscribe();
   }
@@ -177,14 +199,6 @@ export class LabTestCatalogComponent implements OnInit {
         this.onResponseSuccess(res);
       },
     });
-  }
-
-  navigateToWithComponentValues(event: SortState): void {
-    this.handleNavigation(this.page, event);
-  }
-
-  navigateToPage(page: number): void {
-    this.handleNavigation(page, this.sortState());
   }
   // ---- manage lab test catalog detail dialog
   showDetailsDialog(catalog: ILabTestCatalog): void {
@@ -245,38 +259,37 @@ export class LabTestCatalogComponent implements OnInit {
     this.selectedCatalog = null;
     this.displayFormDialog = true;
     this.isNewLab = true;
-    this.router.navigate([], {
-      queryParams: { dialog: 'add-lab', 'selected-lab': 'new', 'is-new': true },
-      queryParamsHandling: 'merge',
-    });
+    this.updateUrlParams({ dialog: 'add-ltc', 'selected-lab': 'new', 'is-new': true });
   }
 
   showEditLabTestCatalogDialog(catalog: ILabTestCatalog): void {
     this.selectedCatalog = catalog;
     this.displayFormDialog = true;
     this.isNewLab = false;
-    this.router.navigate([], {
-      queryParams: { dialog: 'edit-lab', 'selected-lab': catalog.id, 'is-new': false },
-      queryParamsHandling: 'merge',
-    });
+    this.updateUrlParams({ dialog: 'edit-ltc', 'selected-lab': catalog.id, 'is-new': false });
   }
 
   closeFormDialog(success: boolean): void {
     this.displayFormDialog = false;
     this.selectedCatalog = null;
     if (success) {
-      this.load();
+      this.searchWithCriteria();
     }
     this.clearDialogParams();
   }
 
   toggleView(): void {
     this.viewMode = this.viewMode === 'table' ? 'card' : 'table';
+    this.userPreferences.saveViewPreferences(this.STORAGE_KEY, { viewMode: this.viewMode });
   }
 
   search(): void {
+    // Reset to first page when searching
+    this.page = 1;
+    this.first = 0;
+
     this.isLoading = true;
-    if (this.showLatestOnly) {
+    if (this.showLatestOnly && !this.hasActiveFilters()) {
       this.loadLatestVersions();
     } else {
       this.searchWithCriteria();
@@ -285,10 +298,7 @@ export class LabTestCatalogComponent implements OnInit {
 
   clearSearch(): void {
     this.searchCriteria = {};
-    this.load();
-  }
-  getGridCols(): string {
-    return `col-12 md:col-6 lg:col-${12 / this.gridColumns}`;
+    this.searchWithCriteria();
   }
 
   hasActiveFilters(): boolean {
@@ -298,6 +308,29 @@ export class LabTestCatalogComponent implements OnInit {
       this.searchCriteria.method ||
       this.searchCriteria.active !== undefined
     );
+  }
+
+  onPageChange(event: any): void {
+    this.first = event.first;
+    this.itemsPerPage = event.rows;
+    this.page = Math.floor(event.first / event.rows) + 1;
+
+    this.navigateToPage(this.page);
+  }
+
+  navigateToPage(page: number): void {
+    this.handleNavigation(page, this.sortState());
+  }
+
+  onItemsPerPageChange(event: any): void {
+    this.itemsPerPage = event.value;
+    this.userPreferences.saveViewPreferences(this.STORAGE_KEY, { itemsPerPage: this.itemsPerPage });
+    this.search();
+  }
+
+  onGridColumnsChange(event: any): void {
+    this.gridColumns = event.value;
+    this.userPreferences.saveViewPreferences(this.STORAGE_KEY, { gridColumns: this.gridColumns });
   }
 
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
@@ -390,12 +423,9 @@ export class LabTestCatalogComponent implements OnInit {
       page: this.page - 1,
       size: this.itemsPerPage,
       sort: this.sortService.buildSortParam(this.sortState()),
+      isLatestOnly: this.showLatestOnly,
+      ...this.searchCriteria,
     };
-    Object.entries(this.searchCriteria).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        queryObject[key] = value;
-      }
-    });
 
     this.labTestCatalogService.search(queryObject).subscribe({
       next: (res: EntityArrayResponseType) => {
