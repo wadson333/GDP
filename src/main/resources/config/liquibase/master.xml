@@ -37,7 +37,11 @@
     <include file="config/liquibase/changelog/20250716190755_added_entity_constraints_UserConfiguration.xml" relativeToChangelogFile="false"/>
         <!-- ... existing includes ... -->
     <!-- <include file="config/liquibase/changelog/20250930000000_remove_name_unique_constraint.xml" relativeToChangelogFile="false"/> -->
-    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <include file="config/liquibase/changelog/20251004172333_updated_entity_Medication.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20251004172333_updated_entity_migrate_Medication.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20251004172333_updated_entity_constraints_Medication.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20251004175400_updated_entity_Medication.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20251004175400_updated_entity_migrate_Medication.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

@@ -1,0 +1,7 @@
+export enum PrescriptionStatus {
+  PRESCRIPTION = 'PRESCRIPTION',
+
+  OTC = 'OTC',
+
+  HOSPITAL_USE_ONLY = 'HOSPITAL_USE_ONLY',
+}

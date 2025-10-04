@@ -7,9 +7,9 @@ import { finalize } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { AlertError } from 'app/shared/alert/alert-error.model';
-import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
-import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
+import { RouteAdmin } from 'app/entities/enumerations/route-admin.model';
+import { PrescriptionStatus } from 'app/entities/enumerations/prescription-status.model';
+import { RiskLevel } from 'app/entities/enumerations/risk-level.model';
 import { MedicationService } from '../service/medication.service';
 import { IMedication } from '../medication.model';
 import { MedicationFormGroup, MedicationFormService } from './medication-form.service';
@@ -23,9 +23,10 @@ import { MedicationFormGroup, MedicationFormService } from './medication-form.se
 export class MedicationUpdateComponent implements OnInit {
   isSaving = false;
   medication: IMedication | null = null;
+  routeAdminValues = Object.keys(RouteAdmin);
+  prescriptionStatusValues = Object.keys(PrescriptionStatus);
+  riskLevelValues = Object.keys(RiskLevel);
 
-  protected dataUtils = inject(DataUtils);
-  protected eventManager = inject(EventManager);
   protected medicationService = inject(MedicationService);
   protected medicationFormService = inject(MedicationFormService);
   protected activatedRoute = inject(ActivatedRoute);
@@ -39,21 +40,6 @@ export class MedicationUpdateComponent implements OnInit {
       if (medication) {
         this.updateForm(medication);
       }
-    });
-  }
-
-  byteSize(base64String: string): string {
-    return this.dataUtils.byteSize(base64String);
-  }
-
-  openFile(base64String: string, contentType: string | null | undefined): void {
-    this.dataUtils.openFile(base64String, contentType);
-  }
-
-  setFileData(event: Event, field: string, isImage: boolean): void {
-    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
-      error: (err: FileLoadError) =>
-        this.eventManager.broadcast(new EventWithContent<AlertError>('gdpApp.error', { ...err, key: `error.file.${err.key}` })),
     });
   }
 

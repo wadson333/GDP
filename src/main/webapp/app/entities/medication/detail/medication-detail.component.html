@@ -15,13 +15,183 @@
           <dd>
             <span>{{ medicationRef.id }}</span>
           </dd>
-          <dt><span jhiTranslate="gdpApp.medication.name">Name</span></dt>
+          <dt><span [ngbTooltip]="'gdpApp.medication.help.name' | translate" jhiTranslate="gdpApp.medication.name">Name</span></dt>
           <dd>
             <span>{{ medicationRef.name }}</span>
           </dd>
-          <dt><span jhiTranslate="gdpApp.medication.description">Description</span></dt>
+          <dt>
+            <span [ngbTooltip]="'gdpApp.medication.help.internationalName' | translate" jhiTranslate="gdpApp.medication.internationalName"
+              >International Name</span
+            >
+          </dt>
+          <dd>
+            <span>{{ medicationRef.internationalName }}</span>
+          </dd>
+          <dt>
+            <span [ngbTooltip]="'gdpApp.medication.help.codeAtc' | translate" jhiTranslate="gdpApp.medication.codeAtc">Code Atc</span>
+          </dt>
+          <dd>
+            <span>{{ medicationRef.codeAtc }}</span>
+          </dd>
+          <dt>
+            <span [ngbTooltip]="'gdpApp.medication.help.formulation' | translate" jhiTranslate="gdpApp.medication.formulation"
+              >Formulation</span
+            >
+          </dt>
+          <dd>
+            <span>{{ medicationRef.formulation }}</span>
+          </dd>
+          <dt>
+            <span [ngbTooltip]="'gdpApp.medication.help.strength' | translate" jhiTranslate="gdpApp.medication.strength">Strength</span>
+          </dt>
+          <dd>
+            <span>{{ medicationRef.strength }}</span>
+          </dd>
+          <dt>
+            <span
+              [ngbTooltip]="'gdpApp.medication.help.routeOfAdministration' | translate"
+              jhiTranslate="gdpApp.medication.routeOfAdministration"
+              >Route Of Administration</span
+            >
+          </dt>
+          <dd>
+            <span [jhiTranslate]="'gdpApp.RouteAdmin.' + (medicationRef.routeOfAdministration ?? 'null')">{{
+              {
+                null: '',
+                ORAL: 'ORAL',
+                INTRAVENOUS: 'INTRAVENOUS',
+                SUBCUTANEOUS: 'SUBCUTANEOUS',
+                INHALATION: 'INHALATION',
+                TOPICAL: 'TOPICAL',
+                OTHER: 'OTHER',
+              }[medicationRef.routeOfAdministration ?? 'null']
+            }}</span>
+          </dd>
+          <dt>
+            <span [ngbTooltip]="'gdpApp.medication.help.manufacturer' | translate" jhiTranslate="gdpApp.medication.manufacturer"
+              >Manufacturer</span
+            >
+          </dt>
+          <dd>
+            <span>{{ medicationRef.manufacturer }}</span>
+          </dd>
+          <dt>
+            <span
+              [ngbTooltip]="'gdpApp.medication.help.marketingAuthorizationNumber' | translate"
+              jhiTranslate="gdpApp.medication.marketingAuthorizationNumber"
+              >Marketing Authorization Number</span
+            >
+          </dt>
+          <dd>
+            <span>{{ medicationRef.marketingAuthorizationNumber }}</span>
+          </dd>
+          <dt>
+            <span
+              [ngbTooltip]="'gdpApp.medication.help.marketingAuthorizationDate' | translate"
+              jhiTranslate="gdpApp.medication.marketingAuthorizationDate"
+              >Marketing Authorization Date</span
+            >
+          </dt>
+          <dd>
+            <span>{{ medicationRef.marketingAuthorizationDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt>
+            <span [ngbTooltip]="'gdpApp.medication.help.packaging' | translate" jhiTranslate="gdpApp.medication.packaging">Packaging</span>
+          </dt>
+          <dd>
+            <span>{{ medicationRef.packaging }}</span>
+          </dd>
+          <dt>
+            <span [ngbTooltip]="'gdpApp.medication.help.prescriptionStatus' | translate" jhiTranslate="gdpApp.medication.prescriptionStatus"
+              >Prescription Status</span
+            >
+          </dt>
+          <dd>
+            <span [jhiTranslate]="'gdpApp.PrescriptionStatus.' + (medicationRef.prescriptionStatus ?? 'null')">{{
+              { null: '', PRESCRIPTION: 'PRESCRIPTION', OTC: 'OTC', HOSPITAL_USE_ONLY: 'HOSPITAL_USE_ONLY' }[
+                medicationRef.prescriptionStatus ?? 'null'
+              ]
+            }}</span>
+          </dd>
+          <dt>
+            <span [ngbTooltip]="'gdpApp.medication.help.description' | translate" jhiTranslate="gdpApp.medication.description"
+              >Description</span
+            >
+          </dt>
           <dd>
             <span>{{ medicationRef.description }}</span>
+          </dd>
+          <dt>
+            <span [ngbTooltip]="'gdpApp.medication.help.expiryDate' | translate" jhiTranslate="gdpApp.medication.expiryDate"
+              >Expiry Date</span
+            >
+          </dt>
+          <dd>
+            <span>{{ medicationRef.expiryDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span [ngbTooltip]="'gdpApp.medication.help.barcode' | translate" jhiTranslate="gdpApp.medication.barcode">Barcode</span></dt>
+          <dd>
+            <span>{{ medicationRef.barcode }}</span>
+          </dd>
+          <dt>
+            <span [ngbTooltip]="'gdpApp.medication.help.storageCondition' | translate" jhiTranslate="gdpApp.medication.storageCondition"
+              >Storage Condition</span
+            >
+          </dt>
+          <dd>
+            <span>{{ medicationRef.storageCondition }}</span>
+          </dd>
+          <dt>
+            <span [ngbTooltip]="'gdpApp.medication.help.unitPrice' | translate" jhiTranslate="gdpApp.medication.unitPrice">Unit Price</span>
+          </dt>
+          <dd>
+            <span>{{ medicationRef.unitPrice }}</span>
+          </dd>
+          <dt><span [ngbTooltip]="'gdpApp.medication.help.image' | translate" jhiTranslate="gdpApp.medication.image">Image</span></dt>
+          <dd>
+            <span>{{ medicationRef.image }}</span>
+          </dd>
+          <dt>
+            <span [ngbTooltip]="'gdpApp.medication.help.composition' | translate" jhiTranslate="gdpApp.medication.composition"
+              >Composition</span
+            >
+          </dt>
+          <dd>
+            <span>{{ medicationRef.composition }}</span>
+          </dd>
+          <dt>
+            <span [ngbTooltip]="'gdpApp.medication.help.contraindications' | translate" jhiTranslate="gdpApp.medication.contraindications"
+              >Contraindications</span
+            >
+          </dt>
+          <dd>
+            <span>{{ medicationRef.contraindications }}</span>
+          </dd>
+          <dt>
+            <span [ngbTooltip]="'gdpApp.medication.help.sideEffects' | translate" jhiTranslate="gdpApp.medication.sideEffects"
+              >Side Effects</span
+            >
+          </dt>
+          <dd>
+            <span>{{ medicationRef.sideEffects }}</span>
+          </dd>
+          <dt><span [ngbTooltip]="'gdpApp.medication.help.active' | translate" jhiTranslate="gdpApp.medication.active">Active</span></dt>
+          <dd>
+            <span>{{ medicationRef.active }}</span>
+          </dd>
+          <dt>
+            <span [ngbTooltip]="'gdpApp.medication.help.isGeneric' | translate" jhiTranslate="gdpApp.medication.isGeneric">Is Generic</span>
+          </dt>
+          <dd>
+            <span>{{ medicationRef.isGeneric }}</span>
+          </dd>
+          <dt>
+            <span [ngbTooltip]="'gdpApp.medication.help.riskLevel' | translate" jhiTranslate="gdpApp.medication.riskLevel">Risk Level</span>
+          </dt>
+          <dd>
+            <span [jhiTranslate]="'gdpApp.RiskLevel.' + (medicationRef.riskLevel ?? 'null')">{{
+              { null: '', LOW: 'LOW', MODERATE: 'MODERATE', HIGH: 'HIGH', UNKNOWN: 'UNKNOWN' }[medicationRef.riskLevel ?? 'null']
+            }}</span>
           </dd>
         </dl>
 

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added columns to the entity Medication.
+    -->
+    <changeSet id="20251004175400-1-add-columns" author="jhipster">
+        <addColumn tableName="medication">
+            <column name="expiry_date" type="${datetimeType}" remarks="Date d’expiration du médicament"/>
+            <column name="barcode" type="varchar(50)" remarks="Code-barres du médicament (EAN ou autre)"/>
+            <column name="storage_condition" type="varchar(100)" remarks="Conditions de stockage (ex : à conserver entre 2°C et 8°C)"/>
+            <column name="unit_price" type="decimal(21,2)" remarks="Prix unitaire du médicament"/>
+            <column name="image" type="varchar(255)" remarks="URL ou chemin de l&apos;image du médicament"/>
+            <column name="composition" type="varchar(255)" remarks="Liste détaillée des principes actifs et excipients"/>
+            <column name="contraindications" type="varchar(255)" remarks="Contre-indications du médicament"/>
+            <column name="side_effects" type="varchar(255)" remarks="Effets secondaires connus"/>
+            <column name="is_generic" type="boolean" remarks="Ce médicament est-il générique ?"/>
+            <column name="risk_level" type="varchar(255)" remarks="Niveau de risque lié au médicament"/>
+        </addColumn>
+        <dropDefaultValue tableName="medication" columnName="expiry_date" columnDataType="${datetimeType}"/>
+    </changeSet>
+
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+</databaseChangeLog>

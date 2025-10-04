@@ -17,11 +17,285 @@
 
         @let nameRef = editForm.get('name')!;
         <div class="mb-3">
-          <label class="form-label" for="field_name" jhiTranslate="gdpApp.medication.name">Name</label>
+          <label
+            class="form-label"
+            for="field_name"
+            [ngbTooltip]="'gdpApp.medication.help.name' | translate"
+            jhiTranslate="gdpApp.medication.name"
+            >Name</label
+          >
           <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
           @if (nameRef.invalid && (nameRef.dirty || nameRef.touched)) {
             <div>
               @if (editForm.get('name')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              @if (editForm.get('name')?.errors?.minlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: '2' }"
+                  >Ce champ doit faire au minimum 2 caractères.</small
+                >
+              }
+              @if (editForm.get('name')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '100' }"
+                  >Ce champ doit faire moins de 100 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let internationalNameRef = editForm.get('internationalName')!;
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_internationalName"
+            [ngbTooltip]="'gdpApp.medication.help.internationalName' | translate"
+            jhiTranslate="gdpApp.medication.internationalName"
+            >International Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="internationalName"
+            id="field_internationalName"
+            data-cy="internationalName"
+            formControlName="internationalName"
+          />
+          @if (internationalNameRef.invalid && (internationalNameRef.dirty || internationalNameRef.touched)) {
+            <div>
+              @if (editForm.get('internationalName')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '100' }"
+                  >Ce champ doit faire moins de 100 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let codeAtcRef = editForm.get('codeAtc')!;
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_codeAtc"
+            [ngbTooltip]="'gdpApp.medication.help.codeAtc' | translate"
+            jhiTranslate="gdpApp.medication.codeAtc"
+            >Code Atc</label
+          >
+          <input type="text" class="form-control" name="codeAtc" id="field_codeAtc" data-cy="codeAtc" formControlName="codeAtc" />
+          @if (codeAtcRef.invalid && (codeAtcRef.dirty || codeAtcRef.touched)) {
+            <div>
+              @if (editForm.get('codeAtc')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '20' }"
+                  >Ce champ doit faire moins de 20 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let formulationRef = editForm.get('formulation')!;
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_formulation"
+            [ngbTooltip]="'gdpApp.medication.help.formulation' | translate"
+            jhiTranslate="gdpApp.medication.formulation"
+            >Formulation</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="formulation"
+            id="field_formulation"
+            data-cy="formulation"
+            formControlName="formulation"
+          />
+          @if (formulationRef.invalid && (formulationRef.dirty || formulationRef.touched)) {
+            <div>
+              @if (editForm.get('formulation')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '50' }"
+                  >Ce champ doit faire moins de 50 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let strengthRef = editForm.get('strength')!;
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_strength"
+            [ngbTooltip]="'gdpApp.medication.help.strength' | translate"
+            jhiTranslate="gdpApp.medication.strength"
+            >Strength</label
+          >
+          <input type="text" class="form-control" name="strength" id="field_strength" data-cy="strength" formControlName="strength" />
+          @if (strengthRef.invalid && (strengthRef.dirty || strengthRef.touched)) {
+            <div>
+              @if (editForm.get('strength')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '50' }"
+                  >Ce champ doit faire moins de 50 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let routeOfAdministrationRef = editForm.get('routeOfAdministration')!;
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_routeOfAdministration"
+            [ngbTooltip]="'gdpApp.medication.help.routeOfAdministration' | translate"
+            jhiTranslate="gdpApp.medication.routeOfAdministration"
+            >Route Of Administration</label
+          >
+          <select
+            class="form-control"
+            name="routeOfAdministration"
+            formControlName="routeOfAdministration"
+            id="field_routeOfAdministration"
+            data-cy="routeOfAdministration"
+          >
+            <option [ngValue]="null">{{ 'gdpApp.RouteAdmin.null' | translate }}</option>
+            @for (routeAdmin of routeAdminValues; track $index) {
+              <option [value]="routeAdmin">{{ 'gdpApp.RouteAdmin.' + routeAdmin | translate }}</option>
+            }
+          </select>
+          @if (routeOfAdministrationRef.invalid && (routeOfAdministrationRef.dirty || routeOfAdministrationRef.touched)) {
+            <div>
+              @if (editForm.get('routeOfAdministration')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let manufacturerRef = editForm.get('manufacturer')!;
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_manufacturer"
+            [ngbTooltip]="'gdpApp.medication.help.manufacturer' | translate"
+            jhiTranslate="gdpApp.medication.manufacturer"
+            >Manufacturer</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="manufacturer"
+            id="field_manufacturer"
+            data-cy="manufacturer"
+            formControlName="manufacturer"
+          />
+          @if (manufacturerRef.invalid && (manufacturerRef.dirty || manufacturerRef.touched)) {
+            <div>
+              @if (editForm.get('manufacturer')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '100' }"
+                  >Ce champ doit faire moins de 100 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let marketingAuthorizationNumberRef = editForm.get('marketingAuthorizationNumber')!;
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_marketingAuthorizationNumber"
+            [ngbTooltip]="'gdpApp.medication.help.marketingAuthorizationNumber' | translate"
+            jhiTranslate="gdpApp.medication.marketingAuthorizationNumber"
+            >Marketing Authorization Number</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="marketingAuthorizationNumber"
+            id="field_marketingAuthorizationNumber"
+            data-cy="marketingAuthorizationNumber"
+            formControlName="marketingAuthorizationNumber"
+          />
+          @if (
+            marketingAuthorizationNumberRef.invalid && (marketingAuthorizationNumberRef.dirty || marketingAuthorizationNumberRef.touched)
+          ) {
+            <div>
+              @if (editForm.get('marketingAuthorizationNumber')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '30' }"
+                  >Ce champ doit faire moins de 30 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_marketingAuthorizationDate"
+            [ngbTooltip]="'gdpApp.medication.help.marketingAuthorizationDate' | translate"
+            jhiTranslate="gdpApp.medication.marketingAuthorizationDate"
+            >Marketing Authorization Date</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_marketingAuthorizationDate"
+              data-cy="marketingAuthorizationDate"
+              type="datetime-local"
+              class="form-control"
+              name="marketingAuthorizationDate"
+              formControlName="marketingAuthorizationDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        @let packagingRef = editForm.get('packaging')!;
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_packaging"
+            [ngbTooltip]="'gdpApp.medication.help.packaging' | translate"
+            jhiTranslate="gdpApp.medication.packaging"
+            >Packaging</label
+          >
+          <input type="text" class="form-control" name="packaging" id="field_packaging" data-cy="packaging" formControlName="packaging" />
+          @if (packagingRef.invalid && (packagingRef.dirty || packagingRef.touched)) {
+            <div>
+              @if (editForm.get('packaging')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '150' }"
+                  >Ce champ doit faire moins de 150 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let prescriptionStatusRef = editForm.get('prescriptionStatus')!;
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_prescriptionStatus"
+            [ngbTooltip]="'gdpApp.medication.help.prescriptionStatus' | translate"
+            jhiTranslate="gdpApp.medication.prescriptionStatus"
+            >Prescription Status</label
+          >
+          <select
+            class="form-control"
+            name="prescriptionStatus"
+            formControlName="prescriptionStatus"
+            id="field_prescriptionStatus"
+            data-cy="prescriptionStatus"
+          >
+            <option [ngValue]="null">{{ 'gdpApp.PrescriptionStatus.null' | translate }}</option>
+            @for (prescriptionStatus of prescriptionStatusValues; track $index) {
+              <option [value]="prescriptionStatus">{{ 'gdpApp.PrescriptionStatus.' + prescriptionStatus | translate }}</option>
+            }
+          </select>
+          @if (prescriptionStatusRef.invalid && (prescriptionStatusRef.dirty || prescriptionStatusRef.touched)) {
+            <div>
+              @if (editForm.get('prescriptionStatus')?.errors?.required) {
                 <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
               }
             </div>
@@ -29,14 +303,213 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_description" jhiTranslate="gdpApp.medication.description">Description</label>
-          <textarea
+          <label
+            class="form-label"
+            for="field_description"
+            [ngbTooltip]="'gdpApp.medication.help.description' | translate"
+            jhiTranslate="gdpApp.medication.description"
+            >Description</label
+          >
+          <input
+            type="text"
             class="form-control"
             name="description"
             id="field_description"
             data-cy="description"
             formControlName="description"
-          ></textarea>
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_expiryDate"
+            [ngbTooltip]="'gdpApp.medication.help.expiryDate' | translate"
+            jhiTranslate="gdpApp.medication.expiryDate"
+            >Expiry Date</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_expiryDate"
+              data-cy="expiryDate"
+              type="datetime-local"
+              class="form-control"
+              name="expiryDate"
+              formControlName="expiryDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        @let barcodeRef = editForm.get('barcode')!;
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_barcode"
+            [ngbTooltip]="'gdpApp.medication.help.barcode' | translate"
+            jhiTranslate="gdpApp.medication.barcode"
+            >Barcode</label
+          >
+          <input type="text" class="form-control" name="barcode" id="field_barcode" data-cy="barcode" formControlName="barcode" />
+          @if (barcodeRef.invalid && (barcodeRef.dirty || barcodeRef.touched)) {
+            <div>
+              @if (editForm.get('barcode')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '50' }"
+                  >Ce champ doit faire moins de 50 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let storageConditionRef = editForm.get('storageCondition')!;
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_storageCondition"
+            [ngbTooltip]="'gdpApp.medication.help.storageCondition' | translate"
+            jhiTranslate="gdpApp.medication.storageCondition"
+            >Storage Condition</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="storageCondition"
+            id="field_storageCondition"
+            data-cy="storageCondition"
+            formControlName="storageCondition"
+          />
+          @if (storageConditionRef.invalid && (storageConditionRef.dirty || storageConditionRef.touched)) {
+            <div>
+              @if (editForm.get('storageCondition')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '100' }"
+                  >Ce champ doit faire moins de 100 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_unitPrice"
+            [ngbTooltip]="'gdpApp.medication.help.unitPrice' | translate"
+            jhiTranslate="gdpApp.medication.unitPrice"
+            >Unit Price</label
+          >
+          <input type="number" class="form-control" name="unitPrice" id="field_unitPrice" data-cy="unitPrice" formControlName="unitPrice" />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_image"
+            [ngbTooltip]="'gdpApp.medication.help.image' | translate"
+            jhiTranslate="gdpApp.medication.image"
+            >Image</label
+          >
+          <input type="text" class="form-control" name="image" id="field_image" data-cy="image" formControlName="image" />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_composition"
+            [ngbTooltip]="'gdpApp.medication.help.composition' | translate"
+            jhiTranslate="gdpApp.medication.composition"
+            >Composition</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="composition"
+            id="field_composition"
+            data-cy="composition"
+            formControlName="composition"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_contraindications"
+            [ngbTooltip]="'gdpApp.medication.help.contraindications' | translate"
+            jhiTranslate="gdpApp.medication.contraindications"
+            >Contraindications</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="contraindications"
+            id="field_contraindications"
+            data-cy="contraindications"
+            formControlName="contraindications"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_sideEffects"
+            [ngbTooltip]="'gdpApp.medication.help.sideEffects' | translate"
+            jhiTranslate="gdpApp.medication.sideEffects"
+            >Side Effects</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="sideEffects"
+            id="field_sideEffects"
+            data-cy="sideEffects"
+            formControlName="sideEffects"
+          />
+        </div>
+
+        @let activeRef = editForm.get('active')!;
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_active"
+            [ngbTooltip]="'gdpApp.medication.help.active' | translate"
+            jhiTranslate="gdpApp.medication.active"
+            >Active</label
+          >
+          <input type="checkbox" class="form-check" name="active" id="field_active" data-cy="active" formControlName="active" />
+          @if (activeRef.invalid && (activeRef.dirty || activeRef.touched)) {
+            <div>
+              @if (editForm.get('active')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_isGeneric"
+            [ngbTooltip]="'gdpApp.medication.help.isGeneric' | translate"
+            jhiTranslate="gdpApp.medication.isGeneric"
+            >Is Generic</label
+          >
+          <input type="checkbox" class="form-check" name="isGeneric" id="field_isGeneric" data-cy="isGeneric" formControlName="isGeneric" />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_riskLevel"
+            [ngbTooltip]="'gdpApp.medication.help.riskLevel' | translate"
+            jhiTranslate="gdpApp.medication.riskLevel"
+            >Risk Level</label
+          >
+          <select class="form-control" name="riskLevel" formControlName="riskLevel" id="field_riskLevel" data-cy="riskLevel">
+            <option [ngValue]="null">{{ 'gdpApp.RiskLevel.null' | translate }}</option>
+            @for (riskLevel of riskLevelValues; track $index) {
+              <option [value]="riskLevel">{{ 'gdpApp.RiskLevel.' + riskLevel | translate }}</option>
+            }
+          </select>
         </div>
       </div>
 

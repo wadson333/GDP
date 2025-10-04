@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added columns to the entity Medication.
+    -->
+    <changeSet id="20251004172333-1-add-columns" author="jhipster">
+        <addColumn tableName="medication">
+            <column name="international_name" type="varchar(100)" remarks="Dénomination Commune Internationale (DCI), ex : Paracétamol"/>
+            <column name="code_atc" type="varchar(20)" remarks="Code ATC (Anatomical Therapeutic Chemical Classification)"/>
+            <column name="formulation" type="varchar(50)" remarks="Forme pharmaceutique (ex : comprimé, gélule, sirop)"/>
+            <column name="strength" type="varchar(50)" remarks="Dosage (ex : 500mg, 1g/5ml)"/>
+            <column name="route_of_administration" type="varchar(255)" remarks="Voie d&apos;administration (orale, injectable, etc.)"/>
+            <column name="manufacturer" type="varchar(100)" remarks="Fabricant ou laboratoire du médicament"/>
+            <column name="marketing_authorization_number" type="varchar(30)" remarks="Numéro d’Autorisation de Mise sur le Marché"/>
+            <column name="marketing_authorization_date" type="${datetimeType}" remarks="Date d’obtention de l’AMM"/>
+            <column name="packaging" type="varchar(150)" remarks="Présentation/conditionnement (ex : boîte de 16 comprimés)"/>
+            <column name="prescription_status" type="varchar(255)" remarks="Statut de prescription (prescription obligatoire, OTC, etc.)"/>
+            <column name="active" type="boolean" remarks="Statut actif ou inactif (permet d’archiver un médicament)"/>
+        </addColumn>
+        <dropDefaultValue tableName="medication" columnName="marketing_authorization_date" columnDataType="${datetimeType}"/>
+    </changeSet>
+
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+</databaseChangeLog>

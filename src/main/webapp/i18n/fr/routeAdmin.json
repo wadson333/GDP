@@ -1,0 +1,13 @@
+{
+  "gdpApp": {
+    "RouteAdmin": {
+      "null": "",
+      "ORAL": "ORAL",
+      "INTRAVENOUS": "INTRAVENOUS",
+      "SUBCUTANEOUS": "SUBCUTANEOUS",
+      "INHALATION": "INHALATION",
+      "TOPICAL": "TOPICAL",
+      "OTHER": "OTHER"
+    }
+  }
+}

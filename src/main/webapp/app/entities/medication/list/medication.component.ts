@@ -1,4 +1,5 @@
 import { Component, NgZone, OnInit, inject } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { Observable, Subscription, combineLatest, filter, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -6,9 +7,11 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import SharedModule from 'app/shared/shared.module';
 import { SortByDirective, SortDirective, SortService, type SortState, sortStateSignal } from 'app/shared/sort';
 import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
+import { ItemCountComponent } from 'app/shared/pagination';
 import { FormsModule } from '@angular/forms';
+
+import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { DEFAULT_SORT_DATA, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
-import { DataUtils } from 'app/core/util/data-util.service';
 import { IMedication } from '../medication.model';
 import { EntityArrayResponseType, MedicationService } from '../service/medication.service';
 import { MedicationDeleteDialogComponent } from '../delete/medication-delete-dialog.component';
@@ -26,6 +29,7 @@ import { MedicationDeleteDialogComponent } from '../delete/medication-delete-dia
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
+    ItemCountComponent,
   ],
 })
 export class MedicationComponent implements OnInit {
@@ -35,11 +39,14 @@ export class MedicationComponent implements OnInit {
 
   sortState = sortStateSignal({});
 
+  itemsPerPage = ITEMS_PER_PAGE;
+  totalItems = 0;
+  page = 1;
+
   public router = inject(Router);
   protected medicationService = inject(MedicationService);
   protected activatedRoute = inject(ActivatedRoute);
   protected sortService = inject(SortService);
-  protected dataUtils = inject(DataUtils);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
 
@@ -49,21 +56,9 @@ export class MedicationComponent implements OnInit {
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
       .pipe(
         tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
-        tap(() => {
-          if (!this.medications || this.medications.length === 0) {
-            this.load();
-          }
-        }),
+        tap(() => this.load()),
       )
       .subscribe();
-  }
-
-  byteSize(base64String: string): string {
-    return this.dataUtils.byteSize(base64String);
-  }
-
-  openFile(base64String: string, contentType: string | null | undefined): void {
-    return this.dataUtils.openFile(base64String, contentType);
   }
 
   delete(medication: IMedication): void {
@@ -87,37 +82,50 @@ export class MedicationComponent implements OnInit {
   }
 
   navigateToWithComponentValues(event: SortState): void {
-    this.handleNavigation(event);
+    this.handleNavigation(this.page, event);
+  }
+
+  navigateToPage(page: number): void {
+    this.handleNavigation(page, this.sortState());
   }
 
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
+    const page = params.get(PAGE_HEADER);
+    this.page = +(page ?? 1);
     this.sortState.set(this.sortService.parseSortParam(params.get(SORT) ?? data[DEFAULT_SORT_DATA]));
   }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {
+    this.fillComponentAttributesFromResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
-    this.medications = this.refineData(dataFromBody);
-  }
-
-  protected refineData(data: IMedication[]): IMedication[] {
-    const { predicate, order } = this.sortState();
-    return predicate && order ? data.sort(this.sortService.startSort({ predicate, order })) : data;
+    this.medications = dataFromBody;
   }
 
   protected fillComponentAttributesFromResponseBody(data: IMedication[] | null): IMedication[] {
     return data ?? [];
   }
 
+  protected fillComponentAttributesFromResponseHeader(headers: HttpHeaders): void {
+    this.totalItems = Number(headers.get(TOTAL_COUNT_RESPONSE_HEADER));
+  }
+
   protected queryBackend(): Observable<EntityArrayResponseType> {
+    const { page } = this;
+
     this.isLoading = true;
+    const pageToLoad: number = page;
     const queryObject: any = {
+      page: pageToLoad - 1,
+      size: this.itemsPerPage,
       sort: this.sortService.buildSortParam(this.sortState()),
     };
     return this.medicationService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
-  protected handleNavigation(sortState: SortState): void {
+  protected handleNavigation(page: number, sortState: SortState): void {
     const queryParamsObj = {
+      page,
+      size: this.itemsPerPage,
       sort: this.sortService.buildSortParam(sortState),
     };
 

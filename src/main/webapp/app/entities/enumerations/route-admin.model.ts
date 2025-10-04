@@ -1,0 +1,13 @@
+export enum RouteAdmin {
+  ORAL = 'ORAL',
+
+  INTRAVENOUS = 'INTRAVENOUS',
+
+  SUBCUTANEOUS = 'SUBCUTANEOUS',
+
+  INHALATION = 'INHALATION',
+
+  TOPICAL = 'TOPICAL',
+
+  OTHER = 'OTHER',
+}

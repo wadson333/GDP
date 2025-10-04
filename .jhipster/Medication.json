@@ -3,21 +3,170 @@
     "changelogDate": "20250716190750"
   },
   "applications": "*",
-  "documentation": "Dictionnaire central des médicaments.",
+  "documentation": "Dictionnaire central des médicaments.\\nChaque médicament est identifié par son nom, code ATC, formulation, etc.",
   "dto": "mapstruct",
   "fields": [
     {
+      "documentation": "Nom commercial du médicament (ex : Doliprane)",
       "fieldName": "name",
       "fieldType": "String",
-      "fieldValidateRules": ["required", "unique"]
+      "fieldValidateRules": ["required", "minlength", "maxlength", "unique"],
+      "fieldValidateRulesMaxlength": "100",
+      "fieldValidateRulesMinlength": "2"
     },
     {
+      "documentation": "Dénomination Commune Internationale (DCI), ex : Paracétamol",
+      "fieldName": "internationalName",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "100"
+    },
+    {
+      "documentation": "Code ATC (Anatomical Therapeutic Chemical Classification)",
+      "fieldName": "codeAtc",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "20"
+    },
+    {
+      "documentation": "Forme pharmaceutique (ex : comprimé, gélule, sirop)",
+      "fieldName": "formulation",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "documentation": "Dosage (ex : 500mg, 1g/5ml)",
+      "fieldName": "strength",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "documentation": "Voie d'administration (orale, injectable, etc.)",
+      "fieldName": "routeOfAdministration",
+      "fieldType": "RouteAdmin",
+      "fieldTypeDocumentation": "Enumération des voies d’administration possibles pour un médicament.",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "ORAL,INTRAVENOUS,SUBCUTANEOUS,INHALATION,TOPICAL,OTHER",
+      "fieldValuesJavadocs": {
+        "INHALATION": "Administration par inhalation",
+        "INTRAVENOUS": "Administration par voie intraveineuse",
+        "ORAL": "Administration orale (par la bouche)",
+        "OTHER": "Autre voie non listée",
+        "SUBCUTANEOUS": "Administration par voie sous-cutanée",
+        "TOPICAL": "Application locale (crème, patch, etc.)"
+      }
+    },
+    {
+      "documentation": "Fabricant ou laboratoire du médicament",
+      "fieldName": "manufacturer",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "100"
+    },
+    {
+      "documentation": "Numéro d’Autorisation de Mise sur le Marché",
+      "fieldName": "marketingAuthorizationNumber",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "30"
+    },
+    {
+      "documentation": "Date d’obtention de l’AMM",
+      "fieldName": "marketingAuthorizationDate",
+      "fieldType": "Instant"
+    },
+    {
+      "documentation": "Présentation/conditionnement (ex : boîte de 16 comprimés)",
+      "fieldName": "packaging",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "150"
+    },
+    {
+      "documentation": "Statut de prescription (prescription obligatoire, OTC, etc.)",
+      "fieldName": "prescriptionStatus",
+      "fieldType": "PrescriptionStatus",
+      "fieldTypeDocumentation": "Statut de prescription du médicament.",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "PRESCRIPTION,OTC,HOSPITAL_USE_ONLY",
+      "fieldValuesJavadocs": {
+        "HOSPITAL_USE_ONLY": "Usage réservé à l’hôpital",
+        "OTC": "Médicament en vente libre (Over The Counter)",
+        "PRESCRIPTION": "Sur prescription médicale obligatoire"
+      }
+    },
+    {
+      "documentation": "Description libre du médicament",
       "fieldName": "description",
-      "fieldType": "TextBlob"
+      "fieldType": "String"
+    },
+    {
+      "documentation": "Date d’expiration du médicament",
+      "fieldName": "expiryDate",
+      "fieldType": "Instant"
+    },
+    {
+      "documentation": "Code-barres du médicament (EAN ou autre)",
+      "fieldName": "barcode",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "documentation": "Conditions de stockage (ex : à conserver entre 2°C et 8°C)",
+      "fieldName": "storageCondition",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "100"
+    },
+    {
+      "documentation": "Prix unitaire du médicament",
+      "fieldName": "unitPrice",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "documentation": "URL ou chemin de l'image du médicament",
+      "fieldName": "image",
+      "fieldType": "String"
+    },
+    {
+      "documentation": "Liste détaillée des principes actifs et excipients",
+      "fieldName": "composition",
+      "fieldType": "String"
+    },
+    {
+      "documentation": "Contre-indications du médicament",
+      "fieldName": "contraindications",
+      "fieldType": "String"
+    },
+    {
+      "documentation": "Effets secondaires connus",
+      "fieldName": "sideEffects",
+      "fieldType": "String"
+    },
+    {
+      "documentation": "Statut actif ou inactif (permet d’archiver un médicament)",
+      "fieldName": "active",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "documentation": "Ce médicament est-il générique ?",
+      "fieldName": "isGeneric",
+      "fieldType": "Boolean"
+    },
+    {
+      "documentation": "Niveau de risque lié au médicament",
+      "fieldName": "riskLevel",
+      "fieldType": "RiskLevel",
+      "fieldValues": "LOW,MODERATE,HIGH,UNKNOWN"
     }
   ],
   "incrementalChangelog": false,
   "name": "Medication",
+  "pagination": "pagination",
   "relationships": [],
   "searchEngine": "no",
   "service": "serviceClass"

@@ -1,6 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
+
+import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
@@ -8,6 +10,17 @@ import { createRequestOption } from 'app/core/request/request-util';
 import { IMedication, NewMedication } from '../medication.model';
 
 export type PartialUpdateMedication = Partial<IMedication> & Pick<IMedication, 'id'>;
+
+type RestOf<T extends IMedication | NewMedication> = Omit<T, 'marketingAuthorizationDate' | 'expiryDate'> & {
+  marketingAuthorizationDate?: string | null;
+  expiryDate?: string | null;
+};
+
+export type RestMedication = RestOf<IMedication>;
+
+export type NewRestMedication = RestOf<NewMedication>;
+
+export type PartialUpdateRestMedication = RestOf<PartialUpdateMedication>;
 
 export type EntityResponseType = HttpResponse<IMedication>;
 export type EntityArrayResponseType = HttpResponse<IMedication[]>;
@@ -20,28 +33,37 @@ export class MedicationService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/medications');
 
   create(medication: NewMedication): Observable<EntityResponseType> {
-    return this.http.post<IMedication>(this.resourceUrl, medication, { observe: 'response' });
+    const copy = this.convertDateFromClient(medication);
+    return this.http
+      .post<RestMedication>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   update(medication: IMedication): Observable<EntityResponseType> {
-    return this.http.put<IMedication>(`${this.resourceUrl}/${this.getMedicationIdentifier(medication)}`, medication, {
-      observe: 'response',
-    });
+    const copy = this.convertDateFromClient(medication);
+    return this.http
+      .put<RestMedication>(`${this.resourceUrl}/${this.getMedicationIdentifier(medication)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   partialUpdate(medication: PartialUpdateMedication): Observable<EntityResponseType> {
-    return this.http.patch<IMedication>(`${this.resourceUrl}/${this.getMedicationIdentifier(medication)}`, medication, {
-      observe: 'response',
-    });
+    const copy = this.convertDateFromClient(medication);
+    return this.http
+      .patch<RestMedication>(`${this.resourceUrl}/${this.getMedicationIdentifier(medication)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IMedication>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    return this.http
+      .get<RestMedication>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IMedication[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http
+      .get<RestMedication[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
@@ -74,5 +96,33 @@ export class MedicationService {
       return [...medicationsToAdd, ...medicationCollection];
     }
     return medicationCollection;
+  }
+
+  protected convertDateFromClient<T extends IMedication | NewMedication | PartialUpdateMedication>(medication: T): RestOf<T> {
+    return {
+      ...medication,
+      marketingAuthorizationDate: medication.marketingAuthorizationDate?.toJSON() ?? null,
+      expiryDate: medication.expiryDate?.toJSON() ?? null,
+    };
+  }
+
+  protected convertDateFromServer(restMedication: RestMedication): IMedication {
+    return {
+      ...restMedication,
+      marketingAuthorizationDate: restMedication.marketingAuthorizationDate ? dayjs(restMedication.marketingAuthorizationDate) : undefined,
+      expiryDate: restMedication.expiryDate ? dayjs(restMedication.expiryDate) : undefined,
+    };
+  }
+
+  protected convertResponseFromServer(res: HttpResponse<RestMedication>): HttpResponse<IMedication> {
+    return res.clone({
+      body: res.body ? this.convertDateFromServer(res.body) : null,
+    });
+  }
+
+  protected convertResponseArrayFromServer(res: HttpResponse<RestMedication[]>): HttpResponse<IMedication[]> {
+    return res.clone({
+      body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
+    });
   }
 }

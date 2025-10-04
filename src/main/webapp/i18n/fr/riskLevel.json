@@ -1,0 +1,11 @@
+{
+  "gdpApp": {
+    "RiskLevel": {
+      "null": "",
+      "LOW": "LOW",
+      "MODERATE": "MODERATE",
+      "HIGH": "HIGH",
+      "UNKNOWN": "UNKNOWN"
+    }
+  }
+}

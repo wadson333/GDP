@@ -1,5 +1,6 @@
 package com.ciatch.gdp.domain;
 
+import static com.ciatch.gdp.domain.AssertUtils.bigDecimalCompareTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MedicationAsserts {
@@ -48,7 +49,40 @@ public class MedicationAsserts {
         assertThat(expected)
             .as("Verify Medication relevant properties")
             .satisfies(e -> assertThat(e.getName()).as("check name").isEqualTo(actual.getName()))
-            .satisfies(e -> assertThat(e.getDescription()).as("check description").isEqualTo(actual.getDescription()));
+            .satisfies(e -> assertThat(e.getInternationalName()).as("check internationalName").isEqualTo(actual.getInternationalName()))
+            .satisfies(e -> assertThat(e.getCodeAtc()).as("check codeAtc").isEqualTo(actual.getCodeAtc()))
+            .satisfies(e -> assertThat(e.getFormulation()).as("check formulation").isEqualTo(actual.getFormulation()))
+            .satisfies(e -> assertThat(e.getStrength()).as("check strength").isEqualTo(actual.getStrength()))
+            .satisfies(e ->
+                assertThat(e.getRouteOfAdministration()).as("check routeOfAdministration").isEqualTo(actual.getRouteOfAdministration())
+            )
+            .satisfies(e -> assertThat(e.getManufacturer()).as("check manufacturer").isEqualTo(actual.getManufacturer()))
+            .satisfies(e ->
+                assertThat(e.getMarketingAuthorizationNumber())
+                    .as("check marketingAuthorizationNumber")
+                    .isEqualTo(actual.getMarketingAuthorizationNumber())
+            )
+            .satisfies(e ->
+                assertThat(e.getMarketingAuthorizationDate())
+                    .as("check marketingAuthorizationDate")
+                    .isEqualTo(actual.getMarketingAuthorizationDate())
+            )
+            .satisfies(e -> assertThat(e.getPackaging()).as("check packaging").isEqualTo(actual.getPackaging()))
+            .satisfies(e -> assertThat(e.getPrescriptionStatus()).as("check prescriptionStatus").isEqualTo(actual.getPrescriptionStatus()))
+            .satisfies(e -> assertThat(e.getDescription()).as("check description").isEqualTo(actual.getDescription()))
+            .satisfies(e -> assertThat(e.getExpiryDate()).as("check expiryDate").isEqualTo(actual.getExpiryDate()))
+            .satisfies(e -> assertThat(e.getBarcode()).as("check barcode").isEqualTo(actual.getBarcode()))
+            .satisfies(e -> assertThat(e.getStorageCondition()).as("check storageCondition").isEqualTo(actual.getStorageCondition()))
+            .satisfies(e ->
+                assertThat(e.getUnitPrice()).as("check unitPrice").usingComparator(bigDecimalCompareTo).isEqualTo(actual.getUnitPrice())
+            )
+            .satisfies(e -> assertThat(e.getImage()).as("check image").isEqualTo(actual.getImage()))
+            .satisfies(e -> assertThat(e.getComposition()).as("check composition").isEqualTo(actual.getComposition()))
+            .satisfies(e -> assertThat(e.getContraindications()).as("check contraindications").isEqualTo(actual.getContraindications()))
+            .satisfies(e -> assertThat(e.getSideEffects()).as("check sideEffects").isEqualTo(actual.getSideEffects()))
+            .satisfies(e -> assertThat(e.getActive()).as("check active").isEqualTo(actual.getActive()))
+            .satisfies(e -> assertThat(e.getIsGeneric()).as("check isGeneric").isEqualTo(actual.getIsGeneric()))
+            .satisfies(e -> assertThat(e.getRiskLevel()).as("check riskLevel").isEqualTo(actual.getRiskLevel()));
     }
 
     /**

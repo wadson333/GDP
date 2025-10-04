@@ -4,12 +4,11 @@ import com.ciatch.gdp.domain.Medication;
 import com.ciatch.gdp.repository.MedicationRepository;
 import com.ciatch.gdp.service.dto.MedicationDTO;
 import com.ciatch.gdp.service.mapper.MedicationMapper;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -80,12 +79,13 @@ public class MedicationService {
     /**
      * Get all the medications.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public List<MedicationDTO> findAll() {
+    public Page<MedicationDTO> findAll(Pageable pageable) {
         LOG.debug("Request to get all Medications");
-        return medicationRepository.findAll().stream().map(medicationMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+        return medicationRepository.findAll(pageable).map(medicationMapper::toDto);
     }
 
     /**

@@ -5,10 +5,12 @@ import { provideHttpClient } from '@angular/common/http';
 import { IMedication } from '../medication.model';
 import { sampleWithFullData, sampleWithNewData, sampleWithPartialData, sampleWithRequiredData } from '../medication.test-samples';
 
-import { MedicationService } from './medication.service';
+import { MedicationService, RestMedication } from './medication.service';
 
-const requireRestSample: IMedication = {
+const requireRestSample: RestMedication = {
   ...sampleWithRequiredData,
+  marketingAuthorizationDate: sampleWithRequiredData.marketingAuthorizationDate?.toJSON(),
+  expiryDate: sampleWithRequiredData.expiryDate?.toJSON(),
 };
 
 describe('Medication Service', () => {
