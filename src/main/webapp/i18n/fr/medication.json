@@ -2,55 +2,146 @@
   "gdpApp": {
     "medication": {
       "home": {
-        "title": "Medications",
-        "refreshListLabel": "Actualiser la liste",
-        "createLabel": "Créer un nouveau Medication",
-        "createOrEditLabel": "Créer ou éditer un Medication",
-        "notFound": "Aucun Medication trouvé"
+        "title": "Medicaments",
+        "refreshListLabel": "Actualiser",
+        "createLabel": "medicament",
+        "createTooltip": "Créer un nouveau Medicament",
+        "createOrEditLabel": "Créer ou éditer un Medicament",
+        "notFound": "Aucun Medicament trouvé"
       },
-      "created": "Un nouveau Medication a été créé avec l'identifiant {{ param }}",
-      "updated": "Le Medication avec l'identifiant {{ param }} a été mis à jour",
-      "deleted": "Le Medication avec l'identifiant {{ param }} a été supprimé",
+      "created": "Un nouveau Medicament a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Medicament avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Medicament avec l'identifiant {{ param }} a été supprimé",
       "delete": {
         "question": "Êtes-vous certain de vouloir supprimer le Medication {{ id }} ?"
       },
       "detail": {
-        "title": "Medication"
+        "title": "Détails du Medicament",
+        "tabs": {
+          "general": "Général",
+          "medical": "Informations médicales",
+          "audit": "Audit"
+        },
+        "status": {
+          "expired": "Expiré",
+          "nearExpiry": "Expiration proche",
+          "valid": "Valide"
+        },
+        "action": {
+          "export": "Exporter",
+          "deactivate": "Désactiver",
+          "exportDetails": "Exporter les détails"
+        },
+        "audit": {
+          "createdBy": "Créé par",
+          "lastModifiedBy": "Modifié par"
+        },
+        "deactivate": {
+          "confirmationTitle": "Confirmation de désactivation",
+          "confirmationMessage": "Êtes-vous sûr de vouloir désactiver ce médicament ?",
+          "success": "Le médicament a été désactivé",
+          "error": "Erreur lors de la désactivation du médicament"
+        }
+      },
+      "form": {
+        "steps": {
+          "basic": "Informations de base",
+          "details": "Détails techniques",
+          "medical": "Informations médicales"
+        },
+        "validation": {
+          "nameRequired": "Le nom est obligatoire",
+          "nameNotUnique": "Ce nom est déjà utilisé",
+          "internationalNameRequired": "Le nom international est obligatoire",
+          "codeAtcRequired": "Le code ATC est obligatoire",
+          "routeRequired": "La voie d'administration est obligatoire"
+        },
+        "image": {
+          "error": {
+            "size": "Erreur de taille d'image",
+            "sizeDetail": "L'image doit faire moins de 5Mo",
+            "type": "Type de fichier invalide",
+            "typeDetail": "Seules les images JPG, PNG et WebP sont autorisées"
+          },
+          "chooseImage": "Choisir une image"
+        },
+        "saveSuccess": "Médicament enregistré avec succès",
+        "saveError": "Erreur lors de l'enregistrement",
+        "updateSuccess": "Médicament mis à jour avec succès",
+        "createSuccess": "Médicament créé avec succès"
+      },
+      "search": {
+        "reset": "Réinitialiser",
+        "apply": "Appliquer",
+        "search": "Rechercher",
+        "searchTooltip": "Rechercher",
+        "namePlaceholder": "Rechercher par nom ou code...",
+        "statusPlaceholder": "Statut",
+        "advancedTooltip": "Recherche avancée",
+        "clearTooltip": "Effacer les filtres",
+        "minPrice": "Prix minimum",
+        "maxPrice": "Prix maximum",
+        "noResults": "Aucun médicament trouvé correspondant à vos critères",
+        "toggleAdvanced": "Activer la recherche avancée",
+        "typePlaceholder": "Type",
+        "methodPlaceholder": "Méthode",
+        "riskLevelPlaceholder": "Niveau de risque",
+        "advancedFilters": "Filtres avancés",
+        "codeAtcPlaceholder": "Code ATC",
+        "routeOfAdministrationPlaceholder": "Voie d'administration",
+        "formulationPlaceholder": "Formulation",
+        "strengthPlaceholder": "Dosage",
+        "manufacturerPlaceholder": "Fabricant",
+        "marketingAuthorizationNumberPlaceholder": "Numéro d'Autorisation de Mise sur le Marché",
+        "marketingAuthorizationDatePlaceholder": "Date d'obtention de l'AMM",
+        "packagingPlaceholder": "Packaging",
+        "prescriptionStatusPlaceholder": "Statut de Prescription",
+        "descriptionPlaceholder": "Description",
+        "expiryDatePlaceholder": "Date d'Expiration",
+        "barcodePlaceholder": "Code-barres",
+        "storageConditionPlaceholder": "Conditions de Stockage",
+        "unitPricePlaceholder": "Prix Unitaire",
+        "imagePlaceholder": "Image",
+        "compositionPlaceholder": "Composition",
+        "contraindicationsPlaceholder": "Contre-indications",
+        "sideEffectsPlaceholder": "Effets Secondaires",
+        "activePlaceholder": "Actif",
+        "isGenericPlaceholder": "Est Générique"
       },
       "id": "ID",
-      "name": "Name",
-      "internationalName": "International Name",
+      "name": "Nom",
+      "internationalName": "Nom International",
       "codeAtc": "Code Atc",
       "formulation": "Formulation",
-      "strength": "Strength",
-      "routeOfAdministration": "Route Of Administration",
-      "manufacturer": "Manufacturer",
-      "marketingAuthorizationNumber": "Marketing Authorization Number",
-      "marketingAuthorizationDate": "Marketing Authorization Date",
+      "strength": "Dosage",
+      "routeOfAdministration": "Voie D'administration",
+      "manufacturer": "Fabricant",
+      "marketingAuthorizationNumber": "Numéro d'Autorisation de Mise sur le Marché",
+      "marketingAuthorizationDate": "Date d'obtention de l'AMM",
       "packaging": "Packaging",
-      "prescriptionStatus": "Prescription Status",
+      "prescriptionStatus": "Statut de Prescription",
       "description": "Description",
-      "expiryDate": "Expiry Date",
-      "barcode": "Barcode",
-      "storageCondition": "Storage Condition",
-      "unitPrice": "Unit Price",
+      "expiryDate": "Date d'Expiration",
+      "barcode": "Code-barres",
+      "storageCondition": "Conditions de Stockage",
+      "unitPrice": "Prix Unitaire",
       "image": "Image",
       "composition": "Composition",
-      "contraindications": "Contraindications",
-      "sideEffects": "Side Effects",
-      "active": "Active",
-      "isGeneric": "Is Generic",
-      "riskLevel": "Risk Level",
+      "contraindications": "Contre-indications",
+      "sideEffects": "Effets Secondaires",
+      "active": "Actif",
+      "isGeneric": "Est Générique",
+      "riskLevel": "Niveau de Risque",
       "help": {
         "name": "Nom commercial du médicament (ex : Doliprane)",
         "internationalName": "Dénomination Commune Internationale (DCI), ex : Paracétamol",
         "codeAtc": "Code ATC (Anatomical Therapeutic Chemical Classification)",
         "formulation": "Forme pharmaceutique (ex : comprimé, gélule, sirop)",
         "strength": "Dosage (ex : 500mg, 1g/5ml)",
-        "routeOfAdministration": "Voie d&#39;administration (orale, injectable, etc.)",
+        "routeOfAdministration": "Voie d'administration (orale, injectable, etc.)",
         "manufacturer": "Fabricant ou laboratoire du médicament",
-        "marketingAuthorizationNumber": "Numéro d’Autorisation de Mise sur le Marché",
-        "marketingAuthorizationDate": "Date d’obtention de l’AMM",
+        "marketingAuthorizationNumber": "Numéro d'Autorisation de Mise sur le Marché",
+        "marketingAuthorizationDate": "Date d'obtention de l'AMM",
         "packaging": "Présentation/conditionnement (ex : boîte de 16 comprimés)",
         "prescriptionStatus": "Statut de prescription (prescription obligatoire, OTC, etc.)",
         "description": "Description libre du médicament",
@@ -58,13 +149,40 @@
         "barcode": "Code-barres du médicament (EAN ou autre)",
         "storageCondition": "Conditions de stockage (ex : à conserver entre 2°C et 8°C)",
         "unitPrice": "Prix unitaire du médicament",
-        "image": "URL ou chemin de l&#39;image du médicament",
+        "image": "URL ou chemin de l'image du médicament",
         "composition": "Liste détaillée des principes actifs et excipients",
         "contraindications": "Contre-indications du médicament",
         "sideEffects": "Effets secondaires connus",
-        "active": "Statut actif ou inactif (permet d’archiver un médicament)",
-        "isGeneric": "Ce médicament est-il générique ?",
+        "active": "Statut actif ou inactif (permet d'archiver un médicament)",
+        "isGeneric": "Ce médicament est-il générique ?",
         "riskLevel": "Niveau de risque lié au médicament"
+      },
+      "action": {
+        "view": "Voir",
+        "viewTooltip": "Voir les détails",
+        "edit": "Éditer",
+        "editTooltip": "Éditer le Medicament",
+        "delete": "Supprimer",
+        "deleteTooltip": "Supprimer le Medicament",
+        "save": "Enregistrer",
+        "cancel": "Annuler",
+        "label": "Actions"
+      },
+      "toolbar": {
+        "exportLabel": "Exporter les médicaments",
+        "exportToExcel": "Exporter vers Excel",
+        "exportToCsv": "Exporter vers CSV",
+        "exportToPdf": "Exporter vers PDF",
+        "toggleViewTooltip": "Basculer la vue"
+      },
+      "breadcrumb": "Gestion des médicaments"
+    },
+
+    "common": {
+      "status": {
+        "all": "All",
+        "active": "Active",
+        "inactive": "Inactive"
       }
     }
   }

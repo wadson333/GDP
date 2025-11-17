@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <h2 id="page-heading" data-cy="MedicationHeading">
     <span jhiTranslate="gdpApp.medication.home.title">Medications</span>
 
@@ -298,4 +298,604 @@
       </div>
     </div>
   }
+</div> -->
+<p-toast></p-toast>
+<!-- <p-confirmDialog></p-confirmDialog> -->
+
+<jhi-alert-error></jhi-alert-error>
+
+<jhi-alert></jhi-alert>
+
+<div class="card">
+  <p-toolbar>
+    <div class="p-toolbar-group-left">
+      <div class="flex items-center gap-2 lab-test-search-container">
+        <!-- Type Dropdown -->
+        <p-dropdown
+          [options]="statusOptions"
+          [(ngModel)]="searchCriteria.active"
+          (onChange)="onStatusChange($event.value)"
+          [placeholder]="'status'"
+          styleClass="border-0 shadow-none search-dropdown"
+          class="min-w-[80px] filter-dropdown"
+        >
+          <ng-template let-option pTemplate="item">
+            {{ option.label }}
+          </ng-template>
+        </p-dropdown>
+
+        <!-- Divider -->
+        <p-divider layout="vertical" />
+
+        <!-- Method Dropdown -->
+        <p-dropdown
+          [(ngModel)]="searchCriteria.routeOfAdministration"
+          [options]="routeOptions"
+          [placeholder]="'gdpApp.medication.search.methodPlaceholder' | translate"
+          (onChange)="onSearch()"
+          styleClass="border-0 shadow-none search-dropdown"
+          class="min-w-[140px] filter-dropdown"
+        >
+          <ng-template let-option pTemplate="item">
+            {{ option.label }}
+          </ng-template>
+        </p-dropdown>
+
+        <!-- Divider -->
+        <p-divider layout="vertical" />
+
+        <!-- Status Dropdown -->
+        <p-dropdown
+          [(ngModel)]="searchCriteria.riskLevel"
+          [options]="riskLevelOptions"
+          [placeholder]="'gdpApp.medication.search.riskLevelPlaceholder' | translate"
+          (onChange)="onSearch()"
+          styleClass="border-0 shadow-none search-dropdown"
+          class="min-w-[110px] filter-dropdown"
+        >
+          <ng-template let-option pTemplate="item">
+            {{ option.label }}
+          </ng-template>
+        </p-dropdown>
+
+        <!-- Divider -->
+        <p-divider layout="vertical" />
+
+        <!-- Search Input -->
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="searchCriteria.name"
+          [placeholder]="'gdpApp.medication.search.namePlaceholder' | translate"
+          class="border-0 shadow-none focus:ring-0 min-w-[150px] max-w-[200px]"
+        />
+
+        <!-- Clear Button (conditionally shown) -->
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-times"
+          class="p-button-text p-button-sm p-button-danger"
+          (click)="clearSearch()"
+          [pTooltip]="'gdpApp.medication.search.clearTooltip' | translate"
+          tooltipPosition="bottom"
+          [style.visibility]="hasActiveFilters() && !showAdvancedSearch ? 'visible' : 'hidden'"
+        ></button>
+
+        <!-- Search Button -->
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-search"
+          class="p-button-sm"
+          (click)="onSearch(); toggleAdvancedSearch()"
+          [pTooltip]="'gdpApp.medication.search.searchTooltip' | translate"
+          tooltipPosition="bottom"
+          [style.visibility]="!showAdvancedSearch ? 'visible' : 'hidden'"
+        ></button>
+
+        <!-- More/Advanced Search Toggle -->
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-ellipsis-v"
+          class="p-button-text p-button-sm"
+          (click)="toggleAdvancedSearch()"
+          [pTooltip]="'gdpApp.medication.search.advancedTooltip' | translate"
+          tooltipPosition="bottom"
+          [class.p-button-primary]="showAdvancedSearch"
+          [style.visibility]="!showAdvancedSearch ? 'visible' : 'hidden'"
+        ></button>
+      </div>
+    </div>
+    <div class="p-toolbar-group-right">
+      <p-button
+        icon="pi pi-refresh"
+        class="mr-1"
+        (click)="load()"
+        [text]="true"
+        tooltipPosition="bottom"
+        [pTooltip]="'gdpApp.medication.home.refreshListLabel' | translate"
+      />
+      <p-menu #menu [popup]="true" [model]="menuItems"></p-menu>
+      <!-- export button -->
+      <p-button
+        icon="pi pi-file-export"
+        class="mr-1"
+        (click)="menu.toggle($event)"
+        [text]="true"
+        tooltipPosition="bottom"
+        [pTooltip]="'gdpApp.medication.toolbar.exportLabel' | translate"
+      />
+      <!-- View Toggle -->
+      <p-button
+        [icon]="viewMode === 'table' ? 'pi pi-th-large' : 'pi pi-table'"
+        (click)="toggleView()"
+        styleClass="mr-1"
+        [text]="true"
+        [pTooltip]="'gdpApp.medication.toolbar.toggleViewTooltip' | translate"
+        tooltipPosition="bottom"
+      ></p-button>
+
+      <!-- create button -->
+      <p-button
+        icon="pi pi-plus"
+        class="ms-1"
+        [label]="'gdpApp.medication.home.createLabel' | translate"
+        tooltipPosition="bottom"
+        [pTooltip]="'gdpApp.medication.home.createTooltip' | translate"
+        (click)="showAddMedicationFormDialog()"
+      />
+    </div>
+  </p-toolbar>
+  <!-- Advanced Search Panel (Positioned above table) -->
+  <div *ngIf="showAdvancedSearch" class="advanced-search-panel rounded-lg shadow-lg border pb-2 pt-0 px-4 mb-4" [@slideDown]>
+    <div class="flex items-center justify-between mb-2 pb-1 border-b">
+      <h3 class="text-lg font-semibold text-surface-900 dark:text-surface-0">
+        {{ 'gdpApp.medication.search.advancedFilters' | translate }}
+      </h3>
+      <button
+        pButton
+        pRipple
+        type="button"
+        icon="pi pi-times"
+        class="p-button-rounded p-button-text p-button-sm"
+        (click)="toggleAdvancedSearch()"
+      ></button>
+    </div>
+
+    <!-- Advanced Filters Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+      <!-- Code ATC -->
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-medium text-surface-700 dark:text-surface-300">
+          {{ 'gdpApp.medication.codeAtc' | translate }}
+        </label>
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="searchCriteria.codeAtc"
+          class="w-full"
+          [placeholder]="'gdpApp.medication.search.codeAtcPlaceholder' | translate"
+        />
+      </div>
+
+      <!-- Formulation -->
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-medium text-surface-700 dark:text-surface-300">
+          {{ 'gdpApp.medication.formulation' | translate }}
+        </label>
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="searchCriteria.formulation"
+          class="w-full"
+          [placeholder]="'gdpApp.medication.search.formulationPlaceholder' | translate"
+        />
+      </div>
+
+      <!-- Manufacturer -->
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-medium text-surface-700 dark:text-surface-300">
+          {{ 'gdpApp.medication.manufacturer' | translate }}
+        </label>
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="searchCriteria.manufacturer"
+          class="w-full"
+          [placeholder]="'gdpApp.medication.search.manufacturerPlaceholder' | translate"
+        />
+      </div>
+
+      <!-- Prescription Status -->
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-medium text-surface-700 dark:text-surface-300">
+          {{ 'gdpApp.medication.prescriptionStatus' | translate }}
+        </label>
+        <p-dropdown
+          [(ngModel)]="searchCriteria.prescriptionStatus"
+          [options]="prescriptionStatusOptions"
+          (onChange)="onSearch()"
+          styleClass="w-full"
+          [placeholder]="'gdpApp.medication.search.prescriptionStatusPlaceholder' | translate"
+        >
+          <ng-template let-option pTemplate="item">
+            {{ option.label }}
+          </ng-template>
+        </p-dropdown>
+      </div>
+
+      <!-- Strength -->
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-medium text-surface-700 dark:text-surface-300">
+          {{ 'gdpApp.medication.strength' | translate }}
+        </label>
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="searchCriteria.strength"
+          class="w-full"
+          [placeholder]="'gdpApp.medication.search.strengthPlaceholder' | translate"
+        />
+      </div>
+
+      <!-- Price Range -->
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-medium text-surface-700 dark:text-surface-300">
+          {{ 'gdpApp.medication.unitPrice' | translate }}
+        </label>
+        <div class="flex gap-2 items-center">
+          <p-inputNumber
+            [(ngModel)]="searchCriteria.unitPriceMin"
+            [placeholder]="'gdpApp.medication.search.minPrice' | translate"
+            [min]="0"
+            mode="currency"
+            currency="HTG"
+            styleClass="flex-1"
+          ></p-inputNumber>
+          <span class="text-surface-400">—</span>
+          <p-inputNumber
+            [(ngModel)]="searchCriteria.unitPriceMax"
+            [placeholder]="'gdpApp.medication.search.maxPrice' | translate"
+            [min]="0"
+            mode="currency"
+            currency="HTG"
+            styleClass="flex-1"
+          ></p-inputNumber>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex justify-end gap-3 pt-3 border-t border-surface-200 dark:border-surface-700">
+      <button
+        pButton
+        pRipple
+        type="button"
+        [label]="'gdpApp.medication.search.reset' | translate"
+        icon="pi pi-times"
+        (click)="clearSearch()"
+        [style.visibility]="hasActiveFilters() ? 'visible' : 'hidden'"
+        class="p-button-text"
+      ></button>
+      <button
+        pButton
+        pRipple
+        type="button"
+        [label]="'gdpApp.medication.search.apply' | translate"
+        icon="pi pi-check"
+        (click)="onSearch(); toggleAdvancedSearch()"
+      ></button>
+    </div>
+  </div>
+
+  <!-- Table View -->
+  <div *ngIf="viewMode === 'table'" class="py-4">
+    <p-table
+      #medicationTable
+      [value]="medications ?? []"
+      [lazy]="true"
+      [rows]="itemsPerPage"
+      [totalRecords]="totalItems"
+      [loading]="isLoading"
+      [responsive]="true"
+      [rowsPerPageOptions]="[20, 35, 50, 100]"
+      [paginator]="true"
+      [showCurrentPageReport]="true"
+      (onLazyLoad)="load()"
+      styleClass="p-datatable-sm"
+      [globalFilterFields]="['name', 'manufacturer', 'strength', 'unitPrice', 'expiryDate']"
+      [responsiveLayout]="'scroll'"
+      [currentPageReportTemplate]="
+        'gdpApp.labTestCatalog.table.pageDescription' | translate: { first: '{first}', last: '{last}', totalRecords: '{totalRecords}' }
+      "
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 100px">Image</th>
+          <th pSortableColumn="name">
+            {{ 'gdpApp.medication.name' | translate }}
+            <p-sortIcon field="name"></p-sortIcon>
+          </th>
+          <th pSortableColumn="manufacturer">
+            {{ 'gdpApp.medication.manufacturer' | translate }}
+            <p-sortIcon field="manufacturer"></p-sortIcon>
+          </th>
+          <th pSortableColumn="strength">
+            {{ 'gdpApp.medication.strength' | translate }}
+            <p-sortIcon field="strength"></p-sortIcon>
+          </th>
+          <th pSortableColumn="unitPrice">
+            {{ 'gdpApp.medication.unitPrice' | translate }}
+            <p-sortIcon field="unitPrice"></p-sortIcon>
+          </th>
+          <th pSortableColumn="expiryDate" [pTooltip]="'gdpApp.medication.expiryDate' | translate" tooltipPosition="top">
+            {{ 'gdpApp.medication.expiryDate' | translate | maxtextlength: 10 }}
+            <p-sortIcon field="expiryDate"></p-sortIcon>
+          </th>
+          <th class="text-end">{{ 'gdpApp.medication.action.label' | translate }}</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-medication>
+        <tr>
+          <td>
+            <div *ngIf="medication.image; else noImage" class="medication-image">
+              <img src="../../../../content/images/medication.jpg" [alt]="medication.name" width="50" />
+            </div>
+            <ng-template #noImage>
+              <i class="pi pi-image" style="font-size: 2rem"></i>
+            </ng-template>
+          </td>
+          <td>{{ medication.name }}</td>
+          <td>{{ medication.manufacturer }}</td>
+          <td>{{ medication.strength }}</td>
+          <td>{{ medication.unitPrice | currency: 'HT' }}</td>
+          <td>{{ medication.expiryDate | date }}</td>
+          <td class="test-end">
+            <div class="flex gap-2 justify-end">
+              <button
+                *ngIf="medication.active"
+                pButton
+                pRipple
+                type="button"
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-text"
+                [pTooltip]="'gdpApp.medication.action.editTooltip' | translate"
+                tooltipPosition="bottom"
+              ></button>
+
+              <button
+                pButton
+                pRipple
+                type="button"
+                icon="pi pi-eye"
+                class="p-button-rounded p-button-text"
+                [pTooltip]="'gdpApp.medication.action.viewTooltip' | translate"
+                tooltipPosition="bottom"
+                (click)="showMedicationDetails(medication)"
+              ></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6">
+            <div class="empty-state">
+              <i class="pi pi-info-circle" style="font-size: 2rem"></i>
+              <p>{{ 'gdpApp.medication.home.notFound' | translate }}</p>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="loadingbody">
+        <tr *ngFor="let _ of [1, 2, 3, 4, 5]">
+          <td>
+            <p-skeleton width="50px" height="50px" styleClass="mr-2"></p-skeleton>
+          </td>
+          <td><p-skeleton width="80%" height="24px"></p-skeleton></td>
+          <td><p-skeleton width="70%" height="24px"></p-skeleton></td>
+          <td><p-skeleton width="50%" height="24px"></p-skeleton></td>
+          <td><p-skeleton width="60%" height="24px"></p-skeleton></td>
+          <td><p-skeleton width="70%" height="24px"></p-skeleton></td>
+          <td>
+            <div class="flex justify-end gap-2">
+              <p-skeleton width="32px" height="32px" styleClass="mr-2"></p-skeleton>
+              <p-skeleton width="32px" height="32px"></p-skeleton>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <!-- Add this after the table view div -->
+  <!-- Replace the empty medication-cards div with: -->
+  <div *ngIf="viewMode === 'card'" class="medication-cards py-4">
+    <!-- loading state -->
+    <div *ngIf="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div *ngFor="let _ of [1, 2, 3, 4, 5, 6, 8]" class="medication-card-skeleton">
+        <p-card styleClass="h-full">
+          <ng-template pTemplate="header">
+            <p-skeleton height="192px" styleClass="w-full"></p-skeleton>
+          </ng-template>
+          <div class="px-5 py-2">
+            <p-skeleton width="70%" height="24px" styleClass="mb-3"></p-skeleton>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <p-skeleton width="40%" height="20px"></p-skeleton>
+                <p-skeleton width="30%" height="20px"></p-skeleton>
+              </div>
+              <div class="flex justify-between items-center">
+                <p-skeleton width="35%" height="20px"></p-skeleton>
+                <p-skeleton width="25%" height="20px"></p-skeleton>
+              </div>
+              <div class="flex justify-between items-center">
+                <p-skeleton width="45%" height="20px"></p-skeleton>
+                <p-skeleton width="35%" height="20px"></p-skeleton>
+              </div>
+            </div>
+          </div>
+          <ng-template pTemplate="footer">
+            <div class="flex justify-between">
+              <p-skeleton width="80px" height="36px"></p-skeleton>
+              <p-skeleton width="80px" height="36px"></p-skeleton>
+            </div>
+          </ng-template>
+        </p-card>
+      </div>
+    </div>
+
+    <!-- No results state -->
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && (!medications || medications.length === 0)" class="flex flex-col items-center justify-center p-8 text-center">
+      <i class="pi pi-inbox text-6xl mb-4"></i>
+      <h3 class="text-xl font-semibold mb-2">{{ 'gdpApp.medication.home.notFound' | translate }}</h3>
+      <p class="">
+        {{ 'gdpApp.medication.home.emptyMessage' | translate }}
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      @for (medication of medications; track trackId(medication)) {
+        <p-card class="medication-card rounded-lg" styleClass="medication-card h-full">
+          <!-- Card Header with Image -->
+          <ng-template pTemplate="header">
+            <div class="relative h-48 flex items-center justify-center">
+              <div *ngIf="medication.image; else noImage" class="medication-card-img h-full w-full">
+                <img src="../../../../content/images/medication.jpg" [alt]="medication.name" class="h-full w-full object-contain" />
+              </div>
+              <ng-template #noImage>
+                <i class="pi pi-image text-6xl"></i>
+              </ng-template>
+              <!-- Status Badge -->
+              <div class="absolute top-2 right-2">
+                <p-badge
+                  [value]="medication.active ? 'Active' : 'Inactive'"
+                  [severity]="medication.active ? 'success' : 'danger'"
+                ></p-badge>
+              </div>
+            </div>
+          </ng-template>
+
+          <!-- Card Content -->
+          <div class="px-5 pxy-2">
+            <h3 class="text-xl font-semibold mb-2">{{ medication.name }}</h3>
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between">
+                <span class="">{{ 'gdpApp.medication.manufacturer' | translate }}</span>
+                <span class="font-medium">{{ medication.manufacturer | maxtextlength: 15 }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="">{{ 'gdpApp.medication.strength' | translate }}</span>
+                <span class="font-medium">{{ medication.strength }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="">{{ 'gdpApp.medication.unitPrice' | translate }}</span>
+                <span class="font-medium">{{ medication.unitPrice | currency: 'HT' }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="">{{ 'gdpApp.medication.expiryDate' | translate }}</span>
+                <span class="font-medium">{{ medication.expiryDate | formatMediumDate }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Footer and actions -->
+          <div class="py-1 medication-card-footer border-surface-border flex justify-between mt-4">
+            <button
+              *ngIf="medication.active"
+              pButton
+              class="p-button-text hover:bg-surface-100"
+              icon="pi pi-pencil"
+              [label]="'gdpApp.medication.action.edit' | translate"
+              [pTooltip]="'gdpApp.medication.action.editTooltip' | translate"
+              tooltipPosition="bottom"
+            ></button>
+            <button
+              (click)="showMedicationDetails(medication)"
+              pButton
+              class="p-button-text hover:bg-surface-100"
+              icon="pi pi-eye"
+              [label]="'gdpApp.medication.action.view' | translate"
+              [pTooltip]="'gdpApp.medication.action.viewTooltip' | translate"
+              tooltipPosition="bottom"
+            ></button>
+          </div>
+        </p-card>
+      }
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center mt-4">
+      <p-paginator
+        [rows]="itemsPerPage"
+        [totalRecords]="totalItems"
+        [rowsPerPageOptions]="[20, 35, 50, 100]"
+        (onPageChange)="onPageChange($event)"
+      ></p-paginator>
+    </div>
+  </div>
 </div>
+
+@if (selectedMedication && displayDetailDialog) {
+  <p-dialog
+    [(visible)]="displayDetailDialog"
+    [style]="{ width: '680px' }"
+    [header]="'gdpApp.medication.detail.title' | translate"
+    [modal]="true"
+    styleClass="p-fluid"
+    (onHide)="closeDetailDialog()"
+  >
+    <jhi-medication-detail [medication]="selectedMedication"></jhi-medication-detail>
+    <ng-template pTemplate="footer">
+      <div class="flex justify-end gap-2">
+        <p-button (click)="closeDetailDialog()" [label]="'userManagement.home.popCloseLabel' | translate" styleClass="p-button-text">
+        </p-button>
+      </div>
+    </ng-template>
+  </p-dialog>
+}
+
+@if (selectedMedication) {
+  <!-- dialog to edit a medication -->
+  <p-dialog
+    [(visible)]="displayFormDialog"
+    [style]="{ width: '700px' }"
+    [header]="'gdpApp.medication.home.title' | translate"
+    [modal]="true"
+    styleClass="p-fluid"
+    (onHide)="closeFormDialog()"
+  >
+    <jhi-medication-update></jhi-medication-update>
+    <ng-template pTemplate="footer">
+      <div class="flex justify-end gap-2">
+        <p-button (click)="closeFormDialog()" [label]="'userManagement.home.popCloseLabel' | translate" styleClass="p-button-text">
+        </p-button>
+      </div>
+    </ng-template>
+  </p-dialog>
+} @else {
+  <!-- dialog to create a new medication -->
+  <p-dialog
+    [(visible)]="displayFormDialog"
+    [style]="{ width: '700px' }"
+    [header]="'gdpApp.medication.detail.title' | translate"
+    [modal]="true"
+    styleClass="p-fluid"
+    (onHide)="closeFormDialog()"
+  >
+    <jhi-medication-update></jhi-medication-update>
+    <ng-template pTemplate="footer">
+      <div class="flex justify-end gap-2">
+        <p-button (click)="closeFormDialog()" [label]="'userManagement.home.popCloseLabel' | translate" styleClass="p-button-text">
+        </p-button>
+      </div>
+    </ng-template>
+  </p-dialog>
+}

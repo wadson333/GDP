@@ -1,0 +1,35 @@
+.medication-detail-container {
+  min-height: 500px; // Fixed height
+  // overflow: hidden;
+
+  ::ng-deep {
+    .p-tabview {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      //   .p-tabview-panels {
+      //     flex: 1;
+      //     padding: 1.25rem;
+      //   }
+
+      //   .p-tabview-nav {
+      //     position: sticky;
+      //     top: 0;
+      //     z-index: 1;
+      //     background: var(--surface-card);
+      //   }
+    }
+
+    // .p-accordion {
+    //   .p-accordion-header-text {
+    //     flex: 1;
+    //   }
+
+    //   .p-accordion-content {
+    //     max-height: 300px;
+    //     overflow-y: auto;
+    //   }
+    // }
+  }
+}

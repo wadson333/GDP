@@ -8,11 +8,13 @@ import FindLanguageFromKeyPipe from './language/find-language-from-key.pipe';
 import TranslateDirective from './language/translate.directive';
 import { AlertComponent } from './alert/alert.component';
 import { AlertErrorComponent } from './alert/alert-error.component';
+import { MaxtextLengthPipe } from './pipe/max-text-length.pipe';
 
 /**
  * Application wide Module
  */
 @NgModule({
+  declarations: [MaxtextLengthPipe],
   imports: [AlertComponent, AlertErrorComponent, FindLanguageFromKeyPipe, TranslateDirective],
   exports: [
     CommonModule,
@@ -23,6 +25,7 @@ import { AlertErrorComponent } from './alert/alert-error.component';
     TranslateModule,
     FindLanguageFromKeyPipe,
     TranslateDirective,
+    MaxtextLengthPipe,
   ],
 })
 export default class SharedModule {}

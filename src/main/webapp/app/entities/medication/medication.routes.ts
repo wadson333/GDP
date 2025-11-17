@@ -10,33 +10,34 @@ const medicationRoute: Routes = [
     loadComponent: () => import('./list/medication.component').then(m => m.MedicationComponent),
     data: {
       defaultSort: `id,${ASC}`,
+      breadcrumb: 'gdpApp.medication.breadcrumb',
     },
     canActivate: [UserRouteAccessService],
   },
-  {
-    path: ':id/view',
-    loadComponent: () => import('./detail/medication-detail.component').then(m => m.MedicationDetailComponent),
-    resolve: {
-      medication: MedicationResolve,
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: 'new',
-    loadComponent: () => import('./update/medication-update.component').then(m => m.MedicationUpdateComponent),
-    resolve: {
-      medication: MedicationResolve,
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: ':id/edit',
-    loadComponent: () => import('./update/medication-update.component').then(m => m.MedicationUpdateComponent),
-    resolve: {
-      medication: MedicationResolve,
-    },
-    canActivate: [UserRouteAccessService],
-  },
+  // {
+  //   path: ':id/view',
+  //   loadComponent: () => import('./detail/medication-detail.component').then(m => m.MedicationDetailComponent),
+  //   resolve: {
+  //     medication: MedicationResolve,
+  //   },
+  //   canActivate: [UserRouteAccessService],
+  // },
+  // {
+  //   path: 'new',
+  //   loadComponent: () => import('./update/medication-update.component').then(m => m.MedicationUpdateComponent),
+  //   resolve: {
+  //     medication: MedicationResolve,
+  //   },
+  //   canActivate: [UserRouteAccessService],
+  // },
+  // {
+  //   path: ':id/edit',
+  //   loadComponent: () => import('./update/medication-update.component').then(m => m.MedicationUpdateComponent),
+  //   resolve: {
+  //     medication: MedicationResolve,
+  //   },
+  //   canActivate: [UserRouteAccessService],
+  // },
 ];
 
 export default medicationRoute;

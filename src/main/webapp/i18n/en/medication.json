@@ -3,8 +3,9 @@
     "medication": {
       "home": {
         "title": "Medications",
-        "refreshListLabel": "Refresh list",
-        "createLabel": "Create a new Medication",
+        "refreshListLabel": "Refresh",
+        "createLabel": "medication",
+        "createTooltip": "Create a new Medication",
         "createOrEditLabel": "Create or edit a Medication",
         "notFound": "No Medications found"
       },
@@ -15,7 +16,59 @@
         "question": "Are you sure you want to delete Medication {{ id }}?"
       },
       "detail": {
-        "title": "Medication"
+        "title": "Medication Details",
+        "tabs": {
+          "general": "General",
+          "medical": "Medical Information",
+          "audit": "Audit"
+        },
+        "status": {
+          "expired": "Expired",
+          "nearExpiry": "Near Expiry",
+          "valid": "Valid"
+        },
+        "action": {
+          "export": "Export",
+          "deactivate": "Deactivate",
+          "exportDetails": "Export Details"
+        },
+        "audit": {
+          "createdBy": "Created by",
+          "lastModifiedBy": "Modified by"
+        },
+        "deactivate": {
+          "confirmationTitle": "Deactivation Confirmation",
+          "confirmationMessage": "Are you sure you want to deactivate this medication?",
+          "success": "Medication has been deactivated",
+          "error": "Error deactivating medication"
+        }
+      },
+      "form": {
+        "steps": {
+          "basic": "Basic Information",
+          "details": "Technical Details",
+          "medical": "Medical Information"
+        },
+        "validation": {
+          "nameRequired": "Name is required",
+          "nameNotUnique": "This name is already in use",
+          "internationalNameRequired": "International name is required",
+          "codeAtcRequired": "ATC code is required",
+          "routeRequired": "Route of administration is required"
+        },
+        "image": {
+          "error": {
+            "size": "Image size error",
+            "sizeDetail": "Image must be less than 5MB",
+            "type": "Invalid file type",
+            "typeDetail": "Only JPG, PNG and WebP images are allowed"
+          },
+          "chooseImage": "Choose Image"
+        },
+        "saveSuccess": "Medication saved successfully",
+        "saveError": "Error saving medication",
+        "updateSuccess": "Medication updated successfully",
+        "createSuccess": "Medication created successfully"
       },
       "id": "ID",
       "name": "Name",
@@ -30,7 +83,7 @@
       "packaging": "Packaging",
       "prescriptionStatus": "Prescription Status",
       "description": "Description",
-      "expiryDate": "Expiry Date",
+      "expiryDate": "Expiration Date",
       "barcode": "Barcode",
       "storageCondition": "Storage Condition",
       "unitPrice": "Unit Price",
@@ -65,6 +118,71 @@
         "active": "Statut actif ou inactif (permet d’archiver un médicament)",
         "isGeneric": "Ce médicament est-il générique ?",
         "riskLevel": "Niveau de risque lié au médicament"
+      },
+      "action": {
+        "view": "View",
+        "viewTooltip": "View details",
+        "edit": "Edit",
+        "editTooltip": "Edit Medication",
+        "delete": "Delete",
+        "deleteTooltip": "Delete Medication",
+        "save": "Save",
+        "cancel": "Cancel",
+        "label": "Actions"
+      },
+      "search": {
+        "reset": "Reset",
+        "apply": "Apply",
+        "search": "Search",
+        "searchTooltip": "Search",
+        "namePlaceholder": "search by name or code...",
+        "statusPlaceholder": "Status",
+        "advancedTooltip": "Advanced search",
+        "clearTooltip": "Clear filters",
+        "minPrice": "Min price",
+        "maxPrice": "Max price",
+        "noResults": "No medications found matching your criteria",
+        "toggleAdvanced": "Toggle advanced search",
+        "typePlaceholder": "Type",
+        "methodPlaceholder": "Method",
+        "riskLevelPlaceholder": "Risk Level",
+        "advancedFilters": "Filtres avancés",
+        "codeAtcPlaceholder": "Code ATC",
+        "routeOfAdministrationPlaceholder": "Voie d'administration",
+        "formulationPlaceholder": "Formulation",
+        "strengthPlaceholder": "Dosage",
+        "manufacturerPlaceholder": "Fabricant",
+        "marketingAuthorizationNumberPlaceholder": "Numéro d'Autorisation de Mise sur le Marché",
+        "marketingAuthorizationDatePlaceholder": "Date d'obtention de l'AMM",
+        "packagingPlaceholder": "Packaging",
+        "prescriptionStatusPlaceholder": "Statut de Prescription",
+        "descriptionPlaceholder": "Description",
+        "expiryDatePlaceholder": "Date d'Expiration",
+        "barcodePlaceholder": "Code-barres",
+        "storageConditionPlaceholder": "Conditions de Stockage",
+        "unitPricePlaceholder": "Prix Unitaire",
+        "imagePlaceholder": "Image",
+        "compositionPlaceholder": "Composition",
+        "contraindicationsPlaceholder": "Contre-indications",
+        "sideEffectsPlaceholder": "Effets Secondaires",
+        "activePlaceholder": "Actif",
+        "isGenericPlaceholder": "Est Générique"
+      },
+      "toolbar": {
+        "exportLabel": "Export Medications",
+        "exportToExcel": "Export to Excel",
+        "exportToCsv": "Export to CSV",
+        "exportToPdf": "Export to PDF",
+        "toggleViewTooltip": "Toggle view mode"
+      },
+      "breadcrumb": "Medication Management"
+    },
+
+    "common": {
+      "status": {
+        "all": "Tous",
+        "active": "Actif",
+        "inactive": "Inactif"
       }
     }
   }

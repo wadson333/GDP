@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 
 import dayjs from 'dayjs/esm';
 
@@ -96,6 +96,30 @@ export class MedicationService {
       return [...medicationsToAdd, ...medicationCollection];
     }
     return medicationCollection;
+  }
+
+  /**
+   * Check if medication name is unique
+   */
+  checkNameUniqueness(name: string): Observable<boolean> {
+    if (!name) {
+      return of(true);
+    }
+    return this.http.get<IMedication[]>(`${this.resourceUrl}?name.equals=${name}`).pipe(map(medications => medications.length === 0));
+  }
+
+  /**
+   * Upload medication image
+   */
+  uploadImage(id: number, formData: FormData): Observable<HttpResponse<IMedication>> {
+    return this.http.post<IMedication>(`${this.resourceUrl}/${id}/image`, formData, { observe: 'response' });
+  }
+
+  /**
+   * Update medication image URL
+   */
+  updateImageUrl(id: number, imageUrl: string): Observable<HttpResponse<IMedication>> {
+    return this.http.patch<IMedication>(`${this.resourceUrl}/${id}`, { id, image: imageUrl }, { observe: 'response' });
   }
 
   protected convertDateFromClient<T extends IMedication | NewMedication | PartialUpdateMedication>(medication: T): RestOf<T> {

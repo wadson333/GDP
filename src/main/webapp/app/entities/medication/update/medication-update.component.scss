@@ -1,0 +1,38 @@
+:host ::ng-deep {
+  .p-steps {
+    .p-steps-item {
+      &:before {
+        // @apply border-surface-200 dark:border-surface-700;
+      }
+
+      .p-menuitem-link {
+        .p-steps-number {
+          //   @apply bg-primary-500;
+        }
+      }
+
+      &.p-highlight {
+        .p-steps-number {
+          //   @apply bg-primary-700;
+        }
+      }
+
+      &.p-complete {
+        .p-steps-number {
+          @apply bg-green-500;
+        }
+      }
+    }
+  }
+
+  .required:after {
+    content: '*';
+    @apply text-red-500 ml-1;
+  }
+}
+
+.field {
+  small.p-error {
+    @apply block mt-1;
+  }
+}

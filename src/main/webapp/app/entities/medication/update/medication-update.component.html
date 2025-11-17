@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-center">
+<!-- <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2 id="jhi-medication-heading" data-cy="MedicationCreateUpdateHeading" jhiTranslate="gdpApp.medication.home.createOrEditLabel">
@@ -530,4 +530,221 @@
       </div>
     </form>
   </div>
+</div> -->
+
+<div class="card">
+  <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+    <p-steps [model]="steps" [(activeIndex)]="activeStep" [readonly]="true"></p-steps>
+
+    <div class="mt-4">
+      <!-- Step 1: Basic Information -->
+      <div *ngIf="activeStep === 0" class="grid formgrid p-fluid">
+        <div class="field col-12 md:col-6">
+          <label class="required" for="name">{{ 'gdpApp.medication.name' | translate }}</label>
+          <span class="p-input-icon-right w-full">
+            <i *ngIf="editForm.get('name')?.pending" class="pi pi-spin pi-spinner"></i>
+            <input id="name" type="text" pInputText formControlName="name" />
+          </span>
+          <small class="p-error" *ngIf="editForm.get('name')?.errors?.required && editForm.get('name')?.touched">
+            {{ 'gdpApp.medication.form.validation.nameRequired' | translate }}
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label class="required" for="internationalName">{{ 'gdpApp.medication.internationalName' | translate }}</label>
+          <input id="internationalName" type="text" pInputText formControlName="internationalName" />
+          <small class="p-error" *ngIf="editForm.get('internationalName')?.errors?.required && editForm.get('internationalName')?.touched">
+            {{ 'gdpApp.medication.form.validation.internationalNameRequired' | translate }}
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label class="required" for="codeAtc">{{ 'gdpApp.medication.codeAtc' | translate }}</label>
+          <input id="codeAtc" type="text" pInputText formControlName="codeAtc" />
+          <small class="p-error" *ngIf="editForm.get('codeAtc')?.errors?.required && editForm.get('codeAtc')?.touched">
+            {{ 'gdpApp.medication.form.validation.codeAtcRequired' | translate }}
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label class="required" for="routeOfAdministration">{{ 'gdpApp.medication.routeOfAdministration' | translate }}</label>
+          <p-dropdown
+            id="routeOfAdministration"
+            [options]="routeAdminValues"
+            formControlName="routeOfAdministration"
+            optionLabel="label"
+          ></p-dropdown>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label class="required" for="prescriptionStatus">{{ 'gdpApp.medication.prescriptionStatus' | translate }}</label>
+          <p-dropdown
+            id="prescriptionStatus"
+            [options]="prescriptionStatusValues"
+            formControlName="prescriptionStatus"
+            optionLabel="label"
+          ></p-dropdown>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label class="required" for="riskLevel">{{ 'gdpApp.medication.riskLevel' | translate }}</label>
+          <p-dropdown id="riskLevel" [options]="riskLevelValues" formControlName="riskLevel" optionLabel="label"></p-dropdown>
+        </div>
+      </div>
+
+      <!-- Step 2: Technical Details -->
+      <div *ngIf="activeStep === 1" class="grid formgrid p-fluid">
+        <div class="field col-12 md:col-6">
+          <label for="formulation">{{ 'gdpApp.medication.formulation' | translate }}</label>
+          <input id="formulation" type="text" pInputText formControlName="formulation" />
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="strength">{{ 'gdpApp.medication.strength' | translate }}</label>
+          <input id="strength" type="text" pInputText formControlName="strength" />
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="manufacturer">{{ 'gdpApp.medication.manufacturer' | translate }}</label>
+          <input id="manufacturer" type="text" pInputText formControlName="manufacturer" />
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="marketingAuthorizationNumber">{{ 'gdpApp.medication.marketingAuthNumber' | translate }}</label>
+          <input id="marketingAuthorizationNumber" type="text" pInputText formControlName="marketingAuthorizationNumber" />
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="marketingAuthorizationDate">{{ 'gdpApp.medication.marketingAuthDate' | translate }}</label>
+          <p-calendar id="marketingAuthorizationDate" formControlName="marketingAuthorizationDate" dateFormat="dd/mm/yy"></p-calendar>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="expiryDate">{{ 'gdpApp.medication.expiryDate' | translate }}</label>
+          <p-calendar id="expiryDate" formControlName="expiryDate" dateFormat="dd/mm/yy"></p-calendar>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="packaging">{{ 'gdpApp.medication.packaging' | translate }}</label>
+          <input id="packaging" type="text" pInputText formControlName="packaging" />
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="barcode">{{ 'gdpApp.medication.barcode' | translate }}</label>
+          <input id="barcode" type="text" pInputText formControlName="barcode" />
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="unitPrice">{{ 'gdpApp.medication.unitPrice' | translate }}</label>
+          <p-inputNumber id="unitPrice" formControlName="unitPrice" mode="currency" currency="HTG"></p-inputNumber>
+        </div>
+
+        <div class="field col-12">
+          <label for="image">{{ 'gdpApp.medication.image' | translate }}</label>
+          <div class="flex gap-4 align-items-start">
+            <div class="flex-grow-1">
+              <input type="text" id="image" pInputText formControlName="image" class="mb-2" />
+              <p-fileUpload
+                mode="basic"
+                chooseLabel="{{ 'gdpApp.medication.form.chooseImage' | translate }}"
+                [auto]="true"
+                accept="image/*"
+                [maxFileSize]="5000000"
+                (onSelect)="onImageSelected($event)"
+                styleClass="w-full"
+              >
+              </p-fileUpload>
+            </div>
+            <div *ngIf="imagePreview || editForm.get('image')?.value" class="w-24 h-24">
+              <img
+                [src]="imagePreview || editForm.get('image')?.value"
+                class="w-full h-full object-contain border-1 surface-border border-round"
+                alt="Preview"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Medical Information -->
+      <div *ngIf="activeStep === 2" class="grid formgrid p-fluid">
+        <div class="field col-12">
+          <label for="description">{{ 'gdpApp.medication.description' | translate }}</label>
+          <textarea id="description" pInputTextarea formControlName="description" [rows]="4" [autoResize]="true"></textarea>
+        </div>
+
+        <div class="field col-12">
+          <label for="composition">{{ 'gdpApp.medication.composition' | translate }}</label>
+          <textarea id="composition" pInputTextarea formControlName="composition" [rows]="4" [autoResize]="true"></textarea>
+        </div>
+
+        <div class="field col-12">
+          <label for="contraindications">{{ 'gdpApp.medication.contraindications' | translate }}</label>
+          <textarea id="contraindications" pInputTextarea formControlName="contraindications" [rows]="4" [autoResize]="true"></textarea>
+        </div>
+
+        <div class="field col-12">
+          <label for="sideEffects">{{ 'gdpApp.medication.sideEffects' | translate }}</label>
+          <textarea id="sideEffects" pInputTextarea formControlName="sideEffects" [rows]="4" [autoResize]="true"></textarea>
+        </div>
+
+        <div class="field col-12">
+          <label for="storageCondition">{{ 'gdpApp.medication.storageCondition' | translate }}</label>
+          <textarea id="storageCondition" pInputTextarea formControlName="storageCondition" [rows]="4" [autoResize]="true"></textarea>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <div class="flex align-items-center gap-2">
+            <p-checkbox id="active" formControlName="active" [binary]="true"></p-checkbox>
+            <label for="active">{{ 'gdpApp.medication.active' | translate }}</label>
+          </div>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <div class="flex align-items-center gap-2">
+            <p-checkbox id="isGeneric" formControlName="isGeneric" [binary]="true"></p-checkbox>
+            <label for="isGeneric">{{ 'gdpApp.medication.isGeneric' | translate }}</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="flex justify-content-between mt-4">
+        <button
+          pButton
+          type="button"
+          [label]="'common.back' | translate"
+          icon="pi pi-arrow-left"
+          class="p-button-secondary"
+          (click)="prevStep()"
+          *ngIf="activeStep > 0"
+        ></button>
+
+        <div class="flex gap-2">
+          <button pButton type="button" [label]="'common.cancel' | translate" class="p-button-text" (click)="previousState()"></button>
+
+          <button
+            *ngIf="activeStep < steps.length - 1"
+            pButton
+            type="button"
+            [label]="'common.next' | translate"
+            icon="pi pi-arrow-right"
+            iconPos="right"
+            [disabled]="!canProceedToNextStep()"
+            (click)="nextStep()"
+          ></button>
+
+          <button
+            *ngIf="activeStep === steps.length - 1"
+            pButton
+            type="submit"
+            [label]="'common.save' | translate"
+            icon="pi pi-check"
+            [loading]="isSaving"
+            [disabled]="editForm.invalid || isSaving"
+          ></button>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>

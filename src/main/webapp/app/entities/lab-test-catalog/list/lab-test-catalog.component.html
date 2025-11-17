@@ -320,6 +320,7 @@
           icon="pi pi-times"
           [pTooltip]="'gdpApp.labTestCatalog.clearSearchLabel' | translate"
           tooltipPosition="bottom"
+          [severity]="'danger'"
           [style.visibility]="hasActiveFilters() ? 'visible' : 'hidden'"
         ></p-button>
 
@@ -387,7 +388,7 @@
       <!-- create button -->
       <p-button
         icon="pi pi-plus"
-        class="mr-1"
+        class="ms-1"
         [label]="'gdpApp.labTestCatalog.home.createLabel' | translate"
         tooltipPosition="bottom"
         [pTooltip]="'gdpApp.labTestCatalog.home.createTootltip' | translate"

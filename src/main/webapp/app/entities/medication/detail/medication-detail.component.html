@@ -1,6 +1,6 @@
-<div class="d-flex justify-content-center">
+<!-- <div class="d-flex justify-content-center">
   <div class="col-8">
-    @if (medication(); as medicationRef) {
+    @if (medication; as medicationRef) {
       <div>
         <h2 data-cy="medicationDetailsHeading"><span jhiTranslate="gdpApp.medication.detail.title">Medication</span></h2>
 
@@ -205,4 +205,192 @@
       </div>
     }
   </div>
+</div> -->
+
+<div class="surface-section py-2 px-2 medication-detail-container">
+  @if (medication) {
+    <div class="flex justify-end mb-1">
+      <button
+        pButton
+        type="button"
+        class="p-button-text"
+        (click)="exportDetailsToPdf()"
+        icon="pi pi-file-export"
+        [pTooltip]="'gdpApp.medication.detail.action.exportDetails' | translate"
+      ></button>
+    </div>
+    <p-tabView [(activeIndex)]="activeTab" styleClass="medication-detail-tabs">
+      <!-- General Tab -->
+      <p-tabPanel [header]="'gdpApp.medication.detail.tabs.general' | translate">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Basic Info -->
+          <div class="col-span-full">
+            <div class="flex surface-ground border-round">
+              <div class="flex-grow flex gap-4 items-start">
+                <!-- Image -->
+                <div class="w-24 h-24 flex items-center justify-center bg-surface-50 rounded-lg overflow-hidden">
+                  <img
+                    *ngIf="medication.image"
+                    src="../../../../content/images/medication.jpg"
+                    [alt]="medication.name"
+                    class="w-full h-full object-cover"
+                  />
+                  <i *ngIf="!medication.image" class="pi pi-image text-4xl text-surface-400"></i>
+                </div>
+
+                <!-- Name and Status -->
+                <div class="flex-grow">
+                  <div class="text-sm font-bold mb-1">#{{ medication.id }}</div>
+                  <h3 class="text-xl font-semibold mb-2">{{ medication.name }}</h3>
+                  <div class="flex gap-2 flex-wrap">
+                    <p-tag
+                      *ngIf="medication.prescriptionStatus"
+                      [severity]="'info'"
+                      [value]="'gdpApp.PrescriptionStatus.' + medication.prescriptionStatus | translate"
+                    >
+                    </p-tag>
+                    <p-badge *ngIf="isExpired()" severity="danger" [value]="'gdpApp.medication.detail.status.expired' | translate">
+                    </p-badge>
+                    <p-badge *ngIf="isNearExpiry()" severity="warning" [value]="'gdpApp.medication.detail.status.nearExpiry' | translate">
+                    </p-badge>
+                  </div>
+                </div>
+              </div>
+              @if (medication.barcode) {
+                <div class="self-end surface-ground border-round">
+                  <div class="flex flex-col items-center p-3 bg-white dark:bg-surface-800 rounded-lg">
+                    <ngx-barcode6
+                      [bc-value]="medication.barcode"
+                      [bc-display-value]="true"
+                      [bc-width]="1.5"
+                      [bc-height]="50"
+                      [bc-font-size]="12"
+                      [bc-margin-top]="10"
+                      [bc-margin-bottom]="10"
+                    ></ngx-barcode6>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+          <div class="col-span-full px-4">
+            <label class="block text-sm font-medium mb-2">{{ 'gdpApp.medication.description' | translate }}</label>
+            <p class="whitespace-pre-line">{{ medication.description || '-' }}</p>
+          </div>
+          <div class="col-span-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Add all fields in a organized way -->
+            <div class="p-4 surface-ground border-round">
+              <label class="block text-sm font-medium mb-2">{{ 'gdpApp.medication.internationalName' | translate }}</label>
+              <div class="text-surface-900 font-semibold">{{ medication.internationalName || '-' }}</div>
+            </div>
+
+            <div class="p-4 surface-ground border-round">
+              <label class="block text-sm font-medium mb-2">{{ 'gdpApp.medication.codeAtc' | translate }}</label>
+              <div class="text-surface-900 font-semibold">{{ medication.codeAtc || '-' }}</div>
+            </div>
+
+            <div class="p-4 surface-ground border-round">
+              <label class="block text-sm font-medium mb-2">{{ 'gdpApp.medication.formulation' | translate }}</label>
+              <div class="text-surface-900 font-semibold">{{ medication.formulation || '-' }}</div>
+            </div>
+
+            <div class="p-4 surface-ground border-round">
+              <label class="block text-sm font-medium mb-2">{{ 'gdpApp.medication.strength' | translate }}</label>
+              <div class="text-surface-900 font-semibold">{{ medication.strength || '-' }}</div>
+            </div>
+
+            <div class="p-4 surface-ground border-round">
+              <label class="block text-sm font-medium mb-2">{{ 'gdpApp.medication.routeOfAdministration' | translate }}</label>
+              <div class="text-surface-900 font-semibold">
+                {{ medication.routeOfAdministration ? ('gdpApp.RouteAdmin.' + medication.routeOfAdministration | translate) : '-' }}
+              </div>
+            </div>
+
+            <div class="p-4 surface-ground border-round">
+              <label class="block text-sm font-medium mb-2">{{ 'gdpApp.medication.manufacturer' | translate }}</label>
+              <div class="text-surface-900 font-semibold">{{ medication.manufacturer || '-' }}</div>
+            </div>
+
+            <div class="p-4 surface-ground border-round">
+              <label class="block text-sm font-medium mb-2">{{ 'gdpApp.medication.marketingAuthorizationNumber' | translate }}</label>
+              <div class="text-surface-900 font-semibold">{{ medication.marketingAuthorizationNumber || '-' }}</div>
+            </div>
+
+            <div class="p-4 surface-ground border-round">
+              <label class="block text-sm font-medium mb-2">{{ 'gdpApp.medication.marketingAuthorizationDate' | translate }}</label>
+              <div class="text-surface-900 font-semibold">{{ medication.marketingAuthorizationDate | formatMediumDate }}</div>
+            </div>
+
+            <div class="p-4 surface-ground border-round">
+              <label class="block text-sm font-medium mb-2">{{ 'gdpApp.medication.packaging' | translate }}</label>
+              <div class="text-surface-900 font-semibold">{{ medication.packaging || '-' }}</div>
+            </div>
+
+            <div class="p-4 surface-ground border-round">
+              <label class="block text-sm font-medium mb-2">{{ 'gdpApp.medication.barcode' | translate }}</label>
+              <div class="text-surface-900 font-semibold">{{ medication.barcode || '-' }}</div>
+            </div>
+
+            <div class="p-4 surface-ground border-round">
+              <label class="block text-sm font-medium mb-2">{{ 'gdpApp.medication.unitPrice' | translate }}</label>
+              <div class="text-surface-900 font-semibold">{{ medication.unitPrice | currency: 'HTG' }}</div>
+            </div>
+
+            <div class="p-4 surface-ground border-round">
+              <label class="block text-sm font-medium mb-2">{{ 'gdpApp.medication.expiryDate' | translate }}</label>
+              <div class="text-surface-900 font-semibold">{{ medication.expiryDate | formatMediumDate }}</div>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+
+      <!-- Medical Information Tab -->
+      <p-tabPanel [header]="'gdpApp.medication.detail.tabs.medical' | translate">
+        <p-accordion>
+          <!-- Composition -->
+          <p-accordionTab [header]="'gdpApp.medication.composition' | translate">
+            <p class="whitespace-pre-line">{{ medication.composition }}</p>
+          </p-accordionTab>
+
+          <!-- Contraindications -->
+          <p-accordionTab [header]="'gdpApp.medication.contraindications' | translate">
+            <p class="whitespace-pre-line">{{ medication.contraindications }}</p>
+          </p-accordionTab>
+
+          <!-- Side Effects -->
+          <p-accordionTab [header]="'gdpApp.medication.sideEffects' | translate">
+            <p class="whitespace-pre-line">{{ medication.sideEffects }}</p>
+          </p-accordionTab>
+
+          <!-- Storage Conditions -->
+          <p-accordionTab [header]="'gdpApp.medication.storageCondition' | translate">
+            <p class="whitespace-pre-line">{{ medication.storageCondition }}</p>
+          </p-accordionTab>
+        </p-accordion>
+      </p-tabPanel>
+
+      <!-- Audit Tab -->
+      <p-tabPanel [header]="'gdpApp.medication.detail.tabs.audit' | translate">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Created Info -->
+          <div class="p-4 surface-ground border-round">
+            <label class="block text-sm font-medium mb-2">{{ 'gdpApp.medication.detail.audit.createdBy' | translate }}</label>
+            <div class="text-surface-900">{{ medication.createdBy }}</div>
+            <div class="text-sm text-surface-600 font-semibold mt-1">
+              {{ medication.createdDate | date: 'medium' }}
+            </div>
+          </div>
+
+          <!-- Modified Info -->
+          <div class="p-4 surface-ground border-round">
+            <label class="block text-sm font-medium mb-2">{{ 'gdpApp.medication.detail.audit.lastModifiedBy' | translate }}</label>
+            <div class="text-surface-900">{{ medication.lastModifiedBy }}</div>
+            <div class="text-sm text-surface-600 mt-1 font-semibold">
+              {{ medication.lastModifiedDate | date: 'medium' }}
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+  }
 </div>

@@ -1,7 +1,9 @@
 package com.ciatch.gdp.web.rest;
 
 import com.ciatch.gdp.repository.MedicationRepository;
+import com.ciatch.gdp.service.MedicationQueryService;
 import com.ciatch.gdp.service.MedicationService;
+import com.ciatch.gdp.service.criteria.MedicationCriteria;
 import com.ciatch.gdp.service.dto.MedicationDTO;
 import com.ciatch.gdp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -42,9 +44,16 @@ public class MedicationResource {
 
     private final MedicationRepository medicationRepository;
 
-    public MedicationResource(MedicationService medicationService, MedicationRepository medicationRepository) {
+    private final MedicationQueryService medicationQueryService;
+
+    public MedicationResource(
+        MedicationService medicationService,
+        MedicationRepository medicationRepository,
+        MedicationQueryService medicationQueryService
+    ) {
         this.medicationService = medicationService;
         this.medicationRepository = medicationRepository;
+        this.medicationQueryService = medicationQueryService;
     }
 
     /**
@@ -141,10 +150,28 @@ public class MedicationResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of medications in body.
      */
+    // @GetMapping("")
+    // public ResponseEntity<List<MedicationDTO>> getAllMedications(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+    //     LOG.debug("REST request to get a page of Medications");
+    //     Page<MedicationDTO> page = medicationService.findAll(pageable);
+    //     HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+    //     return ResponseEntity.ok().headers(headers).body(page.getContent());
+    // }
+
+    /**
+     * {@code GET  /medications} : get all the medications by criteria.
+     *
+     * @param criteria the criteria by which to filter medications.
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of medications in body.
+     */
     @GetMapping("")
-    public ResponseEntity<List<MedicationDTO>> getAllMedications(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        LOG.debug("REST request to get a page of Medications");
-        Page<MedicationDTO> page = medicationService.findAll(pageable);
+    public ResponseEntity<List<MedicationDTO>> getAllMedications(
+        MedicationCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        LOG.debug("REST request to get Medications by criteria: {}", criteria);
+        Page<MedicationDTO> page = medicationQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
