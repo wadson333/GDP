@@ -1,23 +1,27 @@
 package com.ciatch.gdp.domain;
 
+import com.ciatch.gdp.domain.enumeration.BloodType;
 import com.ciatch.gdp.domain.enumeration.Gender;
+import com.ciatch.gdp.domain.enumeration.PatientStatus;
+import com.ciatch.gdp.domain.enumeration.SmokingStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.util.UUID;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * Table centrale: contient les informations d'identification et administratives des patients.
- * @encryptedFields address, phone1, phone2, email, contactPersonName, contactPersonPhone, antecedents, allergies
- * @hashedFields nif, ninu, passportNumber
+ * A Patient.
  */
 @Entity
 @Table(name = "patient")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Patient implements Serializable {
+public class Patient extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,6 +30,9 @@ public class Patient implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "uid")
+    private UUID uid;
 
     @NotNull
     @Column(name = "first_name", nullable = false)
@@ -43,55 +50,104 @@ public class Patient implements Serializable {
     @Column(name = "gender")
     private Gender gender;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "blood_type")
-    private String bloodType;
+    private BloodType bloodType;
 
-    @Lob
+    // @Lob
     @Column(name = "address")
     private String address;
 
     @NotNull
+    @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$")
     @Column(name = "phone_1", nullable = false)
     private String phone1;
 
+    @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$")
     @Column(name = "phone_2")
     private String phone2;
 
-    @Column(name = "email", unique = true)
-    private String email;
-
-    @Column(name = "nif", unique = true)
+    @Size(min = 10, max = 10)
+    @Column(name = "nif", length = 10, unique = true)
     private String nif;
 
-    @Column(name = "ninu", unique = true)
+    @Size(min = 10, max = 10)
+    @Column(name = "ninu", length = 10, unique = true)
     private String ninu;
 
+    @Column(name = "medical_record_number", unique = true)
+    private String medicalRecordNumber;
+
+    @Min(value = 0)
+    @Max(value = 300)
     @Column(name = "height_cm")
     private Integer heightCm;
 
-    @Column(name = "weight_kg")
-    private Double weightKg;
+    @DecimalMin(value = "0")
+    @DecimalMax(value = "500")
+    @Column(name = "weight_kg", precision = 21, scale = 2)
+    private BigDecimal weightKg;
 
-    @Column(name = "passport_number", unique = true)
+    @Size(min = 3, max = 15)
+    @Column(name = "passport_number", length = 15, unique = true)
     private String passportNumber;
 
-    @Column(name = "contact_person_name")
+    @Size(max = 100)
+    @Column(name = "contact_person_name", length = 100)
     private String contactPersonName;
 
+    @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$")
     @Column(name = "contact_person_phone")
     private String contactPersonPhone;
 
-    @Lob
+    // @Lob
     @Column(name = "antecedents")
     private String antecedents;
 
-    @Lob
+    // @Lob
     @Column(name = "allergies")
     private String allergies;
 
-    /**
-     * Un dossier patient est lié à un et un seul compte utilisateur (pour le portail).
-     */
+    // @Lob
+    @Column(name = "clinical_notes")
+    private String clinicalNotes;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "smoking_status")
+    private SmokingStatus smokingStatus;
+
+    @Column(name = "gdpr_consent_date")
+    private ZonedDateTime gdprConsentDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private PatientStatus status;
+
+    @Column(name = "deceased_date")
+    private ZonedDateTime deceasedDate;
+
+    @Size(max = 200)
+    @Column(name = "insurance_company_name", length = 200)
+    private String insuranceCompanyName;
+
+    @Size(max = 100)
+    @Column(name = "patient_insurance_id", length = 100)
+    private String patientInsuranceId;
+
+    @Size(max = 100)
+    @Column(name = "insurance_policy_number", length = 100)
+    private String insurancePolicyNumber;
+
+    @Size(max = 100)
+    @Column(name = "insurance_coverage_type", length = 100)
+    private String insuranceCoverageType;
+
+    @Column(name = "insurance_valid_from")
+    private LocalDate insuranceValidFrom;
+
+    @Column(name = "insurance_valid_to")
+    private LocalDate insuranceValidTo;
+
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @NotNull
     @JoinColumn(unique = true)
@@ -110,6 +166,19 @@ public class Patient implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public UUID getUid() {
+        return this.uid;
+    }
+
+    public Patient uid(UUID uid) {
+        this.setUid(uid);
+        return this;
+    }
+
+    public void setUid(UUID uid) {
+        this.uid = uid;
     }
 
     public String getFirstName() {
@@ -164,16 +233,16 @@ public class Patient implements Serializable {
         this.gender = gender;
     }
 
-    public String getBloodType() {
+    public BloodType getBloodType() {
         return this.bloodType;
     }
 
-    public Patient bloodType(String bloodType) {
+    public Patient bloodType(BloodType bloodType) {
         this.setBloodType(bloodType);
         return this;
     }
 
-    public void setBloodType(String bloodType) {
+    public void setBloodType(BloodType bloodType) {
         this.bloodType = bloodType;
     }
 
@@ -216,19 +285,6 @@ public class Patient implements Serializable {
         this.phone2 = phone2;
     }
 
-    public String getEmail() {
-        return this.email;
-    }
-
-    public Patient email(String email) {
-        this.setEmail(email);
-        return this;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getNif() {
         return this.nif;
     }
@@ -255,6 +311,19 @@ public class Patient implements Serializable {
         this.ninu = ninu;
     }
 
+    public String getMedicalRecordNumber() {
+        return this.medicalRecordNumber;
+    }
+
+    public Patient medicalRecordNumber(String medicalRecordNumber) {
+        this.setMedicalRecordNumber(medicalRecordNumber);
+        return this;
+    }
+
+    public void setMedicalRecordNumber(String medicalRecordNumber) {
+        this.medicalRecordNumber = medicalRecordNumber;
+    }
+
     public Integer getHeightCm() {
         return this.heightCm;
     }
@@ -268,16 +337,16 @@ public class Patient implements Serializable {
         this.heightCm = heightCm;
     }
 
-    public Double getWeightKg() {
+    public BigDecimal getWeightKg() {
         return this.weightKg;
     }
 
-    public Patient weightKg(Double weightKg) {
+    public Patient weightKg(BigDecimal weightKg) {
         this.setWeightKg(weightKg);
         return this;
     }
 
-    public void setWeightKg(Double weightKg) {
+    public void setWeightKg(BigDecimal weightKg) {
         this.weightKg = weightKg;
     }
 
@@ -346,6 +415,149 @@ public class Patient implements Serializable {
         this.allergies = allergies;
     }
 
+    public String getClinicalNotes() {
+        return this.clinicalNotes;
+    }
+
+    public Patient clinicalNotes(String clinicalNotes) {
+        this.setClinicalNotes(clinicalNotes);
+        return this;
+    }
+
+    public void setClinicalNotes(String clinicalNotes) {
+        this.clinicalNotes = clinicalNotes;
+    }
+
+    public SmokingStatus getSmokingStatus() {
+        return this.smokingStatus;
+    }
+
+    public Patient smokingStatus(SmokingStatus smokingStatus) {
+        this.setSmokingStatus(smokingStatus);
+        return this;
+    }
+
+    public void setSmokingStatus(SmokingStatus smokingStatus) {
+        this.smokingStatus = smokingStatus;
+    }
+
+    public ZonedDateTime getGdprConsentDate() {
+        return this.gdprConsentDate;
+    }
+
+    public Patient gdprConsentDate(ZonedDateTime gdprConsentDate) {
+        this.setGdprConsentDate(gdprConsentDate);
+        return this;
+    }
+
+    public void setGdprConsentDate(ZonedDateTime gdprConsentDate) {
+        this.gdprConsentDate = gdprConsentDate;
+    }
+
+    public PatientStatus getStatus() {
+        return this.status;
+    }
+
+    public Patient status(PatientStatus status) {
+        this.setStatus(status);
+        return this;
+    }
+
+    public void setStatus(PatientStatus status) {
+        this.status = status;
+    }
+
+    public ZonedDateTime getDeceasedDate() {
+        return this.deceasedDate;
+    }
+
+    public Patient deceasedDate(ZonedDateTime deceasedDate) {
+        this.setDeceasedDate(deceasedDate);
+        return this;
+    }
+
+    public void setDeceasedDate(ZonedDateTime deceasedDate) {
+        this.deceasedDate = deceasedDate;
+    }
+
+    public String getInsuranceCompanyName() {
+        return this.insuranceCompanyName;
+    }
+
+    public Patient insuranceCompanyName(String insuranceCompanyName) {
+        this.setInsuranceCompanyName(insuranceCompanyName);
+        return this;
+    }
+
+    public void setInsuranceCompanyName(String insuranceCompanyName) {
+        this.insuranceCompanyName = insuranceCompanyName;
+    }
+
+    public String getPatientInsuranceId() {
+        return this.patientInsuranceId;
+    }
+
+    public Patient patientInsuranceId(String patientInsuranceId) {
+        this.setPatientInsuranceId(patientInsuranceId);
+        return this;
+    }
+
+    public void setPatientInsuranceId(String patientInsuranceId) {
+        this.patientInsuranceId = patientInsuranceId;
+    }
+
+    public String getInsurancePolicyNumber() {
+        return this.insurancePolicyNumber;
+    }
+
+    public Patient insurancePolicyNumber(String insurancePolicyNumber) {
+        this.setInsurancePolicyNumber(insurancePolicyNumber);
+        return this;
+    }
+
+    public void setInsurancePolicyNumber(String insurancePolicyNumber) {
+        this.insurancePolicyNumber = insurancePolicyNumber;
+    }
+
+    public String getInsuranceCoverageType() {
+        return this.insuranceCoverageType;
+    }
+
+    public Patient insuranceCoverageType(String insuranceCoverageType) {
+        this.setInsuranceCoverageType(insuranceCoverageType);
+        return this;
+    }
+
+    public void setInsuranceCoverageType(String insuranceCoverageType) {
+        this.insuranceCoverageType = insuranceCoverageType;
+    }
+
+    public LocalDate getInsuranceValidFrom() {
+        return this.insuranceValidFrom;
+    }
+
+    public Patient insuranceValidFrom(LocalDate insuranceValidFrom) {
+        this.setInsuranceValidFrom(insuranceValidFrom);
+        return this;
+    }
+
+    public void setInsuranceValidFrom(LocalDate insuranceValidFrom) {
+        this.insuranceValidFrom = insuranceValidFrom;
+    }
+
+    public LocalDate getInsuranceValidTo() {
+        return this.insuranceValidTo;
+    }
+
+    public Patient insuranceValidTo(LocalDate insuranceValidTo) {
+        this.setInsuranceValidTo(insuranceValidTo);
+        return this;
+    }
+
+    public void setInsuranceValidTo(LocalDate insuranceValidTo) {
+        this.insuranceValidTo = insuranceValidTo;
+    }
+
     public User getUser() {
         return this.user;
     }
@@ -383,6 +595,7 @@ public class Patient implements Serializable {
     public String toString() {
         return "Patient{" +
             "id=" + getId() +
+            ", uid='" + getUid() + "'" +
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
             ", birthDate='" + getBirthDate() + "'" +
@@ -391,9 +604,9 @@ public class Patient implements Serializable {
             ", address='" + getAddress() + "'" +
             ", phone1='" + getPhone1() + "'" +
             ", phone2='" + getPhone2() + "'" +
-            ", email='" + getEmail() + "'" +
             ", nif='" + getNif() + "'" +
             ", ninu='" + getNinu() + "'" +
+            ", medicalRecordNumber='" + getMedicalRecordNumber() + "'" +
             ", heightCm=" + getHeightCm() +
             ", weightKg=" + getWeightKg() +
             ", passportNumber='" + getPassportNumber() + "'" +
@@ -401,6 +614,17 @@ public class Patient implements Serializable {
             ", contactPersonPhone='" + getContactPersonPhone() + "'" +
             ", antecedents='" + getAntecedents() + "'" +
             ", allergies='" + getAllergies() + "'" +
+            ", clinicalNotes='" + getClinicalNotes() + "'" +
+            ", smokingStatus='" + getSmokingStatus() + "'" +
+            ", gdprConsentDate='" + getGdprConsentDate() + "'" +
+            ", status='" + getStatus() + "'" +
+            ", deceasedDate='" + getDeceasedDate() + "'" +
+            ", insuranceCompanyName='" + getInsuranceCompanyName() + "'" +
+            ", patientInsuranceId='" + getPatientInsuranceId() + "'" +
+            ", insurancePolicyNumber='" + getInsurancePolicyNumber() + "'" +
+            ", insuranceCoverageType='" + getInsuranceCoverageType() + "'" +
+            ", insuranceValidFrom='" + getInsuranceValidFrom() + "'" +
+            ", insuranceValidTo='" + getInsuranceValidTo() + "'" +
             "}";
     }
 }

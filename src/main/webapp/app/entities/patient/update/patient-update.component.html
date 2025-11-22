@@ -15,6 +15,11 @@
           </div>
         }
 
+        <div class="mb-3">
+          <label class="form-label" for="field_uid" jhiTranslate="gdpApp.patient.uid">Uid</label>
+          <input type="text" class="form-control" name="uid" id="field_uid" data-cy="uid" formControlName="uid" />
+        </div>
+
         @let firstNameRef = editForm.get('firstName')!;
         <div class="mb-3">
           <label class="form-label" for="field_firstName" jhiTranslate="gdpApp.patient.firstName">First Name</label>
@@ -78,7 +83,12 @@
 
         <div class="mb-3">
           <label class="form-label" for="field_bloodType" jhiTranslate="gdpApp.patient.bloodType">Blood Type</label>
-          <input type="text" class="form-control" name="bloodType" id="field_bloodType" data-cy="bloodType" formControlName="bloodType" />
+          <select class="form-control" name="bloodType" formControlName="bloodType" id="field_bloodType" data-cy="bloodType">
+            <option [ngValue]="null">{{ 'gdpApp.BloodType.null' | translate }}</option>
+            @for (bloodType of bloodTypeValues; track $index) {
+              <option [value]="bloodType">{{ 'gdpApp.BloodType.' + bloodType | translate }}</option>
+            }
+          </select>
         </div>
 
         <div class="mb-3">
@@ -95,21 +105,27 @@
               @if (editForm.get('phone1')?.errors?.required) {
                 <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
               }
+              @if (editForm.get('phone1')?.errors?.pattern) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.pattern" [translateValues]="{ pattern: 'Phone 1' }"
+                  >Ce champ doit suivre l&apos;expression régulière Phone 1.</small
+                >
+              }
             </div>
           }
         </div>
 
+        @let phone2Ref = editForm.get('phone2')!;
         <div class="mb-3">
           <label class="form-label" for="field_phone2" jhiTranslate="gdpApp.patient.phone2">Phone 2</label>
           <input type="text" class="form-control" name="phone2" id="field_phone2" data-cy="phone2" formControlName="phone2" />
-        </div>
-
-        @let emailRef = editForm.get('email')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_email" jhiTranslate="gdpApp.patient.email">Email</label>
-          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
-          @if (emailRef.invalid && (emailRef.dirty || emailRef.touched)) {
-            <div></div>
+          @if (phone2Ref.invalid && (phone2Ref.dirty || phone2Ref.touched)) {
+            <div>
+              @if (editForm.get('phone2')?.errors?.pattern) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.pattern" [translateValues]="{ pattern: 'Phone 2' }"
+                  >Ce champ doit suivre l&apos;expression régulière Phone 2.</small
+                >
+              }
+            </div>
           }
         </div>
 
@@ -118,7 +134,18 @@
           <label class="form-label" for="field_nif" jhiTranslate="gdpApp.patient.nif">Nif</label>
           <input type="text" class="form-control" name="nif" id="field_nif" data-cy="nif" formControlName="nif" />
           @if (nifRef.invalid && (nifRef.dirty || nifRef.touched)) {
-            <div></div>
+            <div>
+              @if (editForm.get('nif')?.errors?.minlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: '10' }"
+                  >Ce champ doit faire au minimum 10 caractères.</small
+                >
+              }
+              @if (editForm.get('nif')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '10' }"
+                  >Ce champ doit faire moins de 10 caractères.</small
+                >
+              }
+            </div>
           }
         </div>
 
@@ -127,18 +154,89 @@
           <label class="form-label" for="field_ninu" jhiTranslate="gdpApp.patient.ninu">Ninu</label>
           <input type="text" class="form-control" name="ninu" id="field_ninu" data-cy="ninu" formControlName="ninu" />
           @if (ninuRef.invalid && (ninuRef.dirty || ninuRef.touched)) {
+            <div>
+              @if (editForm.get('ninu')?.errors?.minlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: '10' }"
+                  >Ce champ doit faire au minimum 10 caractères.</small
+                >
+              }
+              @if (editForm.get('ninu')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '10' }"
+                  >Ce champ doit faire moins de 10 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let medicalRecordNumberRef = editForm.get('medicalRecordNumber')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_medicalRecordNumber" jhiTranslate="gdpApp.patient.medicalRecordNumber"
+            >Medical Record Number</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="medicalRecordNumber"
+            id="field_medicalRecordNumber"
+            data-cy="medicalRecordNumber"
+            formControlName="medicalRecordNumber"
+          />
+          @if (medicalRecordNumberRef.invalid && (medicalRecordNumberRef.dirty || medicalRecordNumberRef.touched)) {
             <div></div>
           }
         </div>
 
+        @let heightCmRef = editForm.get('heightCm')!;
         <div class="mb-3">
           <label class="form-label" for="field_heightCm" jhiTranslate="gdpApp.patient.heightCm">Height Cm</label>
           <input type="number" class="form-control" name="heightCm" id="field_heightCm" data-cy="heightCm" formControlName="heightCm" />
+          @if (heightCmRef.invalid && (heightCmRef.dirty || heightCmRef.touched)) {
+            <div>
+              @if (editForm.get('heightCm')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
+                  >Ce champ doit être supérieur à 0.</small
+                >
+              }
+              @if (editForm.get('heightCm')?.errors?.max) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.max" [translateValues]="{ max: '300' }"
+                  >Ce champ doit être inférieur à 300.</small
+                >
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('heightCm')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Ce champ doit être un nombre.</small
+              >
+            </div>
+          }
         </div>
 
+        @let weightKgRef = editForm.get('weightKg')!;
         <div class="mb-3">
           <label class="form-label" for="field_weightKg" jhiTranslate="gdpApp.patient.weightKg">Weight Kg</label>
           <input type="number" class="form-control" name="weightKg" id="field_weightKg" data-cy="weightKg" formControlName="weightKg" />
+          @if (weightKgRef.invalid && (weightKgRef.dirty || weightKgRef.touched)) {
+            <div>
+              @if (editForm.get('weightKg')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
+                  >Ce champ doit être supérieur à 0.</small
+                >
+              }
+              @if (editForm.get('weightKg')?.errors?.max) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.max" [translateValues]="{ max: '500' }"
+                  >Ce champ doit être inférieur à 500.</small
+                >
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('weightKg')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Ce champ doit être un nombre.</small
+              >
+            </div>
+          }
         </div>
 
         @let passportNumberRef = editForm.get('passportNumber')!;
@@ -153,10 +251,22 @@
             formControlName="passportNumber"
           />
           @if (passportNumberRef.invalid && (passportNumberRef.dirty || passportNumberRef.touched)) {
-            <div></div>
+            <div>
+              @if (editForm.get('passportNumber')?.errors?.minlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: '3' }"
+                  >Ce champ doit faire au minimum 3 caractères.</small
+                >
+              }
+              @if (editForm.get('passportNumber')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '15' }"
+                  >Ce champ doit faire moins de 15 caractères.</small
+                >
+              }
+            </div>
           }
         </div>
 
+        @let contactPersonNameRef = editForm.get('contactPersonName')!;
         <div class="mb-3">
           <label class="form-label" for="field_contactPersonName" jhiTranslate="gdpApp.patient.contactPersonName"
             >Contact Person Name</label
@@ -169,8 +279,18 @@
             data-cy="contactPersonName"
             formControlName="contactPersonName"
           />
+          @if (contactPersonNameRef.invalid && (contactPersonNameRef.dirty || contactPersonNameRef.touched)) {
+            <div>
+              @if (editForm.get('contactPersonName')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '100' }"
+                  >Ce champ doit faire moins de 100 caractères.</small
+                >
+              }
+            </div>
+          }
         </div>
 
+        @let contactPersonPhoneRef = editForm.get('contactPersonPhone')!;
         <div class="mb-3">
           <label class="form-label" for="field_contactPersonPhone" jhiTranslate="gdpApp.patient.contactPersonPhone"
             >Contact Person Phone</label
@@ -183,6 +303,18 @@
             data-cy="contactPersonPhone"
             formControlName="contactPersonPhone"
           />
+          @if (contactPersonPhoneRef.invalid && (contactPersonPhoneRef.dirty || contactPersonPhoneRef.touched)) {
+            <div>
+              @if (editForm.get('contactPersonPhone')?.errors?.pattern) {
+                <small
+                  class="form-text text-danger"
+                  jhiTranslate="entity.validation.pattern"
+                  [translateValues]="{ pattern: 'Contact Person Phone' }"
+                  >Ce champ doit suivre l&apos;expression régulière Contact Person Phone.</small
+                >
+              }
+            </div>
+          }
         </div>
 
         <div class="mb-3">
@@ -202,13 +334,216 @@
         </div>
 
         <div class="mb-3">
+          <label class="form-label" for="field_clinicalNotes" jhiTranslate="gdpApp.patient.clinicalNotes">Clinical Notes</label>
+          <textarea
+            class="form-control"
+            name="clinicalNotes"
+            id="field_clinicalNotes"
+            data-cy="clinicalNotes"
+            formControlName="clinicalNotes"
+          ></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_smokingStatus" jhiTranslate="gdpApp.patient.smokingStatus">Smoking Status</label>
+          <select
+            class="form-control"
+            name="smokingStatus"
+            formControlName="smokingStatus"
+            id="field_smokingStatus"
+            data-cy="smokingStatus"
+          >
+            <option [ngValue]="null">{{ 'gdpApp.SmokingStatus.null' | translate }}</option>
+            @for (smokingStatus of smokingStatusValues; track $index) {
+              <option [value]="smokingStatus">{{ 'gdpApp.SmokingStatus.' + smokingStatus | translate }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_gdprConsentDate" jhiTranslate="gdpApp.patient.gdprConsentDate">Gdpr Consent Date</label>
+          <div class="d-flex">
+            <input
+              id="field_gdprConsentDate"
+              data-cy="gdprConsentDate"
+              type="datetime-local"
+              class="form-control"
+              name="gdprConsentDate"
+              formControlName="gdprConsentDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_status" jhiTranslate="gdpApp.patient.status">Status</label>
+          <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
+            <option [ngValue]="null">{{ 'gdpApp.PatientStatus.null' | translate }}</option>
+            @for (patientStatus of patientStatusValues; track $index) {
+              <option [value]="patientStatus">{{ 'gdpApp.PatientStatus.' + patientStatus | translate }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_deceasedDate" jhiTranslate="gdpApp.patient.deceasedDate">Deceased Date</label>
+          <div class="d-flex">
+            <input
+              id="field_deceasedDate"
+              data-cy="deceasedDate"
+              type="datetime-local"
+              class="form-control"
+              name="deceasedDate"
+              formControlName="deceasedDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        @let insuranceCompanyNameRef = editForm.get('insuranceCompanyName')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_insuranceCompanyName" jhiTranslate="gdpApp.patient.insuranceCompanyName"
+            >Insurance Company Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="insuranceCompanyName"
+            id="field_insuranceCompanyName"
+            data-cy="insuranceCompanyName"
+            formControlName="insuranceCompanyName"
+          />
+          @if (insuranceCompanyNameRef.invalid && (insuranceCompanyNameRef.dirty || insuranceCompanyNameRef.touched)) {
+            <div>
+              @if (editForm.get('insuranceCompanyName')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '200' }"
+                  >Ce champ doit faire moins de 200 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let patientInsuranceIdRef = editForm.get('patientInsuranceId')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_patientInsuranceId" jhiTranslate="gdpApp.patient.patientInsuranceId"
+            >Patient Insurance Id</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="patientInsuranceId"
+            id="field_patientInsuranceId"
+            data-cy="patientInsuranceId"
+            formControlName="patientInsuranceId"
+          />
+          @if (patientInsuranceIdRef.invalid && (patientInsuranceIdRef.dirty || patientInsuranceIdRef.touched)) {
+            <div>
+              @if (editForm.get('patientInsuranceId')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '100' }"
+                  >Ce champ doit faire moins de 100 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let insurancePolicyNumberRef = editForm.get('insurancePolicyNumber')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_insurancePolicyNumber" jhiTranslate="gdpApp.patient.insurancePolicyNumber"
+            >Insurance Policy Number</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="insurancePolicyNumber"
+            id="field_insurancePolicyNumber"
+            data-cy="insurancePolicyNumber"
+            formControlName="insurancePolicyNumber"
+          />
+          @if (insurancePolicyNumberRef.invalid && (insurancePolicyNumberRef.dirty || insurancePolicyNumberRef.touched)) {
+            <div>
+              @if (editForm.get('insurancePolicyNumber')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '100' }"
+                  >Ce champ doit faire moins de 100 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let insuranceCoverageTypeRef = editForm.get('insuranceCoverageType')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_insuranceCoverageType" jhiTranslate="gdpApp.patient.insuranceCoverageType"
+            >Insurance Coverage Type</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="insuranceCoverageType"
+            id="field_insuranceCoverageType"
+            data-cy="insuranceCoverageType"
+            formControlName="insuranceCoverageType"
+          />
+          @if (insuranceCoverageTypeRef.invalid && (insuranceCoverageTypeRef.dirty || insuranceCoverageTypeRef.touched)) {
+            <div>
+              @if (editForm.get('insuranceCoverageType')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '100' }"
+                  >Ce champ doit faire moins de 100 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_insuranceValidFrom" jhiTranslate="gdpApp.patient.insuranceValidFrom"
+            >Insurance Valid From</label
+          >
+          <div class="input-group">
+            <input
+              id="field_insuranceValidFrom"
+              data-cy="insuranceValidFrom"
+              type="text"
+              class="form-control"
+              name="insuranceValidFrom"
+              ngbDatepicker
+              #insuranceValidFromDp="ngbDatepicker"
+              formControlName="insuranceValidFrom"
+            />
+            <button type="button" class="btn btn-secondary" (click)="insuranceValidFromDp.toggle()">
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_insuranceValidTo" jhiTranslate="gdpApp.patient.insuranceValidTo">Insurance Valid To</label>
+          <div class="input-group">
+            <input
+              id="field_insuranceValidTo"
+              data-cy="insuranceValidTo"
+              type="text"
+              class="form-control"
+              name="insuranceValidTo"
+              ngbDatepicker
+              #insuranceValidToDp="ngbDatepicker"
+              formControlName="insuranceValidTo"
+            />
+            <button type="button" class="btn btn-secondary" (click)="insuranceValidToDp.toggle()">
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="mb-3">
           <label class="form-label" for="field_user" jhiTranslate="gdpApp.patient.user">User</label>
           <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user" [compareWith]="compareUser">
             @if (!editForm.get('user')!.value) {
               <option [ngValue]="null" selected></option>
             }
             @for (userOption of usersSharedCollection; track $index) {
-              <option [ngValue]="userOption">{{ userOption.login }}</option>
+              <option [ngValue]="userOption">{{ userOption.id }}</option>
             }
           </select>
         </div>

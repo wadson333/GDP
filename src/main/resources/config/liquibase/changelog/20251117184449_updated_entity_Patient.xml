@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added columns to the entity Patient.
+    -->
+    <changeSet id="20251117184449-1-add-columns" author="jhipster">
+        <addColumn tableName="patient">
+            <column name="uid" type="${uuidType}"/>
+            <column name="medical_record_number" type="varchar(255)"/>
+            <column name="clinical_notes" type="${clobType}"/>
+            <column name="smoking_status" type="varchar(255)"/>
+            <column name="gdpr_consent_date" type="${datetimeType}"/>
+            <column name="status" type="varchar(255)"/>
+            <column name="deceased_date" type="${datetimeType}"/>
+            <column name="insurance_company_name" type="varchar(200)"/>
+            <column name="patient_insurance_id" type="varchar(100)"/>
+            <column name="insurance_policy_number" type="varchar(100)"/>
+            <column name="insurance_coverage_type" type="varchar(100)"/>
+            <column name="insurance_valid_from" type="date"/>
+            <column name="insurance_valid_to" type="date"/>
+        </addColumn>
+        <dropDefaultValue tableName="patient" columnName="gdpr_consent_date" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="patient" columnName="deceased_date" columnDataType="${datetimeType}"/>
+    </changeSet>
+
+    <!--
+        Dropped columns to the entity Patient.
+    -->
+    <changeSet id="20251117184449-1-drop-columns" author="jhipster">
+        <dropColumn tableName="patient">
+            <column name="email"/>
+        </dropColumn>
+    </changeSet>
+
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+</databaseChangeLog>

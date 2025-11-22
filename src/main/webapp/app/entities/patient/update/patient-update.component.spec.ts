@@ -49,10 +49,10 @@ describe('Patient Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call User query and add missing value', () => {
       const patient: IPatient = { id: 456 };
-      const user: IUser = { id: 16110 };
+      const user: IUser = { id: 6365 };
       patient.user = user;
 
-      const userCollection: IUser[] = [{ id: 20129 }];
+      const userCollection: IUser[] = [{ id: 25932 }];
       jest.spyOn(userService, 'query').mockReturnValue(of(new HttpResponse({ body: userCollection })));
       const additionalUsers = [user];
       const expectedCollection: IUser[] = [...additionalUsers, ...userCollection];
@@ -71,7 +71,7 @@ describe('Patient Management Update Component', () => {
 
     it('Should update editForm', () => {
       const patient: IPatient = { id: 456 };
-      const user: IUser = { id: 25322 };
+      const user: IUser = { id: 12435 };
       patient.user = user;
 
       activatedRoute.data = of({ patient });

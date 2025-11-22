@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-center">
+<!-- <div class="d-flex justify-content-center">
   <div class="col-8">
     @if (patient(); as patientRef) {
       <div>
@@ -14,6 +14,10 @@
           <dt><span jhiTranslate="global.field.id">ID</span></dt>
           <dd>
             <span>{{ patientRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.patient.uid">Uid</span></dt>
+          <dd>
+            <span>{{ patientRef.uid }}</span>
           </dd>
           <dt><span jhiTranslate="gdpApp.patient.firstName">First Name</span></dt>
           <dd>
@@ -35,7 +39,20 @@
           </dd>
           <dt><span jhiTranslate="gdpApp.patient.bloodType">Blood Type</span></dt>
           <dd>
-            <span>{{ patientRef.bloodType }}</span>
+            <span [jhiTranslate]="'gdpApp.BloodType.' + (patientRef.bloodType ?? 'null')">{{
+              {
+                null: '',
+                A_POS: 'A_POS',
+                A_NEG: 'A_NEG',
+                B_POS: 'B_POS',
+                B_NEG: 'B_NEG',
+                AB_POS: 'AB_POS',
+                AB_NEG: 'AB_NEG',
+                O_POS: 'O_POS',
+                O_NEG: 'O_NEG',
+                UNKNOWN: 'UNKNOWN',
+              }[patientRef.bloodType ?? 'null']
+            }}</span>
           </dd>
           <dt><span jhiTranslate="gdpApp.patient.address">Address</span></dt>
           <dd>
@@ -49,10 +66,6 @@
           <dd>
             <span>{{ patientRef.phone2 }}</span>
           </dd>
-          <dt><span jhiTranslate="gdpApp.patient.email">Email</span></dt>
-          <dd>
-            <span>{{ patientRef.email }}</span>
-          </dd>
           <dt><span jhiTranslate="gdpApp.patient.nif">Nif</span></dt>
           <dd>
             <span>{{ patientRef.nif }}</span>
@@ -60,6 +73,10 @@
           <dt><span jhiTranslate="gdpApp.patient.ninu">Ninu</span></dt>
           <dd>
             <span>{{ patientRef.ninu }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.patient.medicalRecordNumber">Medical Record Number</span></dt>
+          <dd>
+            <span>{{ patientRef.medicalRecordNumber }}</span>
           </dd>
           <dt><span jhiTranslate="gdpApp.patient.heightCm">Height Cm</span></dt>
           <dd>
@@ -89,9 +106,57 @@
           <dd>
             <span>{{ patientRef.allergies }}</span>
           </dd>
+          <dt><span jhiTranslate="gdpApp.patient.clinicalNotes">Clinical Notes</span></dt>
+          <dd>
+            <span>{{ patientRef.clinicalNotes }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.patient.smokingStatus">Smoking Status</span></dt>
+          <dd>
+            <span [jhiTranslate]="'gdpApp.SmokingStatus.' + (patientRef.smokingStatus ?? 'null')">{{
+              { null: '', NEVER: 'NEVER', FORMER: 'FORMER', CURRENT: 'CURRENT', UNKNOWN: 'UNKNOWN' }[patientRef.smokingStatus ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.patient.gdprConsentDate">Gdpr Consent Date</span></dt>
+          <dd>
+            <span>{{ patientRef.gdprConsentDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.patient.status">Status</span></dt>
+          <dd>
+            <span [jhiTranslate]="'gdpApp.PatientStatus.' + (patientRef.status ?? 'null')">{{
+              { null: '', ACTIVE: 'ACTIVE', INACTIVE: 'INACTIVE', DECEASED: 'DECEASED', ARCHIVED: 'ARCHIVED' }[patientRef.status ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.patient.deceasedDate">Deceased Date</span></dt>
+          <dd>
+            <span>{{ patientRef.deceasedDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.patient.insuranceCompanyName">Insurance Company Name</span></dt>
+          <dd>
+            <span>{{ patientRef.insuranceCompanyName }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.patient.patientInsuranceId">Patient Insurance Id</span></dt>
+          <dd>
+            <span>{{ patientRef.patientInsuranceId }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.patient.insurancePolicyNumber">Insurance Policy Number</span></dt>
+          <dd>
+            <span>{{ patientRef.insurancePolicyNumber }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.patient.insuranceCoverageType">Insurance Coverage Type</span></dt>
+          <dd>
+            <span>{{ patientRef.insuranceCoverageType }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.patient.insuranceValidFrom">Insurance Valid From</span></dt>
+          <dd>
+            <span>{{ patientRef.insuranceValidFrom | formatMediumDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="gdpApp.patient.insuranceValidTo">Insurance Valid To</span></dt>
+          <dd>
+            <span>{{ patientRef.insuranceValidTo | formatMediumDate }}</span>
+          </dd>
           <dt><span jhiTranslate="gdpApp.patient.user">User</span></dt>
           <dd>
-            <span>{{ patientRef.user?.login }}</span>
+            <span>{{ patientRef.user?.id }}</span>
           </dd>
         </dl>
 
@@ -105,4 +170,276 @@
       </div>
     }
   </div>
-</div>
+</div> -->
+@if (patient(); as patientRef) {
+  <div class="space-y-4">
+    <!-- Informations personnelles -->
+    <div class="bg-white rounded-lg shadow-sm p-4">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">
+        <i class="pi pi-user text-blue-500 mr-2"></i>
+        Informations personnelles
+      </h3>
+
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-xs font-medium text-gray-500">Date de naissance</dt>
+          <dd class="mt-1 text-sm text-gray-900">{{ patientRef.birthDate | formatMediumDate }}</dd>
+        </div>
+
+        <div>
+          <dt class="text-xs font-medium text-gray-500">Sexe</dt>
+          <dd class="mt-1 text-sm text-gray-900" [jhiTranslate]="'gdpApp.Gender.' + (patientRef.gender ?? 'null')"></dd>
+        </div>
+
+        <div>
+          <dt class="text-xs font-medium text-gray-500">Groupe sanguin</dt>
+          <dd class="mt-1 text-sm text-gray-900" [jhiTranslate]="'gdpApp.BloodType.' + (patientRef.bloodType ?? 'null')"></dd>
+        </div>
+
+        <div>
+          <dt class="text-xs font-medium text-gray-500">Statut fumeur</dt>
+          <dd class="mt-1 text-sm text-gray-900" [jhiTranslate]="'gdpApp.SmokingStatus.' + (patientRef.smokingStatus ?? 'null')"></dd>
+        </div>
+
+        @if (patientRef.heightCm) {
+          <div>
+            <dt class="text-xs font-medium text-gray-500">Taille</dt>
+            <dd class="mt-1 text-sm text-gray-900">{{ patientRef.heightCm }} cm</dd>
+          </div>
+        }
+
+        @if (patientRef.weightKg) {
+          <div>
+            <dt class="text-xs font-medium text-gray-500">Poids</dt>
+            <dd class="mt-1 text-sm text-gray-900">{{ patientRef.weightKg }} kg</dd>
+          </div>
+        }
+      </dl>
+    </div>
+
+    <!-- Contact -->
+    <div class="bg-white rounded-lg shadow-sm p-4">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">
+        <i class="pi pi-phone text-blue-500 mr-2"></i>
+        Contact
+      </h3>
+
+      <dl class="space-y-3">
+        @if (patientRef.phone1) {
+          <div>
+            <dt class="text-xs font-medium text-gray-500">Téléphone principal</dt>
+            <dd class="mt-1 text-sm text-gray-900">{{ patientRef.phone1 }}</dd>
+          </div>
+        }
+
+        @if (patientRef.phone2) {
+          <div>
+            <dt class="text-xs font-medium text-gray-500">Téléphone secondaire</dt>
+            <dd class="mt-1 text-sm text-gray-900">{{ patientRef.phone2 }}</dd>
+          </div>
+        }
+
+        @if (patientRef.address) {
+          <div>
+            <dt class="text-xs font-medium text-gray-500">Adresse</dt>
+            <dd class="mt-1 text-sm text-gray-900">{{ patientRef.address }}</dd>
+          </div>
+        }
+
+        @if (patientRef.user?.login) {
+          <div>
+            <dt class="text-xs font-medium text-gray-500">Username</dt>
+            <dd class="mt-1 text-sm text-gray-900">{{ patientRef.user?.login }}</dd>
+          </div>
+        }
+      </dl>
+    </div>
+
+    <!-- Identifiants -->
+    <div class="bg-white rounded-lg shadow-sm p-4">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">
+        <i class="pi pi-id-card text-blue-500 mr-2"></i>
+        Identifiants
+      </h3>
+
+      <dl class="grid grid-cols-2 gap-4">
+        @if (patientRef.nif) {
+          <div>
+            <dt class="text-xs font-medium text-gray-500">NIF</dt>
+            <dd class="mt-1 text-sm text-gray-900 font-mono">{{ patientRef.nif }}</dd>
+          </div>
+        }
+
+        @if (patientRef.ninu) {
+          <div>
+            <dt class="text-xs font-medium text-gray-500">NINU</dt>
+            <dd class="mt-1 text-sm text-gray-900 font-mono">{{ patientRef.ninu }}</dd>
+          </div>
+        }
+
+        @if (patientRef.medicalRecordNumber) {
+          <div>
+            <dt class="text-xs font-medium text-gray-500">N° Dossier médical</dt>
+            <dd class="mt-1 text-sm text-gray-900 font-mono">{{ patientRef.medicalRecordNumber }}</dd>
+          </div>
+        }
+
+        @if (patientRef.passportNumber) {
+          <div>
+            <dt class="text-xs font-medium text-gray-500">N° Passeport</dt>
+            <dd class="mt-1 text-sm text-gray-900 font-mono">{{ patientRef.passportNumber }}</dd>
+          </div>
+        }
+      </dl>
+    </div>
+
+    <!-- Informations médicales -->
+    <div class="bg-white rounded-lg shadow-sm p-4">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">
+        <i class="pi pi-heart text-blue-500 mr-2"></i>
+        Informations médicales
+      </h3>
+
+      <dl class="space-y-3">
+        @if (patientRef.allergies) {
+          <div>
+            <dt class="text-xs font-medium text-gray-500">Allergies</dt>
+            <dd class="mt-1 text-sm text-gray-900 whitespace-pre-wrap">{{ patientRef.allergies }}</dd>
+          </div>
+        }
+
+        @if (patientRef.antecedents) {
+          <div>
+            <dt class="text-xs font-medium text-gray-500">Antécédents</dt>
+            <dd class="mt-1 text-sm text-gray-900 whitespace-pre-wrap">{{ patientRef.antecedents }}</dd>
+          </div>
+        }
+
+        @if (patientRef.clinicalNotes) {
+          <div>
+            <dt class="text-xs font-medium text-gray-500">Notes cliniques</dt>
+            <dd class="mt-1 text-sm text-gray-900 whitespace-pre-wrap">{{ patientRef.clinicalNotes }}</dd>
+          </div>
+        }
+      </dl>
+    </div>
+
+    <!-- Assurance -->
+    @if (patientRef.insuranceCompanyName || patientRef.insurancePolicyNumber) {
+      <div class="bg-white rounded-lg shadow-sm p-4">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">
+          <i class="pi pi-shield text-blue-500 mr-2"></i>
+          Assurance
+        </h3>
+
+        <dl class="grid grid-cols-2 gap-4">
+          @if (patientRef.insuranceCompanyName) {
+            <div class="col-span-2">
+              <dt class="text-xs font-medium text-gray-500">Compagnie d'assurance</dt>
+              <dd class="mt-1 text-sm text-gray-900">{{ patientRef.insuranceCompanyName }}</dd>
+            </div>
+          }
+
+          @if (patientRef.insurancePolicyNumber) {
+            <div>
+              <dt class="text-xs font-medium text-gray-500">N° Police</dt>
+              <dd class="mt-1 text-sm text-gray-900 font-mono">{{ patientRef.insurancePolicyNumber }}</dd>
+            </div>
+          }
+
+          @if (patientRef.patientInsuranceId) {
+            <div>
+              <dt class="text-xs font-medium text-gray-500">ID Assuré</dt>
+              <dd class="mt-1 text-sm text-gray-900 font-mono">{{ patientRef.patientInsuranceId }}</dd>
+            </div>
+          }
+
+          @if (patientRef.insuranceCoverageType) {
+            <div>
+              <dt class="text-xs font-medium text-gray-500">Type de couverture</dt>
+              <dd class="mt-1 text-sm text-gray-900">{{ patientRef.insuranceCoverageType }}</dd>
+            </div>
+          }
+
+          @if (patientRef.insuranceValidFrom) {
+            <div>
+              <dt class="text-xs font-medium text-gray-500">Valide du</dt>
+              <dd class="mt-1 text-sm text-gray-900">{{ patientRef.insuranceValidFrom | formatMediumDate }}</dd>
+            </div>
+          }
+
+          @if (patientRef.insuranceValidTo) {
+            <div>
+              <dt class="text-xs font-medium text-gray-500">Valide jusqu'au</dt>
+              <dd class="mt-1 text-sm text-gray-900">{{ patientRef.insuranceValidTo | formatMediumDate }}</dd>
+            </div>
+          }
+        </dl>
+      </div>
+    }
+
+    <!-- Contact d'urgence -->
+    @if (patientRef.contactPersonName || patientRef.contactPersonPhone) {
+      <div class="bg-white rounded-lg shadow-sm p-4">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">
+          <i class="pi pi-users text-blue-500 mr-2"></i>
+          Contact d'urgence
+        </h3>
+
+        <dl class="space-y-3">
+          @if (patientRef.contactPersonName) {
+            <div>
+              <dt class="text-xs font-medium text-gray-500">Nom</dt>
+              <dd class="mt-1 text-sm text-gray-900">{{ patientRef.contactPersonName }}</dd>
+            </div>
+          }
+
+          @if (patientRef.contactPersonPhone) {
+            <div>
+              <dt class="text-xs font-medium text-gray-500">Téléphone</dt>
+              <dd class="mt-1 text-sm text-gray-900">{{ patientRef.contactPersonPhone }}</dd>
+            </div>
+          }
+        </dl>
+      </div>
+    }
+
+    <!-- Informations système -->
+    <div class="bg-gray-50 rounded-lg p-4 text-xs text-gray-600">
+      <div class="grid grid-cols-2 gap-2">
+        @if (patientRef.createdBy) {
+          <div><span class="font-medium">Créé par:</span> {{ patientRef.createdBy }}</div>
+        }
+        @if (patientRef.createdDate) {
+          <div><span class="font-medium">Le:</span> {{ patientRef.createdDate | date: 'dd/MM/yyyy HH:mm' }}</div>
+        }
+        @if (patientRef.lastModifiedBy) {
+          <div><span class="font-medium">Modifié par:</span> {{ patientRef.lastModifiedBy }}</div>
+        }
+        @if (patientRef.lastModifiedDate) {
+          <div><span class="font-medium">Le:</span> {{ patientRef.lastModifiedDate | date: 'dd/MM/yyyy HH:mm' }}</div>
+        }
+      </div>
+    </div>
+  </div>
+} @else {
+  <!-- Skeleton pour les détails du patient -->
+  <div class="space-y-4">
+    @for (card of [1, 2, 3, 4]; track card) {
+      <div class="bg-white rounded-lg shadow-sm p-4">
+        <div class="flex items-center gap-2 mb-4">
+          <p-skeleton shape="circle" size="1.5rem"></p-skeleton>
+          <p-skeleton width="10rem" height="1.5rem"></p-skeleton>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          @for (item of [1, 2, 3, 4]; track item) {
+            <div>
+              <p-skeleton width="60%" height="0.75rem" styleClass="mb-2"></p-skeleton>
+              <p-skeleton width="80%" height="1rem"></p-skeleton>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+}

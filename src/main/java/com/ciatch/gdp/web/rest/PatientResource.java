@@ -1,7 +1,9 @@
 package com.ciatch.gdp.web.rest;
 
 import com.ciatch.gdp.repository.PatientRepository;
+import com.ciatch.gdp.service.PatientQueryService;
 import com.ciatch.gdp.service.PatientService;
+import com.ciatch.gdp.service.criteria.PatientCriteria;
 import com.ciatch.gdp.service.dto.PatientDTO;
 import com.ciatch.gdp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -42,9 +44,12 @@ public class PatientResource {
 
     private final PatientRepository patientRepository;
 
-    public PatientResource(PatientService patientService, PatientRepository patientRepository) {
+    private final PatientQueryService patientQueryService;
+
+    public PatientResource(PatientService patientService, PatientRepository patientRepository, PatientQueryService patientQueryService) {
         this.patientService = patientService;
         this.patientRepository = patientRepository;
+        this.patientQueryService = patientQueryService;
     }
 
     /**
@@ -139,23 +144,44 @@ public class PatientResource {
      * {@code GET  /patients} : get all the patients.
      *
      * @param pageable the pagination information.
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of patients in body.
+     */
+    // @GetMapping("")
+    // public ResponseEntity<List<PatientDTO>> getAllPatients(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+    //     LOG.debug("REST request to get a page of Patients");
+    //     Page<PatientDTO> page = patientService.findAll(pageable);
+    //     HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+    //     return ResponseEntity.ok().headers(headers).body(page.getContent());
+    // }
+
+    /**
+     * {@code GET  /patients} : get all the patients with advanced filtering.
+     *
+     * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of patients in body.
      */
     @GetMapping("")
     public ResponseEntity<List<PatientDTO>> getAllPatients(
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable,
-        @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload
+        PatientCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
-        LOG.debug("REST request to get a page of Patients");
-        Page<PatientDTO> page;
-        if (eagerload) {
-            page = patientService.findAllWithEagerRelationships(pageable);
-        } else {
-            page = patientService.findAll(pageable);
-        }
+        LOG.debug("REST request to get Patients by criteria: {}", criteria);
+        Page<PatientDTO> page = patientQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /patients/count} : count all the patients.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countPatients(PatientCriteria criteria) {
+        LOG.debug("REST request to count Patients by criteria: {}", criteria);
+        return ResponseEntity.ok().body(patientQueryService.countByCriteria(criteria));
     }
 
     /**

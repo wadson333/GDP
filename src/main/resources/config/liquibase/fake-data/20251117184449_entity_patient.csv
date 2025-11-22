@@ -1,0 +1,3 @@
+id;uid;medical_record_number;clinical_notes;smoking_status;gdpr_consent_date;status;deceased_date;insurance_company_name;patient_insurance_id;insurance_policy_number;insurance_coverage_type;insurance_valid_from;insurance_valid_to
+1;68967428-de4e-45ac-a5a6-137ba328c101;MRN-1001;Notes patient 1;NEVER;2025-01-01T10:00:00;ACTIVE;;AssurCorp;PA-1001;POL-1001;Basic;2024-01-01;2025-01-01
+2;8a0202d9-c99b-4ce2-af2d-ebd970d0766a;MRN-1002;Notes patient 2;FORMER;2025-02-02T11:30:00;ACTIVE;;HealthCo;PA-1002;POL-1002;Premium;2024-02-01;2025-02-01

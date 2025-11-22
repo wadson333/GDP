@@ -1,0 +1,11 @@
+{
+  "gdpApp": {
+    "SmokingStatus": {
+      "null": "",
+      "NEVER": "NEVER",
+      "FORMER": "FORMER",
+      "CURRENT": "CURRENT",
+      "UNKNOWN": "UNKNOWN"
+    }
+  }
+}

@@ -89,15 +89,6 @@ public class PatientService {
     }
 
     /**
-     * Get all the patients with eager load of many-to-many relationships.
-     *
-     * @return the list of entities.
-     */
-    public Page<PatientDTO> findAllWithEagerRelationships(Pageable pageable) {
-        return patientRepository.findAllWithEagerRelationships(pageable).map(patientMapper::toDto);
-    }
-
-    /**
      * Get one patient by id.
      *
      * @param id the id of the entity.
@@ -106,7 +97,7 @@ public class PatientService {
     @Transactional(readOnly = true)
     public Optional<PatientDTO> findOne(Long id) {
         LOG.debug("Request to get Patient : {}", id);
-        return patientRepository.findOneWithEagerRelationships(id).map(patientMapper::toDto);
+        return patientRepository.findById(id).map(patientMapper::toDto);
     }
 
     /**

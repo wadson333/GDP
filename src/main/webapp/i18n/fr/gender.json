@@ -2,9 +2,9 @@
   "gdpApp": {
     "Gender": {
       "null": "",
-      "MALE": "MALE",
-      "FEMALE": "FEMALE",
-      "OTHER": "OTHER"
+      "MALE": "MASCULIN",
+      "FEMALE": "FEMININ",
+      "OTHER": "AUTRE"
     }
   }
 }

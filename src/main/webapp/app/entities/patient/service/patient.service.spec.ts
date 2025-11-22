@@ -11,6 +11,10 @@ import { PatientService, RestPatient } from './patient.service';
 const requireRestSample: RestPatient = {
   ...sampleWithRequiredData,
   birthDate: sampleWithRequiredData.birthDate?.format(DATE_FORMAT),
+  gdprConsentDate: sampleWithRequiredData.gdprConsentDate?.toJSON(),
+  deceasedDate: sampleWithRequiredData.deceasedDate?.toJSON(),
+  insuranceValidFrom: sampleWithRequiredData.insuranceValidFrom?.format(DATE_FORMAT),
+  insuranceValidTo: sampleWithRequiredData.insuranceValidTo?.format(DATE_FORMAT),
 };
 
 describe('Patient Service', () => {

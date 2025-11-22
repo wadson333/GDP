@@ -18,6 +18,7 @@
         "title": "Patient"
       },
       "id": "ID",
+      "uid": "Uid",
       "firstName": "First Name",
       "lastName": "Last Name",
       "birthDate": "Birth Date",
@@ -26,9 +27,9 @@
       "address": "Address",
       "phone1": "Phone 1",
       "phone2": "Phone 2",
-      "email": "Email",
       "nif": "Nif",
       "ninu": "Ninu",
+      "medicalRecordNumber": "Medical Record Number",
       "heightCm": "Height Cm",
       "weightKg": "Weight Kg",
       "passportNumber": "Passport Number",
@@ -36,6 +37,17 @@
       "contactPersonPhone": "Contact Person Phone",
       "antecedents": "Antecedents",
       "allergies": "Allergies",
+      "clinicalNotes": "Clinical Notes",
+      "smokingStatus": "Smoking Status",
+      "gdprConsentDate": "Gdpr Consent Date",
+      "status": "Status",
+      "deceasedDate": "Deceased Date",
+      "insuranceCompanyName": "Insurance Company Name",
+      "patientInsuranceId": "Patient Insurance Id",
+      "insurancePolicyNumber": "Insurance Policy Number",
+      "insuranceCoverageType": "Insurance Coverage Type",
+      "insuranceValidFrom": "Insurance Valid From",
+      "insuranceValidTo": "Insurance Valid To",
       "user": "User"
     }
   }

@@ -1,0 +1,11 @@
+{
+  "gdpApp": {
+    "PatientStatus": {
+      "null": "",
+      "ACTIVE": "ACTIVE",
+      "INACTIVE": "INACTIVE",
+      "DECEASED": "DECEASED",
+      "ARCHIVED": "ARCHIVED"
+    }
+  }
+}

@@ -13,6 +13,9 @@ import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/service/user.service';
 import { Gender } from 'app/entities/enumerations/gender.model';
+import { BloodType } from 'app/entities/enumerations/blood-type.model';
+import { SmokingStatus } from 'app/entities/enumerations/smoking-status.model';
+import { PatientStatus } from 'app/entities/enumerations/patient-status.model';
 import { PatientService } from '../service/patient.service';
 import { IPatient } from '../patient.model';
 import { PatientFormGroup, PatientFormService } from './patient-form.service';
@@ -27,6 +30,9 @@ export class PatientUpdateComponent implements OnInit {
   isSaving = false;
   patient: IPatient | null = null;
   genderValues = Object.keys(Gender);
+  bloodTypeValues = Object.keys(BloodType);
+  smokingStatusValues = Object.keys(SmokingStatus);
+  patientStatusValues = Object.keys(PatientStatus);
 
   usersSharedCollection: IUser[] = [];
 

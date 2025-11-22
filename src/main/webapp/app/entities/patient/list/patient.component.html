@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <h2 id="page-heading" data-cy="PatientHeading">
     <span jhiTranslate="gdpApp.patient.home.title">Patients</span>
 
@@ -38,6 +38,13 @@
             <th scope="col" jhiSortBy="id">
               <div class="d-flex">
                 <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="uid">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.uid">Uid</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -98,13 +105,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="email">
-              <div class="d-flex">
-                <span jhiTranslate="gdpApp.patient.email">Email</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="nif">
               <div class="d-flex">
                 <span jhiTranslate="gdpApp.patient.nif">Nif</span>
@@ -115,6 +115,13 @@
             <th scope="col" jhiSortBy="ninu">
               <div class="d-flex">
                 <span jhiTranslate="gdpApp.patient.ninu">Ninu</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="medicalRecordNumber">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.medicalRecordNumber">Medical Record Number</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -168,7 +175,84 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="user.login">
+            <th scope="col" jhiSortBy="clinicalNotes">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.clinicalNotes">Clinical Notes</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="smokingStatus">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.smokingStatus">Smoking Status</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="gdprConsentDate">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.gdprConsentDate">Gdpr Consent Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="status">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.status">Status</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="deceasedDate">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.deceasedDate">Deceased Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="insuranceCompanyName">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.insuranceCompanyName">Insurance Company Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="patientInsuranceId">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.patientInsuranceId">Patient Insurance Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="insurancePolicyNumber">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.insurancePolicyNumber">Insurance Policy Number</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="insuranceCoverageType">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.insuranceCoverageType">Insurance Coverage Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="insuranceValidFrom">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.insuranceValidFrom">Insurance Valid From</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="insuranceValidTo">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.patient.insuranceValidTo">Insurance Valid To</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="user.id">
               <div class="d-flex">
                 <span jhiTranslate="gdpApp.patient.user">User</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -183,19 +267,35 @@
               <td>
                 <a [routerLink]="['/patient', patient.id, 'view']">{{ patient.id }}</a>
               </td>
+              <td>{{ patient.uid }}</td>
               <td>{{ patient.firstName }}</td>
               <td>{{ patient.lastName }}</td>
               <td>{{ patient.birthDate | formatMediumDate }}</td>
               <td [jhiTranslate]="'gdpApp.Gender.' + (patient.gender ?? 'null')">
                 {{ { null: '', MALE: 'MALE', FEMALE: 'FEMALE', OTHER: 'OTHER' }[patient.gender ?? 'null'] }}
               </td>
-              <td>{{ patient.bloodType }}</td>
+              <td [jhiTranslate]="'gdpApp.BloodType.' + (patient.bloodType ?? 'null')">
+                {{
+                  {
+                    null: '',
+                    A_POS: 'A_POS',
+                    A_NEG: 'A_NEG',
+                    B_POS: 'B_POS',
+                    B_NEG: 'B_NEG',
+                    AB_POS: 'AB_POS',
+                    AB_NEG: 'AB_NEG',
+                    O_POS: 'O_POS',
+                    O_NEG: 'O_NEG',
+                    UNKNOWN: 'UNKNOWN',
+                  }[patient.bloodType ?? 'null']
+                }}
+              </td>
               <td>{{ patient.address }}</td>
               <td>{{ patient.phone1 }}</td>
               <td>{{ patient.phone2 }}</td>
-              <td>{{ patient.email }}</td>
               <td>{{ patient.nif }}</td>
               <td>{{ patient.ninu }}</td>
+              <td>{{ patient.medicalRecordNumber }}</td>
               <td>{{ patient.heightCm }}</td>
               <td>{{ patient.weightKg }}</td>
               <td>{{ patient.passportNumber }}</td>
@@ -203,8 +303,27 @@
               <td>{{ patient.contactPersonPhone }}</td>
               <td>{{ patient.antecedents }}</td>
               <td>{{ patient.allergies }}</td>
+              <td>{{ patient.clinicalNotes }}</td>
+              <td [jhiTranslate]="'gdpApp.SmokingStatus.' + (patient.smokingStatus ?? 'null')">
+                {{
+                  { null: '', NEVER: 'NEVER', FORMER: 'FORMER', CURRENT: 'CURRENT', UNKNOWN: 'UNKNOWN' }[patient.smokingStatus ?? 'null']
+                }}
+              </td>
+              <td>{{ patient.gdprConsentDate | formatMediumDatetime }}</td>
+              <td [jhiTranslate]="'gdpApp.PatientStatus.' + (patient.status ?? 'null')">
+                {{
+                  { null: '', ACTIVE: 'ACTIVE', INACTIVE: 'INACTIVE', DECEASED: 'DECEASED', ARCHIVED: 'ARCHIVED' }[patient.status ?? 'null']
+                }}
+              </td>
+              <td>{{ patient.deceasedDate | formatMediumDatetime }}</td>
+              <td>{{ patient.insuranceCompanyName }}</td>
+              <td>{{ patient.patientInsuranceId }}</td>
+              <td>{{ patient.insurancePolicyNumber }}</td>
+              <td>{{ patient.insuranceCoverageType }}</td>
+              <td>{{ patient.insuranceValidFrom | formatMediumDate }}</td>
+              <td>{{ patient.insuranceValidTo | formatMediumDate }}</td>
               <td>
-                {{ patient.user?.login }}
+                {{ patient.user?.id }}
               </td>
               <td class="text-end">
                 <div class="btn-group">
@@ -249,4 +368,287 @@
       </div>
     </div>
   }
+</div> -->
+
+<div class="flex h-screen overflow-hidden bg-gray-50">
+  <!-- PANNEAU GAUCHE (Maître) -->
+  <div class="flex flex-col w-96 border-r border-gray-200 bg-white">
+    <!-- Zone A: Toolbar Actions -->
+    <div class="p-4 border-b border-gray-200 bg-white">
+      <div class="flex gap-2">
+        <p-button icon="pi pi-plus" label="Nouveau" [routerLink]="['/patient/new']" severity="success" size="small"></p-button>
+
+        <p-button
+          icon="pi pi-refresh"
+          [loading]="isLoading"
+          (onClick)="load()"
+          severity="secondary"
+          size="small"
+          [outlined]="true"
+        ></p-button>
+
+        <p-button icon="pi pi-download" severity="help" size="small" [outlined]="true"></p-button>
+      </div>
+    </div>
+
+    <!-- Zone B: Recherche et Filtres -->
+    <div class="p-4 border-b border-gray-200 space-y-3">
+      <!-- Recherche globale -->
+      <div class="flex gap-2">
+        <span class="p-input-icon-left flex-1">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            [(ngModel)]="globalSearchTerm"
+            (keyup.enter)="applyGlobalSearch()"
+            placeholder="Recherche globale..."
+            class="w-full"
+          />
+        </span>
+        <p-button icon="pi pi-search" (onClick)="applyGlobalSearch()" [disabled]="!globalSearchTerm?.trim()" size="small"></p-button>
+      </div>
+
+      <!-- Sélection de critère et ajout de filtre -->
+      <div class="space-y-2">
+        <div class="flex gap-2">
+          <p-dropdown
+            [(ngModel)]="selectedCriterion"
+            [options]="availableCriteria"
+            optionLabel="label"
+            placeholder="Choisir un critère"
+            class="flex-1"
+            [showClear]="true"
+          ></p-dropdown>
+        </div>
+
+        @if (selectedCriterion) {
+          <div class="flex gap-2">
+            @if (selectedCriterion.type === 'text' || selectedCriterion.type === 'number') {
+              <input pInputText type="text" [(ngModel)]="filterValue" [placeholder]="'Entrer ' + selectedCriterion.label" class="flex-1" />
+            }
+
+            @if (selectedCriterion.type === 'enum') {
+              <p-dropdown
+                [(ngModel)]="filterValue"
+                [options]="selectedCriterion.enumValues || []"
+                optionLabel="label"
+                optionValue="value"
+                [placeholder]="'Choisir ' + selectedCriterion.label"
+                class="flex-1"
+              ></p-dropdown>
+            }
+
+            @if (selectedCriterion.type === 'date') {
+              <p-calendar
+                [(ngModel)]="filterValue"
+                [showIcon]="true"
+                dateFormat="dd/mm/yy"
+                [placeholder]="'Sélectionner ' + selectedCriterion.label"
+                class="flex-1"
+              ></p-calendar>
+            }
+
+            <p-button icon="pi pi-plus" (onClick)="addFilter()" [disabled]="!filterValue" size="small" severity="success"></p-button>
+          </div>
+        }
+      </div>
+
+      <!-- Filtres actifs (Chips) -->
+      @if (activeFilters.length > 0) {
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-gray-600">Filtres actifs:</span>
+            <button class="text-xs text-blue-600 hover:text-blue-800" (click)="clearAllFilters()">Tout effacer</button>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            @for (filter of activeFilters; track filter) {
+              <p-chip
+                [label]="filter.label + ': ' + filter.displayValue"
+                [removable]="true"
+                (onRemove)="removeFilter(filter)"
+                styleClass="text-xs"
+              ></p-chip>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Zone C: Liste des Patients (Scrollable) -->
+    <div class="flex-1 overflow-y-auto">
+      @if (isLoading) {
+        <!-- Skeleton pour la liste de patients -->
+        <div class="divide-y divide-gray-100">
+          @for (item of [1, 2, 3, 4, 5]; track item) {
+            <div class="p-3">
+              <div class="flex gap-3">
+                <div class="flex-shrink-0">
+                  <p-skeleton shape="circle" size="3rem"></p-skeleton>
+                </div>
+                <div class="flex-1 space-y-3">
+                  <p-skeleton width="60%" height="1rem"></p-skeleton>
+                  <p-skeleton width="80%" height="0.75rem" class="my-3"></p-skeleton>
+                  <p-skeleton width="50%" height="0.75rem"></p-skeleton>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+        <!-- <div class="flex justify-center items-center h-32">
+          <i class="pi pi-spin pi-spinner text-3xl text-blue-500"></i>
+        </div> -->
+      }
+
+      @if (!isLoading && (!patients || patients.length === 0)) {
+        <div class="p-4 text-center text-gray-500">
+          <i class="pi pi-inbox text-4xl mb-2"></i>
+          <p>Aucun patient trouvé</p>
+        </div>
+      }
+
+      @if (!isLoading && patients && patients.length > 0) {
+        <div class="divide-y divide-gray-100">
+          @for (patient of patients; track trackId(patient)) {
+            <div
+              class="p-3 cursor-pointer hover:bg-gray-50 transition-colors"
+              [class.bg-blue-50]="selectedPatient?.id === patient.id"
+              [class.border-l-4]="selectedPatient?.id === patient.id"
+              [class.border-blue-500]="selectedPatient?.id === patient.id"
+              (click)="onSelect(patient)"
+            >
+              <div class="flex gap-3">
+                <!-- Avatar -->
+                <div class="flex-shrink-0">
+                  <!-- @if (patient.user?.imageUrl) {
+                    <p-avatar 
+                      [image]="patient.user.imageUrl"
+                      shape="circle"
+                      size="large"
+                    ></p-avatar>
+                  } @else { -->
+                  <p-avatar
+                    [label]="getInitials(patient)"
+                    shape="circle"
+                    size="large"
+                    [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"
+                  ></p-avatar>
+                  <!-- } -->
+                </div>
+
+                <!-- Informations -->
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-start justify-between">
+                    <div class="flex-1">
+                      <h3 class="text-sm font-semibold text-gray-900 truncate">{{ patient.firstName }} {{ patient.lastName }}</h3>
+                      <div class="mt-1 space-y-1">
+                        <p class="text-xs text-gray-600">
+                          <i class="pi pi-calendar text-gray-400 mr-1"></i>
+                          {{ patient.birthDate | formatMediumDate }}
+                          <span class="mx-2">•</span>
+                          {{ getGenderLabel(patient.gender) }}
+                        </p>
+                        @if (patient.medicalRecordNumber) {
+                          <p class="text-xs text-gray-500">
+                            <i class="pi pi-file text-gray-400 mr-1"></i>
+                            {{ patient.medicalRecordNumber }}
+                          </p>
+                        }
+                        @if (patient.phone1) {
+                          <p class="text-xs text-gray-500">
+                            <i class="pi pi-phone text-gray-400 mr-1"></i>
+                            {{ patient.phone1 }}
+                          </p>
+                        }
+                      </div>
+                    </div>
+
+                    <p-tag
+                      [value]="getStatusLabel(patient.status)"
+                      [severity]="getStatusSeverity(patient.status)"
+                      styleClass="text-xs"
+                    ></p-tag>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Zone D: Pagination -->
+    @if (patients && patients.length > 0) {
+      <div class="border-t border-gray-200 bg-white p-2">
+        <p-paginator
+          [first]="(page - 1) * itemsPerPage"
+          [rows]="itemsPerPage"
+          [totalRecords]="totalItems"
+          (onPageChange)="onPageChange($event)"
+          [rowsPerPageOptions]="[10, 20, 50]"
+        ></p-paginator>
+      </div>
+    }
+  </div>
+
+  <!-- PANNEAU DROIT (Détail) -->
+  <div class="flex-1 overflow-y-auto bg-gray-50">
+    @if (!selectedPatient) {
+      <div class="flex flex-col items-center justify-center h-full text-gray-400">
+        <i class="pi pi-user text-6xl mb-4"></i>
+        <p class="text-lg">Sélectionnez un patient pour voir les détails</p>
+      </div>
+    } @else {
+      <div class="p-6">
+        <!-- Header avec actions -->
+        <div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <!-- @if (selectedPatient.user?.imageUrl) {
+                <p-avatar 
+                  [image]="selectedPatient.user.imageUrl"
+                  shape="circle"
+                  size="xlarge"
+                ></p-avatar>
+              } @else { -->
+              <p-avatar
+                [label]="getInitials(selectedPatient)"
+                shape="circle"
+                size="xlarge"
+                [style]="{ 'background-color': '#2196F3', color: '#ffffff', 'font-size': '2rem' }"
+              ></p-avatar>
+              <!-- } -->
+
+              <div>
+                <h2 class="text-2xl font-bold text-gray-900">{{ selectedPatient.firstName }} {{ selectedPatient.lastName }}</h2>
+                <p class="text-sm text-gray-600">ID: {{ selectedPatient.id }} • UID: {{ selectedPatient.uid }}</p>
+              </div>
+            </div>
+
+            <div class="flex gap-2">
+              <p-button
+                icon="pi pi-pencil"
+                label="Modifier"
+                [routerLink]="['/patient', selectedPatient.id, 'edit']"
+                severity="primary"
+                size="small"
+              ></p-button>
+
+              <p-button
+                icon="pi pi-trash"
+                label="Supprimer"
+                (onClick)="delete(selectedPatient)"
+                severity="danger"
+                size="small"
+                [outlined]="true"
+              ></p-button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Détails du patient -->
+        <jhi-patient-detail [patient]="selectedPatient"></jhi-patient-detail>
+      </div>
+    }
+  </div>
 </div>

@@ -1,0 +1,336 @@
+// .split-view-container {
+//   display: flex;
+//   height: calc(100vh - 60px);
+//   overflow: hidden;
+// }
+
+// // ===== PANNEAU MAÎTRE (GAUCHE) =====
+// .master-panel {
+//   flex: 0 0 450px;
+//   display: flex;
+//   flex-direction: column;
+//   border-right: 1px solid var(--surface-border);
+//   background: var(--surface-ground);
+// }
+
+// .toolbar {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   padding: 1rem 1.5rem;
+//   border-bottom: 1px solid var(--surface-border);
+//   background: var(--surface-card);
+
+//   .page-title {
+//     margin: 0;
+//     font-size: 1.5rem;
+//     font-weight: 600;
+//   }
+
+//   .toolbar-right {
+//     display: flex;
+//     gap: 0.5rem;
+//   }
+// }
+
+// .search-panel {
+//   padding: 1rem 1.5rem;
+//   border-bottom: 1px solid var(--surface-border);
+//   background: var(--surface-card);
+
+//   .quick-search {
+//     input {
+//       font-size: 0.95rem;
+//     }
+//   }
+
+//   .advanced-filters {
+//     .filter-label {
+//       font-size: 0.875rem;
+//       font-weight: 600;
+//       color: var(--text-color-secondary);
+//     }
+
+//     .chips-container {
+//       display: flex;
+//       flex-wrap: wrap;
+//       gap: 0.5rem;
+
+//       ::ng-deep .custom-chip {
+//         background: var(--primary-color);
+//         color: white;
+//       }
+//     }
+//   }
+// }
+
+// .patients-list {
+//   flex: 1;
+//   overflow-y: auto;
+//   position: relative;
+
+//   &.loading {
+//     opacity: 0.6;
+//     pointer-events: none;
+//   }
+
+//   .loading-spinner {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     height: 200px;
+//   }
+
+//   .empty-state {
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: center;
+//     height: 300px;
+//     color: var(--text-color-secondary);
+
+//     p {
+//       margin-top: 1rem;
+//       font-size: 1.1rem;
+//     }
+//   }
+
+//   .patient-items {
+//     padding: 0.5rem;
+//   }
+// }
+
+// .patient-card {
+//   display: flex;
+//   gap: 1rem;
+//   padding: 1rem;
+//   margin-bottom: 0.5rem;
+//   border: 1px solid var(--surface-border);
+//   border-radius: 8px;
+//   background: var(--surface-card);
+//   cursor: pointer;
+//   transition: all 0.2s ease;
+
+//   &:hover {
+//     border-color: var(--primary-color);
+//     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+//     transform: translateY(-1px);
+//   }
+
+//   &.selected {
+//     border-color: var(--primary-color);
+//     background: var(--primary-50);
+//     box-shadow: 0 2px 12px rgba(var(--primary-color-rgb), 0.2);
+//   }
+
+//   .patient-avatar {
+//     flex-shrink: 0;
+//   }
+
+//   .patient-info {
+//     flex: 1;
+//     min-width: 0;
+//   }
+
+//   .patient-name {
+//     font-size: 1.1rem;
+//     font-weight: 600;
+//     margin-bottom: 0.25rem;
+//     color: var(--text-color);
+//     display: flex;
+//     align-items: center;
+//   }
+
+//   .patient-meta {
+//     display: flex;
+//     gap: 1rem;
+//     margin-bottom: 0.5rem;
+//     font-size: 0.875rem;
+//     color: var(--text-color-secondary);
+
+//     .meta-item {
+//       display: flex;
+//       align-items: center;
+//       gap: 0.25rem;
+
+//       i {
+//         font-size: 0.75rem;
+//       }
+//     }
+//   }
+
+//   .patient-details {
+//     display: flex;
+//     flex-wrap: wrap;
+//     gap: 0.5rem;
+//     margin-bottom: 0.5rem;
+
+//     .detail-badge {
+//       display: inline-flex;
+//       align-items: center;
+//       gap: 0.25rem;
+//       padding: 0.25rem 0.5rem;
+//       background: var(--surface-100);
+//       border-radius: 4px;
+//       font-size: 0.75rem;
+//       color: var(--text-color-secondary);
+
+//       i {
+//         font-size: 0.7rem;
+//       }
+//     }
+//   }
+
+//   .patient-status {
+//     display: flex;
+//     gap: 0.5rem;
+//   }
+// }
+
+// .pagination-panel {
+//   border-top: 1px solid var(--surface-border);
+//   background: var(--surface-card);
+// }
+
+// // ===== PANNEAU DÉTAIL (DROIT) =====
+// .detail-panel {
+//   flex: 1;
+//   display: flex;
+//   flex-direction: column;
+//   overflow: hidden;
+//   background: var(--surface-ground);
+// }
+
+// .empty-detail {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   height: 100%;
+//   color: var(--text-color-secondary);
+
+//   h3 {
+//     margin-top: 1rem;
+//     font-size: 1.5rem;
+//     font-weight: 600;
+//   }
+
+//   p {
+//     margin-top: 0.5rem;
+//     font-size: 1rem;
+//   }
+// }
+
+// .detail-content {
+//   height: 100%;
+//   overflow-y: auto;
+//   padding: 2rem;
+
+//   .detail-header {
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: flex-start;
+//     margin-bottom: 1rem;
+
+//     .header-left {
+//       h3 {
+//         margin: 0;
+//         font-size: 1.75rem;
+//         font-weight: 600;
+//       }
+
+//       p {
+//         margin: 0.5rem 0 0;
+//         font-size: 0.875rem;
+//       }
+//     }
+
+//     .header-actions {
+//       display: flex;
+//       gap: 0.5rem;
+//     }
+//   }
+
+//   .detail-grid {
+//     display: grid;
+//     grid-template-columns: repeat(2, 1fr);
+//     gap: 1.5rem;
+//     padding: 1rem 0;
+
+//     .detail-row {
+//       display: flex;
+//       flex-direction: column;
+//       gap: 0.25rem;
+
+//       &.full-width {
+//         grid-column: 1 / -1;
+//       }
+
+//       .detail-label {
+//         font-size: 0.875rem;
+//         font-weight: 600;
+//         color: var(--text-color-secondary);
+//         text-transform: uppercase;
+//         letter-spacing: 0.5px;
+//       }
+
+//       .detail-value {
+//         font-size: 1rem;
+//         color: var(--text-color);
+//         word-break: break-word;
+//       }
+//     }
+//   }
+// }
+
+// // Responsive
+// @media (max-width: 1200px) {
+//   .master-panel {
+//     flex: 0 0 380px;
+//   }
+// }
+
+// @media (max-width: 992px) {
+//   .split-view-container {
+//     flex-direction: column;
+//   }
+
+//   .master-panel {
+//     flex: 0 0 50vh;
+//   }
+
+//   .detail-panel {
+//     flex: 1;
+//   }
+// }
+:host {
+  display: block;
+  height: 100%;
+}
+
+::ng-deep {
+  .p-paginator {
+    padding: 0.5rem !important;
+
+    .p-paginator-pages {
+      .p-paginator-page {
+        min-width: 2rem;
+        height: 2rem;
+      }
+    }
+  }
+
+  .p-chip {
+    .p-chip-text {
+      font-size: 0.75rem;
+    }
+  }
+
+  .p-dropdown {
+    width: 100%;
+  }
+
+  .p-calendar {
+    width: 100%;
+  }
+}

@@ -1,23 +1,28 @@
 package com.ciatch.gdp.service.dto;
 
+import com.ciatch.gdp.domain.enumeration.BloodType;
 import com.ciatch.gdp.domain.enumeration.Gender;
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.ciatch.gdp.domain.enumeration.PatientStatus;
+import com.ciatch.gdp.domain.enumeration.SmokingStatus;
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * A DTO for the {@link com.ciatch.gdp.domain.Patient} entity.
  */
-@Schema(
-    description = "Table centrale: contient les informations d'identification et administratives des patients.\n@encryptedFields address, phone1, phone2, email, contactPersonName, contactPersonPhone, antecedents, allergies\n@hashedFields nif, ninu, passportNumber"
-)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class PatientDTO implements Serializable {
 
     private Long id;
+
+    private UUID uid;
 
     @NotNull
     private String firstName;
@@ -30,41 +35,84 @@ public class PatientDTO implements Serializable {
 
     private Gender gender;
 
-    private String bloodType;
+    private BloodType bloodType;
 
-    @Lob
+    // @Lob
     private String address;
 
     @NotNull
+    @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$")
     private String phone1;
 
+    @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$")
     private String phone2;
 
-    private String email;
-
+    @Size(min = 10, max = 10)
     private String nif;
 
+    @Size(min = 10, max = 10)
     private String ninu;
 
+    private String medicalRecordNumber;
+
+    @Min(value = 0)
+    @Max(value = 300)
     private Integer heightCm;
 
-    private Double weightKg;
+    @DecimalMin(value = "0")
+    @DecimalMax(value = "500")
+    private BigDecimal weightKg;
 
+    @Size(min = 3, max = 15)
     private String passportNumber;
 
+    @Size(max = 100)
     private String contactPersonName;
 
+    @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$")
     private String contactPersonPhone;
 
-    @Lob
+    // @Lob
     private String antecedents;
 
-    @Lob
+    // @Lob
     private String allergies;
 
+    // @Lob
+    private String clinicalNotes;
+
+    private SmokingStatus smokingStatus;
+
+    private ZonedDateTime gdprConsentDate;
+
+    private PatientStatus status;
+
+    private ZonedDateTime deceasedDate;
+
+    @Size(max = 200)
+    private String insuranceCompanyName;
+
+    @Size(max = 100)
+    private String patientInsuranceId;
+
+    @Size(max = 100)
+    private String insurancePolicyNumber;
+
+    @Size(max = 100)
+    private String insuranceCoverageType;
+
+    private LocalDate insuranceValidFrom;
+
+    private LocalDate insuranceValidTo;
+
     @NotNull
-    @Schema(description = "Un dossier patient est lié à un et un seul compte utilisateur (pour le portail).")
     private UserDTO user;
+
+    // Champs d'audit (lecture seule)
+    private String createdBy;
+    private Instant createdDate;
+    private String lastModifiedBy;
+    private Instant lastModifiedDate;
 
     public Long getId() {
         return id;
@@ -72,6 +120,14 @@ public class PatientDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public UUID getUid() {
+        return uid;
+    }
+
+    public void setUid(UUID uid) {
+        this.uid = uid;
     }
 
     public String getFirstName() {
@@ -106,11 +162,11 @@ public class PatientDTO implements Serializable {
         this.gender = gender;
     }
 
-    public String getBloodType() {
+    public BloodType getBloodType() {
         return bloodType;
     }
 
-    public void setBloodType(String bloodType) {
+    public void setBloodType(BloodType bloodType) {
         this.bloodType = bloodType;
     }
 
@@ -138,14 +194,6 @@ public class PatientDTO implements Serializable {
         this.phone2 = phone2;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getNif() {
         return nif;
     }
@@ -162,6 +210,14 @@ public class PatientDTO implements Serializable {
         this.ninu = ninu;
     }
 
+    public String getMedicalRecordNumber() {
+        return medicalRecordNumber;
+    }
+
+    public void setMedicalRecordNumber(String medicalRecordNumber) {
+        this.medicalRecordNumber = medicalRecordNumber;
+    }
+
     public Integer getHeightCm() {
         return heightCm;
     }
@@ -170,11 +226,11 @@ public class PatientDTO implements Serializable {
         this.heightCm = heightCm;
     }
 
-    public Double getWeightKg() {
+    public BigDecimal getWeightKg() {
         return weightKg;
     }
 
-    public void setWeightKg(Double weightKg) {
+    public void setWeightKg(BigDecimal weightKg) {
         this.weightKg = weightKg;
     }
 
@@ -218,12 +274,132 @@ public class PatientDTO implements Serializable {
         this.allergies = allergies;
     }
 
+    public String getClinicalNotes() {
+        return clinicalNotes;
+    }
+
+    public void setClinicalNotes(String clinicalNotes) {
+        this.clinicalNotes = clinicalNotes;
+    }
+
+    public SmokingStatus getSmokingStatus() {
+        return smokingStatus;
+    }
+
+    public void setSmokingStatus(SmokingStatus smokingStatus) {
+        this.smokingStatus = smokingStatus;
+    }
+
+    public ZonedDateTime getGdprConsentDate() {
+        return gdprConsentDate;
+    }
+
+    public void setGdprConsentDate(ZonedDateTime gdprConsentDate) {
+        this.gdprConsentDate = gdprConsentDate;
+    }
+
+    public PatientStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(PatientStatus status) {
+        this.status = status;
+    }
+
+    public ZonedDateTime getDeceasedDate() {
+        return deceasedDate;
+    }
+
+    public void setDeceasedDate(ZonedDateTime deceasedDate) {
+        this.deceasedDate = deceasedDate;
+    }
+
+    public String getInsuranceCompanyName() {
+        return insuranceCompanyName;
+    }
+
+    public void setInsuranceCompanyName(String insuranceCompanyName) {
+        this.insuranceCompanyName = insuranceCompanyName;
+    }
+
+    public String getPatientInsuranceId() {
+        return patientInsuranceId;
+    }
+
+    public void setPatientInsuranceId(String patientInsuranceId) {
+        this.patientInsuranceId = patientInsuranceId;
+    }
+
+    public String getInsurancePolicyNumber() {
+        return insurancePolicyNumber;
+    }
+
+    public void setInsurancePolicyNumber(String insurancePolicyNumber) {
+        this.insurancePolicyNumber = insurancePolicyNumber;
+    }
+
+    public String getInsuranceCoverageType() {
+        return insuranceCoverageType;
+    }
+
+    public void setInsuranceCoverageType(String insuranceCoverageType) {
+        this.insuranceCoverageType = insuranceCoverageType;
+    }
+
+    public LocalDate getInsuranceValidFrom() {
+        return insuranceValidFrom;
+    }
+
+    public void setInsuranceValidFrom(LocalDate insuranceValidFrom) {
+        this.insuranceValidFrom = insuranceValidFrom;
+    }
+
+    public LocalDate getInsuranceValidTo() {
+        return insuranceValidTo;
+    }
+
+    public void setInsuranceValidTo(LocalDate insuranceValidTo) {
+        this.insuranceValidTo = insuranceValidTo;
+    }
+
     public UserDTO getUser() {
         return user;
     }
 
     public void setUser(UserDTO user) {
         this.user = user;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     @Override
@@ -252,6 +428,7 @@ public class PatientDTO implements Serializable {
     public String toString() {
         return "PatientDTO{" +
             "id=" + getId() +
+            ", uid='" + getUid() + "'" +
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
             ", birthDate='" + getBirthDate() + "'" +
@@ -260,9 +437,9 @@ public class PatientDTO implements Serializable {
             ", address='" + getAddress() + "'" +
             ", phone1='" + getPhone1() + "'" +
             ", phone2='" + getPhone2() + "'" +
-            ", email='" + getEmail() + "'" +
             ", nif='" + getNif() + "'" +
             ", ninu='" + getNinu() + "'" +
+            ", medicalRecordNumber='" + getMedicalRecordNumber() + "'" +
             ", heightCm=" + getHeightCm() +
             ", weightKg=" + getWeightKg() +
             ", passportNumber='" + getPassportNumber() + "'" +
@@ -270,6 +447,17 @@ public class PatientDTO implements Serializable {
             ", contactPersonPhone='" + getContactPersonPhone() + "'" +
             ", antecedents='" + getAntecedents() + "'" +
             ", allergies='" + getAllergies() + "'" +
+            ", clinicalNotes='" + getClinicalNotes() + "'" +
+            ", smokingStatus='" + getSmokingStatus() + "'" +
+            ", gdprConsentDate='" + getGdprConsentDate() + "'" +
+            ", status='" + getStatus() + "'" +
+            ", deceasedDate='" + getDeceasedDate() + "'" +
+            ", insuranceCompanyName='" + getInsuranceCompanyName() + "'" +
+            ", patientInsuranceId='" + getPatientInsuranceId() + "'" +
+            ", insurancePolicyNumber='" + getInsurancePolicyNumber() + "'" +
+            ", insuranceCoverageType='" + getInsuranceCoverageType() + "'" +
+            ", insuranceValidFrom='" + getInsuranceValidFrom() + "'" +
+            ", insuranceValidTo='" + getInsuranceValidTo() + "'" +
             ", user=" + getUser() +
             "}";
     }

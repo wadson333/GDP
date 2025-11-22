@@ -1,5 +1,7 @@
 package com.ciatch.gdp.domain;
 
+import static com.ciatch.gdp.domain.AssertUtils.bigDecimalCompareTo;
+import static com.ciatch.gdp.domain.AssertUtils.zonedDataTimeSameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PatientAsserts {
@@ -47,6 +49,7 @@ public class PatientAsserts {
     public static void assertPatientUpdatableFieldsEquals(Patient expected, Patient actual) {
         assertThat(expected)
             .as("Verify Patient relevant properties")
+            .satisfies(e -> assertThat(e.getUid()).as("check uid").isEqualTo(actual.getUid()))
             .satisfies(e -> assertThat(e.getFirstName()).as("check firstName").isEqualTo(actual.getFirstName()))
             .satisfies(e -> assertThat(e.getLastName()).as("check lastName").isEqualTo(actual.getLastName()))
             .satisfies(e -> assertThat(e.getBirthDate()).as("check birthDate").isEqualTo(actual.getBirthDate()))
@@ -55,16 +58,47 @@ public class PatientAsserts {
             .satisfies(e -> assertThat(e.getAddress()).as("check address").isEqualTo(actual.getAddress()))
             .satisfies(e -> assertThat(e.getPhone1()).as("check phone1").isEqualTo(actual.getPhone1()))
             .satisfies(e -> assertThat(e.getPhone2()).as("check phone2").isEqualTo(actual.getPhone2()))
-            .satisfies(e -> assertThat(e.getEmail()).as("check email").isEqualTo(actual.getEmail()))
             .satisfies(e -> assertThat(e.getNif()).as("check nif").isEqualTo(actual.getNif()))
             .satisfies(e -> assertThat(e.getNinu()).as("check ninu").isEqualTo(actual.getNinu()))
+            .satisfies(e ->
+                assertThat(e.getMedicalRecordNumber()).as("check medicalRecordNumber").isEqualTo(actual.getMedicalRecordNumber())
+            )
             .satisfies(e -> assertThat(e.getHeightCm()).as("check heightCm").isEqualTo(actual.getHeightCm()))
-            .satisfies(e -> assertThat(e.getWeightKg()).as("check weightKg").isEqualTo(actual.getWeightKg()))
+            .satisfies(e ->
+                assertThat(e.getWeightKg()).as("check weightKg").usingComparator(bigDecimalCompareTo).isEqualTo(actual.getWeightKg())
+            )
             .satisfies(e -> assertThat(e.getPassportNumber()).as("check passportNumber").isEqualTo(actual.getPassportNumber()))
             .satisfies(e -> assertThat(e.getContactPersonName()).as("check contactPersonName").isEqualTo(actual.getContactPersonName()))
             .satisfies(e -> assertThat(e.getContactPersonPhone()).as("check contactPersonPhone").isEqualTo(actual.getContactPersonPhone()))
             .satisfies(e -> assertThat(e.getAntecedents()).as("check antecedents").isEqualTo(actual.getAntecedents()))
-            .satisfies(e -> assertThat(e.getAllergies()).as("check allergies").isEqualTo(actual.getAllergies()));
+            .satisfies(e -> assertThat(e.getAllergies()).as("check allergies").isEqualTo(actual.getAllergies()))
+            .satisfies(e -> assertThat(e.getClinicalNotes()).as("check clinicalNotes").isEqualTo(actual.getClinicalNotes()))
+            .satisfies(e -> assertThat(e.getSmokingStatus()).as("check smokingStatus").isEqualTo(actual.getSmokingStatus()))
+            .satisfies(e ->
+                assertThat(e.getGdprConsentDate())
+                    .as("check gdprConsentDate")
+                    .usingComparator(zonedDataTimeSameInstant)
+                    .isEqualTo(actual.getGdprConsentDate())
+            )
+            .satisfies(e -> assertThat(e.getStatus()).as("check status").isEqualTo(actual.getStatus()))
+            .satisfies(e ->
+                assertThat(e.getDeceasedDate())
+                    .as("check deceasedDate")
+                    .usingComparator(zonedDataTimeSameInstant)
+                    .isEqualTo(actual.getDeceasedDate())
+            )
+            .satisfies(e ->
+                assertThat(e.getInsuranceCompanyName()).as("check insuranceCompanyName").isEqualTo(actual.getInsuranceCompanyName())
+            )
+            .satisfies(e -> assertThat(e.getPatientInsuranceId()).as("check patientInsuranceId").isEqualTo(actual.getPatientInsuranceId()))
+            .satisfies(e ->
+                assertThat(e.getInsurancePolicyNumber()).as("check insurancePolicyNumber").isEqualTo(actual.getInsurancePolicyNumber())
+            )
+            .satisfies(e ->
+                assertThat(e.getInsuranceCoverageType()).as("check insuranceCoverageType").isEqualTo(actual.getInsuranceCoverageType())
+            )
+            .satisfies(e -> assertThat(e.getInsuranceValidFrom()).as("check insuranceValidFrom").isEqualTo(actual.getInsuranceValidFrom()))
+            .satisfies(e -> assertThat(e.getInsuranceValidTo()).as("check insuranceValidTo").isEqualTo(actual.getInsuranceValidTo()));
     }
 
     /**

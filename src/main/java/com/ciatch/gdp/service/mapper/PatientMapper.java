@@ -9,14 +9,17 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Patient} and its DTO {@link PatientDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {})
 public interface PatientMapper extends EntityMapper<PatientDTO, Patient> {
-    @Mapping(target = "user", source = "user", qualifiedByName = "userLogin")
+    @Mapping(target = "user", source = "user", qualifiedByName = "userId")
+    // @Mapping(target = "user", source = "user.email", qualifiedByName = "email")
+    // @Mapping(target = "user", source = "user.imageUrl", qualifiedByName = "imageUrl")
     PatientDTO toDto(Patient s);
 
-    @Named("userLogin")
+    @Named("userId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    @Mapping(target = "login", source = "login")
-    UserDTO toDtoUserLogin(User user);
+    // @Mapping(target = "email", source = "email")
+    // @Mapping(target = "imageUrl", source = "imageUrl")
+    UserDTO toDtoUserId(User user);
 }

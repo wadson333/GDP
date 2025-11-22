@@ -12,8 +12,15 @@ import { IPatient, NewPatient } from '../patient.model';
 
 export type PartialUpdatePatient = Partial<IPatient> & Pick<IPatient, 'id'>;
 
-type RestOf<T extends IPatient | NewPatient> = Omit<T, 'birthDate'> & {
+type RestOf<T extends IPatient | NewPatient> = Omit<
+  T,
+  'birthDate' | 'gdprConsentDate' | 'deceasedDate' | 'insuranceValidFrom' | 'insuranceValidTo'
+> & {
   birthDate?: string | null;
+  gdprConsentDate?: string | null;
+  deceasedDate?: string | null;
+  insuranceValidFrom?: string | null;
+  insuranceValidTo?: string | null;
 };
 
 export type RestPatient = RestOf<IPatient>;
@@ -102,6 +109,10 @@ export class PatientService {
     return {
       ...patient,
       birthDate: patient.birthDate?.format(DATE_FORMAT) ?? null,
+      gdprConsentDate: patient.gdprConsentDate?.toJSON() ?? null,
+      deceasedDate: patient.deceasedDate?.toJSON() ?? null,
+      insuranceValidFrom: patient.insuranceValidFrom?.format(DATE_FORMAT) ?? null,
+      insuranceValidTo: patient.insuranceValidTo?.format(DATE_FORMAT) ?? null,
     };
   }
 
@@ -109,6 +120,10 @@ export class PatientService {
     return {
       ...restPatient,
       birthDate: restPatient.birthDate ? dayjs(restPatient.birthDate) : undefined,
+      gdprConsentDate: restPatient.gdprConsentDate ? dayjs(restPatient.gdprConsentDate) : undefined,
+      deceasedDate: restPatient.deceasedDate ? dayjs(restPatient.deceasedDate) : undefined,
+      insuranceValidFrom: restPatient.insuranceValidFrom ? dayjs(restPatient.insuranceValidFrom) : undefined,
+      insuranceValidTo: restPatient.insuranceValidTo ? dayjs(restPatient.insuranceValidTo) : undefined,
     };
   }
 
