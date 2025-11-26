@@ -369,117 +369,211 @@
     </div>
   }
 </div> -->
+<p-toast></p-toast>
+<!-- Toolbar -->
+<div>
+  <p-toolbar>
+    <div class="p-toolbar-group-left">
+      <!-- Zone B: Search and Filters -->
+      <div class="flex items-center search-container">
+        <p-dropdown
+          [(ngModel)]="searchType"
+          [options]="searchTypeOptions"
+          styleClass="text-sm border-0 filter-dropdown"
+          (onChange)="clearAllFilters()"
+          class="min-w-[200px] max-w-[200px] filter-dropdown"
+          [placeholder]="'gdpApp.patient.search.searchType.title' | translate"
+        ></p-dropdown>
+        <p-divider layout="vertical" class="divider-v" />
 
-<div class="flex h-screen overflow-hidden bg-gray-50">
-  <!-- PANNEAU GAUCHE (Maître) -->
-  <div class="flex flex-col w-96 border-r border-gray-200 bg-white">
-    <!-- Zone A: Toolbar Actions -->
-    <div class="p-4 border-b border-gray-200 bg-white">
-      <div class="flex gap-2">
-        <p-button icon="pi pi-plus" label="Nouveau" [routerLink]="['/patient/new']" severity="success" size="small"></p-button>
+        <!-- Recherche globale -->
+        <div class="min-w-[400px]">
+          @if (searchType != 'advanced') {
+            <div class="flex items-center gap-x-2">
+              <span class="p-input-icon-left flex-1">
+                <i class="pi pi-search"></i>
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="globalSearchTerm"
+                  (keyup.enter)="applyGlobalSearch()"
+                  [placeholder]="'gdpApp.patient.search.searchGlobalPlaceholder' | translate"
+                  class="flex-grow border-0 bg-transparent text-sm focus:outline-none focus:ring-0 w-full"
+                />
+              </span>
+              <p-button
+                (click)="clearAllFilters()"
+                size="small"
+                styleClass="p-button-text"
+                icon="pi pi-times"
+                [pTooltip]="'gdpApp.patient.search.clearPlaceholder' | translate"
+                tooltipPosition="bottom"
+                [severity]="'danger'"
+                [style.visibility]="globalSearchTerm?.trim() ? 'visible' : 'hidden'"
+              ></p-button>
+              <p-button
+                icon="pi pi-search"
+                (onClick)="applyGlobalSearch()"
+                [disabled]="!globalSearchTerm?.trim()"
+                [pTooltip]="'gdpApp.patient.search.searchGlobalPlaceholder' | translate"
+                tooltipPosition="bottom"
+                size="small"
+              >
+              </p-button>
+            </div>
+          }
 
-        <p-button
-          icon="pi pi-refresh"
-          [loading]="isLoading"
-          (onClick)="load()"
-          severity="secondary"
-          size="small"
-          [outlined]="true"
-        ></p-button>
+          <!-- Sélection de critère et ajout de filtre -->
+          @if (searchType === 'advanced') {
+            <div class="flex items-center gap-x-2">
+              <p-divider layout="vertical" class="divider-v" />
+              <p-dropdown
+                [(ngModel)]="selectedCriterion"
+                [options]="availableCriteria"
+                [placeholder]="'gdpApp.patient.search.selectFilterCriteria' | translate"
+                styleClass="text-sm border-0 filter-dropdown"
+                class="min-w-[200px] max-w-[200px] filter-dropdown"
+              ></p-dropdown>
+              <p-divider layout="vertical" class="divider-v" />
+              <!-- @if (selectedCriterion) { -->
+              <div class="flex items-center gap-x-2">
+                @if (selectedCriterion?.type != 'enum' && selectedCriterion?.type != 'date') {
+                  <input
+                    pInputText
+                    [type]="selectedCriterion?.type"
+                    [(ngModel)]="filterValue"
+                    [placeholder]="'Entrer ' + selectedCriterion?.label"
+                    (keyup.enter)="addFilter()"
+                    [placeholder]="
+                      selectedCriterion?.label
+                        ? ('gdpApp.patient.search.enterLabel' | translate) + selectedCriterion?.label
+                        : ('gdpApp.patient.search.enterLabelPlaceholder' | translate)
+                    "
+                    class="flex-grow border-0 bg-transparent text-sm focus:outline-none focus:ring-0"
+                  />
+                }
 
-        <p-button icon="pi pi-download" severity="help" size="small" [outlined]="true"></p-button>
+                @if (selectedCriterion?.type === 'enum') {
+                  <p-dropdown
+                    [(ngModel)]="filterValue"
+                    [options]="selectedCriterion?.enumValues || []"
+                    optionLabel="label"
+                    optionValue="value"
+                    [placeholder]="'Choisir ' + selectedCriterion?.label"
+                    class="flex-1"
+                  ></p-dropdown>
+                }
+
+                @if (selectedCriterion?.type === 'date') {
+                  <p-calendar
+                    [(ngModel)]="filterValue"
+                    [showIcon]="true"
+                    dateFormat="dd/mm/yy"
+                    [placeholder]="'gdpApp.patient.search.selectDOBPlaceholder' | translate"
+                    class="flex-1"
+                  ></p-calendar>
+                }
+
+                <p-button
+                  icon="pi pi-plus"
+                  (onClick)="addFilter()"
+                  [disabled]="!filterValue"
+                  size="small"
+                  styleClass="p-button-text"
+                  severity="primary"
+                  [pTooltip]="'gdpApp.patient.search.addFilterCriteria' | translate"
+                  tooltipPosition="bottom"
+                >
+                </p-button>
+              </div>
+              <!-- } -->
+            </div>
+          }
+        </div>
       </div>
     </div>
 
-    <!-- Zone B: Recherche et Filtres -->
-    <div class="p-4 border-b border-gray-200 space-y-3">
-      <!-- Recherche globale -->
-      <div class="flex gap-2">
-        <span class="p-input-icon-left flex-1">
-          <i class="pi pi-search"></i>
-          <input
-            pInputText
-            type="text"
-            [(ngModel)]="globalSearchTerm"
-            (keyup.enter)="applyGlobalSearch()"
-            placeholder="Recherche globale..."
-            class="w-full"
+    <div class="p-toolbar-group-right">
+      <!-- Zone A: Toolbar Actions -->
+      <div class="px-1 py-1 border-b">
+        <div class="flex gap-1 justify-end">
+          <!-- refresh button   severity="help"-->
+          <p-button
+            icon="pi pi-refresh"
+            (click)="load()"
+            [loading]="isLoading"
+            [text]="true"
+            tooltipPosition="bottom"
+            [pTooltip]="'gdpApp.patient.home.refreshListLabel' | translate"
           />
-        </span>
-        <p-button icon="pi pi-search" (onClick)="applyGlobalSearch()" [disabled]="!globalSearchTerm?.trim()" size="small"></p-button>
-      </div>
 
-      <!-- Sélection de critère et ajout de filtre -->
-      <div class="space-y-2">
-        <div class="flex gap-2">
-          <p-dropdown
-            [(ngModel)]="selectedCriterion"
-            [options]="availableCriteria"
-            optionLabel="label"
-            placeholder="Choisir un critère"
-            class="flex-1"
-            [showClear]="true"
-          ></p-dropdown>
+          <!-- export button severity="help"-->
+          <p-menu #menu [popup]="true" [model]="menuItems"></p-menu>
+          <p-button
+            icon="pi pi-file-export"
+            (click)="menu.toggle($event)"
+            [text]="true"
+            tooltipPosition="bottom"
+            [pTooltip]="'gdpApp.patient.home.export' | translate"
+          />
+
+          <p-button
+            icon="pi pi-plus"
+            [label]="'gdpApp.patient.home.createLabel' | translate"
+            [routerLink]="['/patient/new']"
+            severity="primary"
+            tooltipPosition="bottom"
+            [pTooltip]="'gdpApp.patient.home.createLabelTooltip' | translate"
+          >
+          </p-button>
         </div>
-
-        @if (selectedCriterion) {
-          <div class="flex gap-2">
-            @if (selectedCriterion.type === 'text' || selectedCriterion.type === 'number') {
-              <input pInputText type="text" [(ngModel)]="filterValue" [placeholder]="'Entrer ' + selectedCriterion.label" class="flex-1" />
-            }
-
-            @if (selectedCriterion.type === 'enum') {
-              <p-dropdown
-                [(ngModel)]="filterValue"
-                [options]="selectedCriterion.enumValues || []"
-                optionLabel="label"
-                optionValue="value"
-                [placeholder]="'Choisir ' + selectedCriterion.label"
-                class="flex-1"
-              ></p-dropdown>
-            }
-
-            @if (selectedCriterion.type === 'date') {
-              <p-calendar
-                [(ngModel)]="filterValue"
-                [showIcon]="true"
-                dateFormat="dd/mm/yy"
-                [placeholder]="'Sélectionner ' + selectedCriterion.label"
-                class="flex-1"
-              ></p-calendar>
-            }
-
-            <p-button icon="pi pi-plus" (onClick)="addFilter()" [disabled]="!filterValue" size="small" severity="success"></p-button>
-          </div>
+      </div>
+    </div>
+  </p-toolbar>
+</div>
+<!-- chip for active filter  -->
+<div>
+  <!-- Filtres actifs (Chips) -->
+  @if (activeFilters.length > 0) {
+    <div class="flex items-center">
+      <div class="flex items-center gap-x-2 border-e">
+        <span class="text-xs font-semibold">Filtres actifs:</span>
+        <p-button
+          (click)="clearAllFilters()"
+          size="small"
+          styleClass="p-button-text"
+          icon="pi pi-times"
+          [pTooltip]="'gdpApp.patient.search.clearPlaceholder' | translate"
+          tooltipPosition="bottom"
+          [severity]="'danger'"
+        ></p-button>
+        <!-- <button class="text-xs text-blue-600 hover:text-blue-800" (click)="clearAllFilters()">Tout effacer</button> -->
+      </div>
+      <p-divider layout="vertical" class="divider-v" />
+      <div class="flex flex-wrap gap-x-2">
+        @for (filter of activeFilters; track filter) {
+          <p-chip
+            [label]="filter.label + ': ' + filter.displayValue"
+            [removable]="true"
+            (onRemove)="removeFilter(filter)"
+            styleClass="text-xs"
+          ></p-chip>
         }
       </div>
-
-      <!-- Filtres actifs (Chips) -->
-      @if (activeFilters.length > 0) {
-        <div class="space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-semibold text-gray-600">Filtres actifs:</span>
-            <button class="text-xs text-blue-600 hover:text-blue-800" (click)="clearAllFilters()">Tout effacer</button>
-          </div>
-          <div class="flex flex-wrap gap-2">
-            @for (filter of activeFilters; track filter) {
-              <p-chip
-                [label]="filter.label + ': ' + filter.displayValue"
-                [removable]="true"
-                (onRemove)="removeFilter(filter)"
-                styleClass="text-xs"
-              ></p-chip>
-            }
-          </div>
-        </div>
-      }
     </div>
+    <p-divider layout="horizontal" class="divider-h" />
+  }
+</div>
 
+<div class="flex h-[91%]">
+  <!-- <p-divider layout="vertical" class="divider-v"/> -->
+  <!-- PANNEAU GAUCHE (Maître) -->
+  <div class="flex flex-col w-96 border-r border-surface-300">
     <!-- Zone C: Liste des Patients (Scrollable) -->
     <div class="flex-1 overflow-y-auto">
       @if (isLoading) {
         <!-- Skeleton pour la liste de patients -->
-        <div class="divide-y divide-gray-100">
+        <div class="divide-y">
           @for (item of [1, 2, 3, 4, 5]; track item) {
             <div class="p-3">
               <div class="flex gap-3">
@@ -501,23 +595,22 @@
       }
 
       @if (!isLoading && (!patients || patients.length === 0)) {
-        <div class="p-4 text-center text-gray-500">
+        <div class="p-4 text-center" style="color: var(--bluegray-300)">
           <i class="pi pi-inbox text-4xl mb-2"></i>
           <p>Aucun patient trouvé</p>
         </div>
       }
 
       @if (!isLoading && patients && patients.length > 0) {
-        <div class="divide-y divide-gray-100">
+        <div class="divide-y">
+          <p-divider layout="horizontal" class="divider-h" />
           @for (patient of patients; track trackId(patient)) {
             <div
-              class="p-3 cursor-pointer hover:bg-gray-50 transition-colors"
-              [class.bg-blue-50]="selectedPatient?.id === patient.id"
-              [class.border-l-4]="selectedPatient?.id === patient.id"
-              [class.border-blue-500]="selectedPatient?.id === patient.id"
+              class="pb-3 px-4 cursor-pointer rounded-sm transition-colors patient-list-card"
+              [class.selected]="selectedPatient?.id === patient.id"
               (click)="onSelect(patient)"
             >
-              <div class="flex gap-3">
+              <div class="flex items-center gap-x-2">
                 <!-- Avatar -->
                 <div class="flex-shrink-0">
                   <!-- @if (patient.user?.imageUrl) {
@@ -531,7 +624,7 @@
                     [label]="getInitials(patient)"
                     shape="circle"
                     size="large"
-                    [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"
+                    [style]="{ 'background-color': 'var(--primary-color)', color: '#ffffff' }"
                   ></p-avatar>
                   <!-- } -->
                 </div>
@@ -540,23 +633,21 @@
                 <div class="flex-1 min-w-0">
                   <div class="flex items-start justify-between">
                     <div class="flex-1">
-                      <h3 class="text-sm font-semibold text-gray-900 truncate">{{ patient.firstName }} {{ patient.lastName }}</h3>
+                      <h3 class="text-sm font-semibold truncate">{{ patient.firstName }} {{ patient.lastName?.toUpperCase() }}</h3>
                       <div class="mt-1 space-y-1">
-                        <p class="text-xs text-gray-600">
-                          <i class="pi pi-calendar text-gray-400 mr-1"></i>
+                        <p class="text-xs">
+                          <i class="pi pi-calendar" style="color: var(--bluegray-600)"></i>
                           {{ patient.birthDate | formatMediumDate }}
                           <span class="mx-2">•</span>
                           {{ getGenderLabel(patient.gender) }}
                         </p>
+
                         @if (patient.medicalRecordNumber) {
-                          <p class="text-xs text-gray-500">
-                            <i class="pi pi-file text-gray-400 mr-1"></i>
+                          <p class="text-xs" style="color: var(--bluegray-600)">
+                            <i class="pi pi-file"></i>
                             {{ patient.medicalRecordNumber }}
-                          </p>
-                        }
-                        @if (patient.phone1) {
-                          <p class="text-xs text-gray-500">
-                            <i class="pi pi-phone text-gray-400 mr-1"></i>
+                            <span class="mx-2">•</span>
+                            <i class="pi pi-phone"></i>
                             {{ patient.phone1 }}
                           </p>
                         }
@@ -566,12 +657,13 @@
                     <p-tag
                       [value]="getStatusLabel(patient.status)"
                       [severity]="getStatusSeverity(patient.status)"
-                      styleClass="text-xs"
+                      styleClass="text-xs mt-3"
                     ></p-tag>
                   </div>
                 </div>
               </div>
             </div>
+            <p-divider layout="horizontal" class="divider-h" />
           }
         </div>
       }
@@ -579,7 +671,7 @@
 
     <!-- Zone D: Pagination -->
     @if (patients && patients.length > 0) {
-      <div class="border-t border-gray-200 bg-white p-2">
+      <div class="border-t px-2">
         <p-paginator
           [first]="(page - 1) * itemsPerPage"
           [rows]="itemsPerPage"
@@ -590,20 +682,23 @@
       </div>
     }
   </div>
-
+  <p-divider layout="vertical" class="divider-v" />
   <!-- PANNEAU DROIT (Détail) -->
-  <div class="flex-1 overflow-y-auto bg-gray-50">
+  <div class="flex-1 overflow-y-auto h-full right-pannel">
     @if (!selectedPatient) {
-      <div class="flex flex-col items-center justify-center h-full text-gray-400">
+      <div class="flex flex-col items-center justify-center h-full" style="color: var(--bluegray-300)">
         <i class="pi pi-user text-6xl mb-4"></i>
-        <p class="text-lg">Sélectionnez un patient pour voir les détails</p>
+        <p class="text-lg">{{ 'gdpApp.patient.detail.noPatientSelected' | translate }}</p>
       </div>
     } @else {
-      <div class="p-6">
+      <div
+        class="py-6 px-3 mx-3 rounded-md h-full overflow-y-auto"
+        style="border: 1px solid var(--surface-border); background-color: var(--surface-100)"
+      >
         <!-- Header avec actions -->
-        <div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+        <div class="rounded-lg shadow-sm px-4 py-0 mb-4" style="background-color: var(--surface-0)">
           <div class="flex items-center justify-between">
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-x-4">
               <!-- @if (selectedPatient.user?.imageUrl) {
                 <p-avatar 
                   [image]="selectedPatient.user.imageUrl"
@@ -615,33 +710,43 @@
                 [label]="getInitials(selectedPatient)"
                 shape="circle"
                 size="xlarge"
-                [style]="{ 'background-color': '#2196F3', color: '#ffffff', 'font-size': '2rem' }"
+                [style]="{ 'background-color': 'var(--primary-color)', color: '#ffffff', 'font-size': '2rem' }"
               ></p-avatar>
               <!-- } -->
 
               <div>
-                <h2 class="text-2xl font-bold text-gray-900">{{ selectedPatient.firstName }} {{ selectedPatient.lastName }}</h2>
-                <p class="text-sm text-gray-600">ID: {{ selectedPatient.id }} • UID: {{ selectedPatient.uid }}</p>
+                <h2 class="text-2xl font-bold my-0 py-0">
+                  {{ selectedPatient.firstName }} {{ selectedPatient.lastName?.toUpperCase() }}
+                  <p-button
+                    icon="pi pi-pencil"
+                    [rounded]="true"
+                    [text]="true"
+                    [routerLink]="['/patient', selectedPatient.id, 'edit']"
+                    severity="primary"
+                    pTooltip="Modifier"
+                  ></p-button>
+                </h2>
+                <p class="text-sm">ID: {{ selectedPatient.id }} • UID: {{ selectedPatient.uid }}</p>
               </div>
             </div>
 
-            <div class="flex gap-2">
+            <div class="flex items-center gap-2">
               <p-button
-                icon="pi pi-pencil"
-                label="Modifier"
-                [routerLink]="['/patient', selectedPatient.id, 'edit']"
-                severity="primary"
-                size="small"
+                icon="pi pi-times"
+                [rounded]="true"
+                [text]="true"
+                severity="secondary"
+                (onClick)="closeDetail()"
+                pTooltip="Fermer"
               ></p-button>
-
-              <p-button
+              <!-- <p-button
                 icon="pi pi-trash"
                 label="Supprimer"
                 (onClick)="delete(selectedPatient)"
                 severity="danger"
                 size="small"
                 [outlined]="true"
-              ></p-button>
+              ></p-button> -->
             </div>
           </div>
         </div>

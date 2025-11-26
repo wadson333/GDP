@@ -39,9 +39,9 @@ export interface IPatient {
   insuranceValidTo?: dayjs.Dayjs | null;
   user?: IUser | null;
   createdBy?: string;
-  createdDate?: Date;
+  createdDate?: dayjs.Dayjs | null;
   lastModifiedBy?: string;
-  lastModifiedDate?: Date;
+  lastModifiedDate?: dayjs.Dayjs | null;
 }
 
 export type NewPatient = Omit<IPatient, 'id'> & { id: null };

@@ -172,274 +172,746 @@
   </div>
 </div> -->
 @if (patient(); as patientRef) {
-  <div class="space-y-4">
-    <!-- Informations personnelles -->
-    <div class="bg-white rounded-lg shadow-sm p-4">
-      <h3 class="text-lg font-semibold text-gray-900 mb-4">
-        <i class="pi pi-user text-blue-500 mr-2"></i>
-        Informations personnelles
-      </h3>
+  <div class="h-full">
+    <div class="pb-8">
+      <div class="rounded-lg shadow-sm" style="background-color: var(--surface-0)">
+        <p-tabView styleClass="custom-tabview">
+          <!-- Onglet Informations Générales -->
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+              <div class="flex items-center gap-2 text-sm">
+                <i class="pi pi-user text-lg"></i>
+                <span jhiTranslate="gdpApp.patient.detail.tabs.general" class="hidden md:inline">Informations Générales</span>
+              </div>
+            </ng-template>
 
-      <dl class="grid grid-cols-2 gap-4">
-        <div>
-          <dt class="text-xs font-medium text-gray-500">Date de naissance</dt>
-          <dd class="mt-1 text-sm text-gray-900">{{ patientRef.birthDate | formatMediumDate }}</dd>
-        </div>
+            <div class="py-2 px-6 space-y-4">
+              <!-- Section Identité -->
+              <div class="pb-4" style="border-bottom: 1px solid var(--bluegray-100)">
+                <h4 class="flex items-center gap-x-3 gap-y-1 text-lg font-semibold mb-5" style="color: var(--surface-600)">
+                  <i class="pi pi-id-card text-xl" style="color: var(--primary-color)"></i>
+                  <span jhiTranslate="gdpApp.patient.detail.sections.identity">Identité</span>
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="text-xs font-semibold uppercase tracking-wide"
+                      style="color: var(--surface-500)"
+                      jhiTranslate="gdpApp.patient.firstName"
+                      >Prénom</label
+                    >
+                    <span class="text-base font-medium" style="color: var(--surface-900)">{{ patientRef.firstName || '-' }}</span>
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="text-xs font-semibold uppercase tracking-wide"
+                      style="color: var(--surface-500)"
+                      jhiTranslate="gdpApp.patient.lastName"
+                      >Nom</label
+                    >
+                    <span class="text-base font-medium" style="color: var(--surface-900)">{{ patientRef.lastName || '-' }}</span>
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="text-xs font-semibold uppercase tracking-wide"
+                      style="color: var(--surface-500)"
+                      jhiTranslate="gdpApp.patient.birthDate"
+                      >Date de naissance</label
+                    >
+                    <span class="text-base font-medium" style="color: var(--surface-900)">{{
+                      patientRef.birthDate | formatMediumDate
+                    }}</span>
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="text-xs font-semibold uppercase tracking-wide"
+                      style="color: var(--surface-500)"
+                      jhiTranslate="gdpApp.patient.gender"
+                      >Sexe</label
+                    >
+                    <span
+                      class="text-base font-medium"
+                      style="color: var(--surface-900)"
+                      [jhiTranslate]="'gdpApp.Gender.' + (patientRef.gender ?? 'null')"
+                    ></span>
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="text-xs font-semibold uppercase tracking-wide"
+                      style="color: var(--surface-500)"
+                      jhiTranslate="gdpApp.patient.uid"
+                      >UID</label
+                    >
+                    <span class="text-sm font-mono px-2 py-1 rounded inline-block" style="background-color: var(--surface-100)">{{
+                      patientRef.uid || '-'
+                    }}</span>
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="text-xs font-semibold uppercase tracking-wide"
+                      style="color: var(--surface-500)"
+                      jhiTranslate="gdpApp.patient.status"
+                      >Statut</label
+                    >
+                    <div>
+                      <p-tag
+                        [value]="'gdpApp.PatientStatus.' + (patientRef.status ?? 'null') | translate"
+                        [severity]="getStatusSeverity(patientRef.status)"
+                      ></p-tag>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-        <div>
-          <dt class="text-xs font-medium text-gray-500">Sexe</dt>
-          <dd class="mt-1 text-sm text-gray-900" [jhiTranslate]="'gdpApp.Gender.' + (patientRef.gender ?? 'null')"></dd>
-        </div>
+              <!-- Section Documents Officiels -->
+              <div class="pb-6" style="border-bottom: 1px solid var(--bluegray-100)">
+                <h4 class="flex items-center gap-x-3 gap-y-1 text-lg font-semibold mb-5" style="color: var(--surface-600)">
+                  <i class="pi pi-file text-xl" style="color: var(--primary-color)"></i>
+                  <span jhiTranslate="gdpApp.patient.detail.sections.officialDocs">Documents Officiels</span>
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="text-xs font-semibold uppercase tracking-wide"
+                      style="color: var(--surface-500)"
+                      jhiTranslate="gdpApp.patient.nif"
+                      >NIF</label
+                    >
+                    <span class="text-sm font-mono px-2 py-1 rounded inline-block" style="background-color: var(--surface-100)">{{
+                      patientRef.nif || '-'
+                    }}</span>
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="text-xs font-semibold uppercase tracking-wide"
+                      style="color: var(--surface-500)"
+                      jhiTranslate="gdpApp.patient.ninu"
+                      >NINU</label
+                    >
+                    <span class="text-sm font-mono px-2 py-1 rounded inline-block" style="background-color: var(--surface-100)">{{
+                      patientRef.ninu || '-'
+                    }}</span>
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="text-xs font-semibold uppercase tracking-wide"
+                      style="color: var(--surface-500)"
+                      jhiTranslate="gdpApp.patient.passportNumber"
+                      >N° Passeport</label
+                    >
+                    <span class="text-sm font-mono px-2 py-1 rounded inline-block" style="background-color: var(--surface-100)">{{
+                      patientRef.passportNumber || '-'
+                    }}</span>
+                  </div>
+                </div>
+              </div>
 
-        <div>
-          <dt class="text-xs font-medium text-gray-500">Groupe sanguin</dt>
-          <dd class="mt-1 text-sm text-gray-900" [jhiTranslate]="'gdpApp.BloodType.' + (patientRef.bloodType ?? 'null')"></dd>
-        </div>
+              <!-- Section Contact -->
+              <div class="pb-6" style="border-bottom: 1px solid var(--bluegray-100)">
+                <h4 class="flex items-center gap-x-3 gap-y-1 text-lg font-semibold mb-5" style="color: var(--surface-600)">
+                  <i class="pi pi-phone" style="color: var(--primary-color)"></i>
+                  <span jhiTranslate="gdpApp.patient.detail.sections.contact">Coordonnées</span>
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="text-xs font-semibold uppercase tracking-wide"
+                      style="color: var(--surface-500)"
+                      jhiTranslate="gdpApp.patient.phone1"
+                      >Téléphone principal</label
+                    >
+                    <a
+                      [href]="'tel:' + patientRef.phone1"
+                      class="text-base font-medium hover:underline transition-colors"
+                      style="color: var(--primary-color)"
+                    >
+                      {{ patientRef.phone1 || '-' }}
+                    </a>
+                  </div>
+                  @if (patientRef.phone2) {
+                    <div class="flex flex-col gap-2">
+                      <label
+                        class="text-xs font-semibold uppercase tracking-wide"
+                        style="color: var(--surface-500)"
+                        jhiTranslate="gdpApp.patient.phone2"
+                        >Téléphone secondaire</label
+                      >
+                      <a
+                        [href]="'tel:' + patientRef.phone2"
+                        class="text-base font-medium hover:underline transition-colors"
+                        style="color: var(--primary-color)"
+                      >
+                        {{ patientRef.phone2 }}
+                      </a>
+                    </div>
+                  }
+                  @if (patientRef.user?.login) {
+                    <div class="flex flex-col gap-2">
+                      <label
+                        class="text-xs font-semibold uppercase tracking-wide"
+                        style="color: var(--surface-500)"
+                        jhiTranslate="gdpApp.patient.user"
+                        >Utilisateur</label
+                      >
+                      <span class="text-base font-medium" style="color: var(--surface-900)">{{ patientRef.user?.login }}</span>
+                    </div>
+                  }
+                  <div class="flex flex-col gap-2 md:col-span-2">
+                    <label
+                      class="text-xs font-semibold uppercase tracking-wide"
+                      style="color: var(--surface-500)"
+                      jhiTranslate="gdpApp.patient.address"
+                      >Adresse</label
+                    >
+                    <span class="text-base font-medium" style="color: var(--surface-900)">{{ patientRef.address || '-' }}</span>
+                  </div>
+                </div>
+              </div>
 
-        <div>
-          <dt class="text-xs font-medium text-gray-500">Statut fumeur</dt>
-          <dd class="mt-1 text-sm text-gray-900" [jhiTranslate]="'gdpApp.SmokingStatus.' + (patientRef.smokingStatus ?? 'null')"></dd>
-        </div>
-
-        @if (patientRef.heightCm) {
-          <div>
-            <dt class="text-xs font-medium text-gray-500">Taille</dt>
-            <dd class="mt-1 text-sm text-gray-900">{{ patientRef.heightCm }} cm</dd>
-          </div>
-        }
-
-        @if (patientRef.weightKg) {
-          <div>
-            <dt class="text-xs font-medium text-gray-500">Poids</dt>
-            <dd class="mt-1 text-sm text-gray-900">{{ patientRef.weightKg }} kg</dd>
-          </div>
-        }
-      </dl>
-    </div>
-
-    <!-- Contact -->
-    <div class="bg-white rounded-lg shadow-sm p-4">
-      <h3 class="text-lg font-semibold text-gray-900 mb-4">
-        <i class="pi pi-phone text-blue-500 mr-2"></i>
-        Contact
-      </h3>
-
-      <dl class="space-y-3">
-        @if (patientRef.phone1) {
-          <div>
-            <dt class="text-xs font-medium text-gray-500">Téléphone principal</dt>
-            <dd class="mt-1 text-sm text-gray-900">{{ patientRef.phone1 }}</dd>
-          </div>
-        }
-
-        @if (patientRef.phone2) {
-          <div>
-            <dt class="text-xs font-medium text-gray-500">Téléphone secondaire</dt>
-            <dd class="mt-1 text-sm text-gray-900">{{ patientRef.phone2 }}</dd>
-          </div>
-        }
-
-        @if (patientRef.address) {
-          <div>
-            <dt class="text-xs font-medium text-gray-500">Adresse</dt>
-            <dd class="mt-1 text-sm text-gray-900">{{ patientRef.address }}</dd>
-          </div>
-        }
-
-        @if (patientRef.user?.login) {
-          <div>
-            <dt class="text-xs font-medium text-gray-500">Username</dt>
-            <dd class="mt-1 text-sm text-gray-900">{{ patientRef.user?.login }}</dd>
-          </div>
-        }
-      </dl>
-    </div>
-
-    <!-- Identifiants -->
-    <div class="bg-white rounded-lg shadow-sm p-4">
-      <h3 class="text-lg font-semibold text-gray-900 mb-4">
-        <i class="pi pi-id-card text-blue-500 mr-2"></i>
-        Identifiants
-      </h3>
-
-      <dl class="grid grid-cols-2 gap-4">
-        @if (patientRef.nif) {
-          <div>
-            <dt class="text-xs font-medium text-gray-500">NIF</dt>
-            <dd class="mt-1 text-sm text-gray-900 font-mono">{{ patientRef.nif }}</dd>
-          </div>
-        }
-
-        @if (patientRef.ninu) {
-          <div>
-            <dt class="text-xs font-medium text-gray-500">NINU</dt>
-            <dd class="mt-1 text-sm text-gray-900 font-mono">{{ patientRef.ninu }}</dd>
-          </div>
-        }
-
-        @if (patientRef.medicalRecordNumber) {
-          <div>
-            <dt class="text-xs font-medium text-gray-500">N° Dossier médical</dt>
-            <dd class="mt-1 text-sm text-gray-900 font-mono">{{ patientRef.medicalRecordNumber }}</dd>
-          </div>
-        }
-
-        @if (patientRef.passportNumber) {
-          <div>
-            <dt class="text-xs font-medium text-gray-500">N° Passeport</dt>
-            <dd class="mt-1 text-sm text-gray-900 font-mono">{{ patientRef.passportNumber }}</dd>
-          </div>
-        }
-      </dl>
-    </div>
-
-    <!-- Informations médicales -->
-    <div class="bg-white rounded-lg shadow-sm p-4">
-      <h3 class="text-lg font-semibold text-gray-900 mb-4">
-        <i class="pi pi-heart text-blue-500 mr-2"></i>
-        Informations médicales
-      </h3>
-
-      <dl class="space-y-3">
-        @if (patientRef.allergies) {
-          <div>
-            <dt class="text-xs font-medium text-gray-500">Allergies</dt>
-            <dd class="mt-1 text-sm text-gray-900 whitespace-pre-wrap">{{ patientRef.allergies }}</dd>
-          </div>
-        }
-
-        @if (patientRef.antecedents) {
-          <div>
-            <dt class="text-xs font-medium text-gray-500">Antécédents</dt>
-            <dd class="mt-1 text-sm text-gray-900 whitespace-pre-wrap">{{ patientRef.antecedents }}</dd>
-          </div>
-        }
-
-        @if (patientRef.clinicalNotes) {
-          <div>
-            <dt class="text-xs font-medium text-gray-500">Notes cliniques</dt>
-            <dd class="mt-1 text-sm text-gray-900 whitespace-pre-wrap">{{ patientRef.clinicalNotes }}</dd>
-          </div>
-        }
-      </dl>
-    </div>
-
-    <!-- Assurance -->
-    @if (patientRef.insuranceCompanyName || patientRef.insurancePolicyNumber) {
-      <div class="bg-white rounded-lg shadow-sm p-4">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">
-          <i class="pi pi-shield text-blue-500 mr-2"></i>
-          Assurance
-        </h3>
-
-        <dl class="grid grid-cols-2 gap-4">
-          @if (patientRef.insuranceCompanyName) {
-            <div class="col-span-2">
-              <dt class="text-xs font-medium text-gray-500">Compagnie d'assurance</dt>
-              <dd class="mt-1 text-sm text-gray-900">{{ patientRef.insuranceCompanyName }}</dd>
+              <!-- Section Contact d'Urgence -->
+              @if (patientRef.contactPersonName || patientRef.contactPersonPhone) {
+                <div
+                  class="rounded-lg p-4"
+                  style="
+                    border: 1px solid var(--red-500);
+                    border-left-width: 4px;
+                    background: linear-gradient(to right, var(--surface-100), transparent);
+                  "
+                >
+                  <h4 class="flex items-center gap-3 text-lg font-semibold mb-5" style="color: var(--surface-600)">
+                    <i class="pi pi-exclamation-circle text-xl" style="color: var(--red-500)"></i>
+                    <span jhiTranslate="gdpApp.patient.detail.sections.emergency">Contact d'Urgence</span>
+                  </h4>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    @if (patientRef.contactPersonName) {
+                      <div class="flex flex-col gap-2">
+                        <label
+                          class="text-xs font-semibold uppercase tracking-wide"
+                          style="color: var(--surface-500)"
+                          jhiTranslate="gdpApp.patient.contactPersonName"
+                          >Nom</label
+                        >
+                        <span class="text-base font-medium" style="color: var(--surface-900)">{{ patientRef.contactPersonName }}</span>
+                      </div>
+                    }
+                    @if (patientRef.contactPersonPhone) {
+                      <div class="flex flex-col gap-2">
+                        <label
+                          class="text-xs font-semibold uppercase tracking-wide"
+                          style="color: var(--surface-500)"
+                          jhiTranslate="gdpApp.patient.contactPersonPhone"
+                          >Téléphone</label
+                        >
+                        <a
+                          [href]="'tel:' + patientRef.contactPersonPhone"
+                          class="text-base font-medium hover:underline transition-colors"
+                          style="color: var(--primary-color)"
+                        >
+                          {{ patientRef.contactPersonPhone }}
+                        </a>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
             </div>
-          }
+          </p-tabPanel>
 
-          @if (patientRef.insurancePolicyNumber) {
-            <div>
-              <dt class="text-xs font-medium text-gray-500">N° Police</dt>
-              <dd class="mt-1 text-sm text-gray-900 font-mono">{{ patientRef.insurancePolicyNumber }}</dd>
+          <!-- Onglet Informations Médicales -->
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+              <div class="flex items-center gap-2 text-sm">
+                <i class="pi pi-heart text-lg"></i>
+                <span jhiTranslate="gdpApp.patient.detail.tabs.medical" class="hidden md:inline">Informations Médicales</span>
+              </div>
+            </ng-template>
+
+            <div class="px-6 py-3 space-y-4">
+              <!-- Section Dossier Médical -->
+              <div class="pb-6" style="border-bottom: 1px solid var(--surface-200)">
+                <h4 class="flex items-center gap-3 text-lg font-semibold mb-5" style="color: var(--surface-900)">
+                  <i class="pi pi-folder text-xl" style="color: var(--primary-color)"></i>
+                  <span jhiTranslate="gdpApp.patient.detail.sections.medicalRecord">Dossier Médical</span>
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="text-xs font-semibold uppercase tracking-wide"
+                      style="color: var(--surface-500)"
+                      jhiTranslate="gdpApp.patient.medicalRecordNumber"
+                      >N° Dossier</label
+                    >
+                    <span class="text-sm font-mono px-2 py-1 rounded inline-block" style="background-color: var(--surface-100)">{{
+                      patientRef.medicalRecordNumber || '-'
+                    }}</span>
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="text-xs font-semibold uppercase tracking-wide"
+                      style="color: var(--surface-500)"
+                      jhiTranslate="gdpApp.patient.bloodType"
+                      >Groupe Sanguin</label
+                    >
+                    <div>
+                      <p-tag
+                        [value]="'gdpApp.BloodType.' + (patientRef.bloodType ?? 'null') | translate"
+                        severity="danger"
+                        [rounded]="true"
+                      ></p-tag>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Section Paramètres Physiques -->
+              <div class="pb-6" style="border-bottom: 1px solid var(--surface-200)">
+                <h4 class="flex items-center gap-3 text-lg font-semibold mb-5" style="color: var(--surface-900)">
+                  <i class="pi pi-chart-line text-xl" style="color: var(--primary-color)"></i>
+                  <span jhiTranslate="gdpApp.patient.detail.sections.physicalParams">Paramètres Physiques</span>
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-3">
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="text-xs font-semibold uppercase tracking-wide"
+                      style="color: var(--surface-500)"
+                      jhiTranslate="gdpApp.patient.heightCm"
+                      >Taille</label
+                    >
+                    <span class="text-base font-medium" style="color: var(--surface-900)">{{
+                      patientRef.heightCm ? patientRef.heightCm + ' cm' : '-'
+                    }}</span>
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="text-xs font-semibold uppercase tracking-wide"
+                      style="color: var(--surface-500)"
+                      jhiTranslate="gdpApp.patient.weightKg"
+                      >Poids</label
+                    >
+                    <span class="text-base font-medium" style="color: var(--surface-900)">{{
+                      patientRef.weightKg ? patientRef.weightKg + ' kg' : '-'
+                    }}</span>
+                  </div>
+                  @if (patientRef.heightCm && patientRef.weightKg) {
+                    <div class="flex flex-col gap-2">
+                      <label
+                        class="text-xs font-semibold uppercase tracking-wide"
+                        style="color: var(--surface-500)"
+                        jhiTranslate="gdpApp.patient.detail.bmi"
+                        >IMC</label
+                      >
+                      <span class="text-base font-medium" style="color: var(--surface-900)">{{
+                        calculateBMI(patientRef.heightCm, patientRef.weightKg)
+                      }}</span>
+                    </div>
+                  }
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="text-xs font-semibold uppercase tracking-wide"
+                      style="color: var(--surface-500)"
+                      jhiTranslate="gdpApp.patient.smokingStatus"
+                      >Statut Tabagique</label
+                    >
+                    <span
+                      class="text-base font-medium"
+                      style="color: var(--surface-900)"
+                      [jhiTranslate]="'gdpApp.SmokingStatus.' + (patientRef.smokingStatus ?? 'null')"
+                    ></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Section Allergies -->
+              @if (patientRef.allergies) {
+                <div
+                  class="border-l-4 rounded-lg px-4 py-2"
+                  style="
+                    border: 1px solid var(--yellow-500);
+                    border-left-width: 4px;
+                    background: linear-gradient(to right, var(--surface-100), transparent);
+                  "
+                >
+                  <h4 class="flex items-center gap-3 text-lg font-semibold mb-4" style="color: var(--surface-900)">
+                    <i class="pi pi-exclamation-triangle text-xl" style="color: var(--yellow-500)"></i>
+                    <span jhiTranslate="gdpApp.patient.allergies">Allergies</span>
+                  </h4>
+                  <div>
+                    <p class="text-base leading-relaxed whitespace-pre-wrap">{{ patientRef.allergies }}</p>
+                    <!-- <p-message 
+                      severity="warning" 
+                      [text]="patientRef.allergies"
+                      styleClass="w-full"
+                      class="text-left"
+                    ></p-message> -->
+                  </div>
+                </div>
+              }
+
+              <!-- Section Antécédents -->
+              @if (patientRef.antecedents) {
+                <div class="pb-6" style="border-bottom: 1px solid var(--surface-200)">
+                  <h4 class="flex items-center gap-3 text-lg font-semibold mb-5" style="color: var(--surface-900)">
+                    <i class="pi pi-history text-xl" style="color: var(--primary-color)"></i>
+                    <span jhiTranslate="gdpApp.patient.antecedents">Antécédents Médicaux</span>
+                  </h4>
+                  <div class="p-4 rounded-lg" style="background-color: var(--surface-100)">
+                    <p class="text-base leading-relaxed whitespace-pre-wrap" style="color: var(--surface-900)">
+                      {{ patientRef.antecedents }}
+                    </p>
+                  </div>
+                </div>
+              }
+
+              <!-- Section Notes Cliniques -->
+              @if (patientRef.clinicalNotes) {
+                <div>
+                  <h4 class="flex items-center gap-3 text-lg font-semibold mb-5" style="color: var(--surface-900)">
+                    <i class="pi pi-book text-xl" style="color: var(--primary-color)"></i>
+                    <span jhiTranslate="gdpApp.patient.clinicalNotes">Notes Cliniques</span>
+                  </h4>
+                  <div class="p-4 rounded-lg" style="background-color: var(--surface-100)">
+                    <p class="text-base leading-relaxed whitespace-pre-wrap">{{ patientRef.clinicalNotes }}</p>
+                  </div>
+                </div>
+              }
             </div>
-          }
+          </p-tabPanel>
 
-          @if (patientRef.patientInsuranceId) {
-            <div>
-              <dt class="text-xs font-medium text-gray-500">ID Assuré</dt>
-              <dd class="mt-1 text-sm text-gray-900 font-mono">{{ patientRef.patientInsuranceId }}</dd>
+          <!-- Onglet Assurance -->
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+              <div class="flex items-center gap-2 text-sm">
+                <i class="pi pi-shield text-lg"></i>
+                <span jhiTranslate="gdpApp.patient.detail.tabs.insurance" class="hidden md:inline">Assurance</span>
+              </div>
+            </ng-template>
+
+            <div class="py-3 px-6">
+              @if (patientRef.insuranceCompanyName || patientRef.insurancePolicyNumber) {
+                <div class="space-y-4">
+                  <!-- Section Informations Assurance -->
+                  <div class="pb-6" style="border-bottom: 1px solid var(--surface-200)">
+                    <h4 class="flex items-center gap-3 text-lg font-semibold mb-5" style="color: var(--surface-900)">
+                      <i class="pi pi-building text-xl" style="color: var(--primary-color)"></i>
+                      <span jhiTranslate="gdpApp.patient.detail.sections.insuranceInfo">Informations d'Assurance</span>
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div class="flex flex-col gap-2 md:col-span-2">
+                        <label
+                          class="text-xs font-semibold"
+                          style="color: var(--surface-500)"
+                          jhiTranslate="gdpApp.patient.insuranceCompanyName"
+                          >Compagnie</label
+                        >
+                        <span class="text-base font-semibold" style="color: var(--primary-color)">{{
+                          patientRef.insuranceCompanyName || '-'
+                        }}</span>
+                      </div>
+                      <div class="flex flex-col gap-2">
+                        <label
+                          class="text-xs font-semibold"
+                          style="color: var(--surface-500)"
+                          jhiTranslate="gdpApp.patient.insurancePolicyNumber"
+                          >N° Police</label
+                        >
+                        <span class="text-sm font-mono px-2 py-1 rounded inline-block" style="background-color: var(--surface-100)">{{
+                          patientRef.insurancePolicyNumber || '-'
+                        }}</span>
+                      </div>
+                      <div class="flex flex-col gap-2">
+                        <label
+                          class="text-xs font-semibold"
+                          style="color: var(--surface-500)"
+                          jhiTranslate="gdpApp.patient.patientInsuranceId"
+                          >ID Assuré</label
+                        >
+                        <span class="text-sm font-mono px-2 py-1 rounded inline-block" style="background-color: var(--surface-100)">{{
+                          patientRef.patientInsuranceId || '-'
+                        }}</span>
+                      </div>
+                      <div class="flex flex-col gap-2">
+                        <label
+                          class="text-xs font-semibold"
+                          style="color: var(--surface-500)"
+                          jhiTranslate="gdpApp.patient.insuranceCoverageType"
+                          >Type de Couverture</label
+                        >
+                        <span class="text-base font-medium" style="color: var(--surface-900)">{{
+                          patientRef.insuranceCoverageType || '-'
+                        }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Section Validité -->
+                  <div>
+                    <h4 class="flex items-center gap-3 text-lg font-semibold mb-5" style="color: var(--surface-900)">
+                      <i class="pi pi-calendar-clock text-xl" style="color: var(--primary-color)"></i>
+                      <span jhiTranslate="gdpApp.patient.detail.sections.validity">Période de Validité</span>
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-3 gap-x-6">
+                      <div class="flex flex-col gap-2">
+                        <label
+                          class="text-xs font-semibold"
+                          style="color: var(--surface-500)"
+                          jhiTranslate="gdpApp.patient.insuranceValidFrom"
+                          >Valide du</label
+                        >
+                        <span class="text-base font-medium" style="color: var(--surface-900)">{{
+                          patientRef.insuranceValidFrom | formatMediumDate
+                        }}</span>
+                      </div>
+                      <div class="flex flex-col gap-2">
+                        <label
+                          class="text-xs font-semibold"
+                          style="color: var(--surface-500)"
+                          jhiTranslate="gdpApp.patient.insuranceValidTo"
+                          >Valide jusqu'au</label
+                        >
+                        <span
+                          class="text-base font-medium"
+                          [class.text-red-600]="isInsuranceExpired(patientRef.insuranceValidTo)"
+                          [class.text-gray-900]="!isInsuranceExpired(patientRef.insuranceValidTo)"
+                        >
+                          {{ patientRef.insuranceValidTo | formatMediumDate }}
+                          @if (isInsuranceExpired(patientRef.insuranceValidTo)) {
+                            <i class="pi pi-exclamation-circle ml-2"></i>
+                          }
+                        </span>
+                      </div>
+                      @if (patientRef.insuranceValidFrom && patientRef.insuranceValidTo) {
+                        <div class="flex flex-col gap-2">
+                          <label
+                            class="text-xs font-semibold"
+                            style="color: var(--surface-500)"
+                            jhiTranslate="gdpApp.patient.detail.insuranceStatus"
+                            >Statut</label
+                          >
+                          <div>
+                            <p-tag
+                              [value]="getInsuranceStatusLabel(patientRef.insuranceValidTo) | translate"
+                              [severity]="isInsuranceExpired(patientRef.insuranceValidTo) ? 'danger' : 'success'"
+                            ></p-tag>
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+              } @else {
+                <div class="flex flex-col items-center justify-center py-12" style="color: var(--surface-400)">
+                  <i class="pi pi-info-circle text-5xl mb-4 opacity-50"></i>
+                  <p class="text-base" jhiTranslate="gdpApp.patient.detail.noInsurance">Aucune information d'assurance disponible</p>
+                </div>
+              }
             </div>
-          }
+          </p-tabPanel>
 
-          @if (patientRef.insuranceCoverageType) {
-            <div>
-              <dt class="text-xs font-medium text-gray-500">Type de couverture</dt>
-              <dd class="mt-1 text-sm text-gray-900">{{ patientRef.insuranceCoverageType }}</dd>
+          <!-- Onglet Informations Système -->
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+              <div class="flex items-center gap-2 text-sm">
+                <i class="pi pi-cog text-lg"></i>
+                <span jhiTranslate="gdpApp.patient.detail.tabs.system" class="hidden md:inline">Système</span>
+              </div>
+            </ng-template>
+
+            <div class="py-3 px-6 space-y-4">
+              <!-- Section Traçabilité -->
+              <div class="pb-6 border-b" style="border-bottom: 1px solid var(--bluegray-100)">
+                <h4 class="flex items-center gap-3 text-lg font-semibold mb-5" style="color: var(--surface-900)">
+                  <i class="pi pi-history text-xl" style="color: var(--primary-color)"></i>
+                  <span jhiTranslate="gdpApp.patient.detail.sections.audit">Traçabilité</span>
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="text-xs font-semibold uppercase tracking-wide"
+                      style="color: var(--surface-500)"
+                      jhiTranslate="gdpApp.patient.detail.createdBy"
+                      >Créé par</label
+                    >
+                    <span class="text-base font-medium" style="color: var(--surface-900)">{{ patientRef.createdBy || '-' }}</span>
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="text-xs font-semibold uppercase tracking-wide"
+                      style="color: var(--surface-500)"
+                      jhiTranslate="gdpApp.patient.detail.createdDate"
+                      >Date de création</label
+                    >
+                    <span class="text-base font-medium" style="color: var(--surface-900)">{{
+                      patientRef.createdDate | formatMediumDatetime
+                    }}</span>
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="text-xs font-semibold uppercase tracking-wide"
+                      style="color: var(--surface-500)"
+                      jhiTranslate="gdpApp.patient.detail.lastModifiedBy"
+                      >Modifié par</label
+                    >
+                    <span class="text-base font-medium" style="color: var(--surface-900)">{{ patientRef.lastModifiedBy || '-' }}</span>
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="text-xs font-semibold uppercase tracking-wide"
+                      style="color: var(--surface-500)"
+                      jhiTranslate="gdpApp.patient.detail.lastModifiedDate"
+                      >Date de modification</label
+                    >
+                    <span class="text-base font-medium" style="color: var(--surface-900)">{{
+                      patientRef.lastModifiedDate | formatMediumDatetime
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Section RGPD -->
+              <div class="pb-6" style="border-bottom: 1px solid var(--bluegray-100)">
+                <h4 class="flex items-center gap-3 text-lg font-semibold mb-5" style="color: var(--surface-900)">
+                  <i class="pi pi-shield text-xl" style="color: var(--primary-color)"></i>
+                  <span jhiTranslate="gdpApp.patient.detail.sections.gdpr">RGPD & Confidentialité</span>
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  @if (patientRef.gdprConsentDate) {
+                    <div class="flex flex-col gap-2">
+                      <label
+                        class="text-xs font-semibold uppercase tracking-wide"
+                        style="color: var(--surface-500)"
+                        jhiTranslate="gdpApp.patient.gdprConsentDate"
+                        >Consentement RGPD</label
+                      >
+                      <span class="text-base font-medium">
+                        <i class="pi pi-check-circle" style="color: var(--green-500)"></i>
+                        <span style="color: var(--surface-900)">{{ patientRef.gdprConsentDate | formatMediumDatetime }}</span>
+                      </span>
+                    </div>
+                  } @else {
+                    <div class="flex flex-col gap-2">
+                      <label
+                        class="text-xs font-semibold uppercase tracking-wide"
+                        style="color: var(--surface-100)"
+                        jhiTranslate="gdpApp.patient.gdprConsentDate"
+                        >Consentement RGPD</label
+                      >
+                      <span class="text-base font-medium flex items-center gap-2" style="color: var(--orange-500)">
+                        <i class="pi pi-exclamation-triangle"></i>
+                        <span jhiTranslate="gdpApp.patient.detail.noConsent">Non renseigné</span>
+                      </span>
+                    </div>
+                  }
+                  @if (patientRef.status === 'DECEASED' && patientRef.deceasedDate) {
+                    <div class="flex flex-col gap-2">
+                      <label
+                        class="text-xs font-semibold uppercase tracking-wide"
+                        style="color: var(--surface-500)"
+                        jhiTranslate="gdpApp.patient.deceasedDate"
+                        >Date de décès</label
+                      >
+                      <span class="text-base font-medium" style="background-color: var(--surface-900)">{{
+                        patientRef.deceasedDate | formatMediumDatetime
+                      }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <!-- Section Identifiants Système -->
+              <div>
+                <h4 class="flex items-center gap-3 text-lg font-semibold mb-5" style="color: var(--surface-900)">
+                  <i class="pi pi-database text-xl" style="color: var(--primary-color)"></i>
+                  <span jhiTranslate="gdpApp.patient.detail.sections.systemIds">Identifiants Système</span>
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="flex flex-col gap-2">
+                    <label class="text-xs font-semibold uppercase tracking-wide" jhiTranslate="global.field.id">ID</label>
+                    <span class="text-sm font-mono px-2 py-1 rounded inline-block" style="background-color: var(--surface-100)">{{
+                      patientRef.id
+                    }}</span>
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <label class="text-xs font-semibold uppercase tracking-wide" jhiTranslate="gdpApp.patient.uid">UID</label>
+                    <span class="text-sm font-mon px-2 py-1 rounded inline-block" style="background-color: var(--surface-100)">{{
+                      patientRef.uid || '-'
+                    }}</span>
+                  </div>
+                </div>
+              </div>
             </div>
-          }
+          </p-tabPanel>
 
-          @if (patientRef.insuranceValidFrom) {
-            <div>
-              <dt class="text-xs font-medium text-gray-500">Valide du</dt>
-              <dd class="mt-1 text-sm text-gray-900">{{ patientRef.insuranceValidFrom | formatMediumDate }}</dd>
-            </div>
-          }
+          <!-- Onglet medcin -->
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+              <div class="flex items-center gap-2 text-sm">
+                <i class="pi pi-cog text-lg"></i>
+                <span class="hidden md:inline">Medcin</span>
+              </div>
+            </ng-template>
+          </p-tabPanel>
 
-          @if (patientRef.insuranceValidTo) {
-            <div>
-              <dt class="text-xs font-medium text-gray-500">Valide jusqu'au</dt>
-              <dd class="mt-1 text-sm text-gray-900">{{ patientRef.insuranceValidTo | formatMediumDate }}</dd>
-            </div>
-          }
-        </dl>
-      </div>
-    }
+          <!-- Onglet consultation -->
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+              <div class="flex items-center gap-2 text-sm">
+                <i class="pi pi-cog text-lg"></i>
+                <span class="hidden md:inline">Consultation</span>
+              </div>
+            </ng-template>
+          </p-tabPanel>
 
-    <!-- Contact d'urgence -->
-    @if (patientRef.contactPersonName || patientRef.contactPersonPhone) {
-      <div class="bg-white rounded-lg shadow-sm p-4">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">
-          <i class="pi pi-users text-blue-500 mr-2"></i>
-          Contact d'urgence
-        </h3>
+          <!-- Onglet examen -->
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+              <div class="flex items-center gap-2 text-sm">
+                <i class="pi pi-cog text-lg"></i>
+                <span class="hidden md:inline">Examen</span>
+              </div>
+            </ng-template>
+          </p-tabPanel>
 
-        <dl class="space-y-3">
-          @if (patientRef.contactPersonName) {
-            <div>
-              <dt class="text-xs font-medium text-gray-500">Nom</dt>
-              <dd class="mt-1 text-sm text-gray-900">{{ patientRef.contactPersonName }}</dd>
-            </div>
-          }
+          <!-- Onglet Hospitalisation -->
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+              <div class="flex items-center gap-2 text-sm">
+                <i class="pi pi-cog text-lg"></i>
+                <span class="hidden md:inline">Hospitalisation</span>
+              </div>
+            </ng-template>
+          </p-tabPanel>
 
-          @if (patientRef.contactPersonPhone) {
-            <div>
-              <dt class="text-xs font-medium text-gray-500">Téléphone</dt>
-              <dd class="mt-1 text-sm text-gray-900">{{ patientRef.contactPersonPhone }}</dd>
-            </div>
-          }
-        </dl>
-      </div>
-    }
-
-    <!-- Informations système -->
-    <div class="bg-gray-50 rounded-lg p-4 text-xs text-gray-600">
-      <div class="grid grid-cols-2 gap-2">
-        @if (patientRef.createdBy) {
-          <div><span class="font-medium">Créé par:</span> {{ patientRef.createdBy }}</div>
-        }
-        @if (patientRef.createdDate) {
-          <div><span class="font-medium">Le:</span> {{ patientRef.createdDate | date: 'dd/MM/yyyy HH:mm' }}</div>
-        }
-        @if (patientRef.lastModifiedBy) {
-          <div><span class="font-medium">Modifié par:</span> {{ patientRef.lastModifiedBy }}</div>
-        }
-        @if (patientRef.lastModifiedDate) {
-          <div><span class="font-medium">Le:</span> {{ patientRef.lastModifiedDate | date: 'dd/MM/yyyy HH:mm' }}</div>
-        }
+          <!-- Onglet Document -->
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+              <div class="flex items-center gap-2 text-sm">
+                <i class="pi pi-cog text-lg"></i>
+                <span class="hidden md:inline">Document</span>
+              </div>
+            </ng-template>
+          </p-tabPanel>
+        </p-tabView>
       </div>
     </div>
   </div>
 } @else {
-  <!-- Skeleton pour les détails du patient -->
-  <div class="space-y-4">
-    @for (card of [1, 2, 3, 4]; track card) {
-      <div class="bg-white rounded-lg shadow-sm p-4">
-        <div class="flex items-center gap-2 mb-4">
-          <p-skeleton shape="circle" size="1.5rem"></p-skeleton>
-          <p-skeleton width="10rem" height="1.5rem"></p-skeleton>
+  <!-- Skeleton pour chargement -->
+  <div class="h-full overflow-y-auto p-6">
+    <div class="bg-white rounded-xl shadow-sm p-6">
+      <p-skeleton width="100%" height="3rem" styleClass="mb-6"></p-skeleton>
+      @for (section of [1, 2, 3]; track section) {
+        <div class="mb-8 pb-6 border-b border-gray-200 last:border-0">
+          <p-skeleton width="12rem" height="1.5rem" styleClass="mb-5"></p-skeleton>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            @for (item of [1, 2, 3, 4]; track item) {
+              <div class="flex flex-col gap-2">
+                <p-skeleton width="8rem" height="0.875rem" styleClass="mb-2"></p-skeleton>
+                <p-skeleton width="10rem" height="1.25rem"></p-skeleton>
+              </div>
+            }
+          </div>
         </div>
-        <div class="grid grid-cols-2 gap-4">
-          @for (item of [1, 2, 3, 4]; track item) {
-            <div>
-              <p-skeleton width="60%" height="0.75rem" styleClass="mb-2"></p-skeleton>
-              <p-skeleton width="80%" height="1rem"></p-skeleton>
-            </div>
-          }
-        </div>
-      </div>
-    }
+      }
+    </div>
   </div>
 }

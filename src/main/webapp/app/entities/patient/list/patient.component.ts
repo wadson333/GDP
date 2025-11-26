@@ -152,6 +152,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { Observable, Subscription, combineLatest, filter, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateService } from '@ngx-translate/core';
 
 import SharedModule from 'app/shared/shared.module';
 import { SortByDirective, SortDirective, SortService, type SortState, sortStateSignal } from 'app/shared/sort';
@@ -180,6 +181,12 @@ import { TagModule } from 'primeng/tag';
 import { CalendarModule } from 'primeng/calendar';
 import { CommonModule } from '@angular/common';
 import { SkeletonModule } from 'primeng/skeleton';
+import { MenuModule } from 'primeng/menu';
+import { MenuItem, MessageService } from 'primeng/api';
+import { ToolbarModule } from 'primeng/toolbar';
+import { DividerModule } from 'primeng/divider';
+import { ToastModule } from 'primeng/toast';
+import { TabViewModule } from 'primeng/tabview';
 
 interface FilterCriterion {
   field: string;
@@ -225,7 +232,13 @@ interface ActiveFilter {
     TagModule,
     CalendarModule,
     SkeletonModule,
+    MenuModule,
+    ToolbarModule,
+    DividerModule,
+    ToastModule,
+    TabViewModule,
   ],
+  providers: [MessageService],
 })
 export class PatientComponent implements OnInit {
   subscription: Subscription | null = null;
@@ -244,57 +257,70 @@ export class PatientComponent implements OnInit {
   selectedCriterion: FilterCriterion | null = null;
   filterValue: any = null;
 
-  availableCriteria: FilterCriterion[] = [
-    { field: 'firstName', label: 'Prénom', type: 'text', operator: 'contains' },
-    { field: 'lastName', label: 'Nom', type: 'text', operator: 'contains' },
-    { field: 'nif', label: 'NIF', type: 'text', operator: 'contains' },
-    { field: 'medicalRecordNumber', label: 'N° Dossier Médical', type: 'text', operator: 'contains' },
-    { field: 'phone1', label: 'Téléphone', type: 'text', operator: 'contains' },
-    {
-      field: 'status',
-      label: 'Statut',
-      type: 'enum',
-      operator: 'equals',
-      enumValues: [
-        { label: 'Actif', value: 'ACTIVE' },
-        { label: 'Inactif', value: 'INACTIVE' },
-        { label: 'Décédé', value: 'DECEASED' },
-        { label: 'Archivé', value: 'ARCHIVED' },
-      ],
-    },
-    {
-      field: 'gender',
-      label: 'Sexe',
-      type: 'enum',
-      operator: 'equals',
-      enumValues: [
-        { label: 'Homme', value: 'MALE' },
-        { label: 'Femme', value: 'FEMALE' },
-        { label: 'Autre', value: 'OTHER' },
-      ],
-    },
-    {
-      field: 'bloodType',
-      label: 'Groupe Sanguin',
-      type: 'enum',
-      operator: 'equals',
-      enumValues: [
-        { label: 'A+', value: 'A_POS' },
-        { label: 'A-', value: 'A_NEG' },
-        { label: 'B+', value: 'B_POS' },
-        { label: 'B-', value: 'B_NEG' },
-        { label: 'AB+', value: 'AB_POS' },
-        { label: 'AB-', value: 'AB_NEG' },
-        { label: 'O+', value: 'O_POS' },
-        { label: 'O-', value: 'O_NEG' },
-        { label: 'Inconnu', value: 'UNKNOWN' },
-      ],
-    },
-    { field: 'birthDate', label: 'Date de naissance', type: 'date', operator: 'equals' },
-  ];
+  // availableCriteria: FilterCriterion[] = [
+  //   { field: 'firstName', label: 'Prénom', type: 'text', operator: 'contains' },
+  //   { field: 'lastName', label: 'Nom', type: 'text', operator: 'contains' },
+  //   { field: 'nif', label: 'NIF', type: 'text', operator: 'contains' },
+  //   { field: 'medicalRecordNumber', label: 'N° Dossier Médical', type: 'text', operator: 'contains' },
+  //   { field: 'phone1', label: 'Téléphone', type: 'text', operator: 'contains' },
+  //   {
+  //     field: 'status',
+  //     label: 'Statut',
+  //     type: 'enum',
+  //     operator: 'equals',
+  //     enumValues: [
+  //       { label: 'Actif', value: 'ACTIVE' },
+  //       { label: 'Inactif', value: 'INACTIVE' },
+  //       { label: 'Décédé', value: 'DECEASED' },
+  //       { label: 'Archivé', value: 'ARCHIVED' },
+  //     ],
+  //   },
+  //   {
+  //     field: 'gender',
+  //     label: 'Sexe',
+  //     type: 'enum',
+  //     operator: 'equals',
+  //     enumValues: [
+  //       { label: 'Homme', value: 'MALE' },
+  //       { label: 'Femme', value: 'FEMALE' },
+  //       { label: 'Autre', value: 'OTHER' },
+  //     ],
+  //   },
+  //   {
+  //     field: 'bloodType',
+  //     label: 'Groupe Sanguin',
+  //     type: 'enum',
+  //     operator: 'equals',
+  //     enumValues: [
+  //       { label: 'A+', value: 'A_POS' },
+  //       { label: 'A-', value: 'A_NEG' },
+  //       { label: 'B+', value: 'B_POS' },
+  //       { label: 'B-', value: 'B_NEG' },
+  //       { label: 'AB+', value: 'AB_POS' },
+  //       { label: 'AB-', value: 'AB_NEG' },
+  //       { label: 'O+', value: 'O_POS' },
+  //       { label: 'O-', value: 'O_NEG' },
+  //       { label: 'Inconnu', value: 'UNKNOWN' },
+  //     ],
+  //   },
+  //   { field: 'birthDate', label: 'Date de naissance', type: 'date', operator: 'equals' },
+  // ];
+
+  searchType!: 'simple' | 'advanced';
 
   // Recherche globale
   globalSearchTerm = '';
+
+  menuItems: MenuItem[] = [
+    {
+      label: 'Export',
+      items: [
+        { label: 'CSV', icon: 'pi pi-file' },
+        { label: 'Excel', icon: 'pi pi-file-excel' },
+        { label: 'PDF', icon: 'pi pi-file-pdf' },
+      ],
+    },
+  ];
 
   public router = inject(Router);
   protected patientService = inject(PatientService);
@@ -303,6 +329,8 @@ export class PatientComponent implements OnInit {
   protected dataUtils = inject(DataUtils);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
+  protected messageService = inject(MessageService);
+  protected translateService = inject(TranslateService);
 
   trackId = (item: IPatient): number => this.patientService.getPatientIdentifier(item);
 
@@ -315,18 +343,106 @@ export class PatientComponent implements OnInit {
       .subscribe();
   }
 
+  get searchTypeOptions(): { label: string; value: string }[] {
+    return [
+      {
+        label: this.translateService.instant('gdpApp.patient.search.searchType.simple'),
+        value: 'simple',
+      },
+      {
+        label: this.translateService.instant('gdpApp.patient.search.searchType.advanced'),
+        value: 'advanced',
+      },
+    ];
+  }
+
+  get availableCriteria(): FilterCriterion[] {
+    return [
+      { field: 'firstName', label: this.translateService.instant('gdpApp.patient.firstName'), type: 'text', operator: 'contains' },
+      { field: 'lastName', label: this.translateService.instant('gdpApp.patient.lastName'), type: 'text', operator: 'contains' },
+      { field: 'nif', label: this.translateService.instant('gdpApp.patient.nif'), type: 'text', operator: 'contains' },
+      {
+        field: 'medicalRecordNumber',
+        label: this.translateService.instant('gdpApp.patient.medicalRecordNumber'),
+        type: 'text',
+        operator: 'contains',
+      },
+      { field: 'phone1', label: this.translateService.instant('gdpApp.patient.phone1'), type: 'text', operator: 'contains' },
+      {
+        field: 'status',
+        label: this.translateService.instant('gdpApp.patient.enumValues.status.title'),
+        type: 'enum',
+        operator: 'equals',
+        enumValues: [
+          { label: this.translateService.instant('gdpApp.patient.enumValues.status.actif'), value: 'ACTIVE' },
+          { label: this.translateService.instant('gdpApp.patient.enumValues.status.inactif'), value: 'INACTIVE' },
+          { label: this.translateService.instant('gdpApp.patient.enumValues.status.deceased'), value: 'DECEASED' },
+          { label: this.translateService.instant('gdpApp.patient.enumValues.status.archive'), value: 'ARCHIVED' },
+        ],
+      },
+      {
+        field: 'gender',
+        label: this.translateService.instant('gdpApp.patient.enumValues.gender.title'),
+        type: 'enum',
+        operator: 'equals',
+        enumValues: [
+          { label: this.translateService.instant('gdpApp.patient.enumValues.gender.male'), value: 'MALE' },
+          { label: this.translateService.instant('gdpApp.patient.enumValues.gender.female'), value: 'FEMALE' },
+          { label: this.translateService.instant('gdpApp.patient.enumValues.gender.other'), value: 'OTHER' },
+        ],
+      },
+      {
+        field: 'bloodType',
+        label: 'Groupe Sanguin',
+        type: 'enum',
+        operator: 'equals',
+        enumValues: [
+          { label: this.translateService.instant('gdpApp.patient.enumValues.bloodType.aPositive'), value: 'A_POS' },
+          { label: this.translateService.instant('gdpApp.patient.enumValues.bloodType.aNegative'), value: 'A_NEG' },
+          { label: this.translateService.instant('gdpApp.patient.enumValues.bloodType.bPositive'), value: 'B_POS' },
+          { label: this.translateService.instant('gdpApp.patient.enumValues.bloodType.bNegative'), value: 'B_NEG' },
+          { label: this.translateService.instant('gdpApp.patient.enumValues.bloodType.abPositive'), value: 'AB_POS' },
+          { label: this.translateService.instant('gdpApp.patient.enumValues.bloodType.abNegative'), value: 'AB_NEG' },
+          { label: this.translateService.instant('gdpApp.patient.enumValues.bloodType.oPositive'), value: 'O_POS' },
+          { label: this.translateService.instant('gdpApp.patient.enumValues.bloodType.oNegative'), value: 'O_NEG' },
+          { label: this.translateService.instant('gdpApp.patient.enumValues.bloodType.unknown'), value: 'UNKNOWN' },
+        ],
+      },
+      { field: 'birthDate', label: this.translateService.instant('gdpApp.patient.birthDate'), type: 'date', operator: 'equals' },
+    ];
+  }
   onSelect(patient: IPatient): void {
     this.selectedPatient = patient;
     // Optionnel : Mettre à jour l'URL sans recharger
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
-      queryParams: { patientId: patient.id },
+      queryParams: { patient: patient.uid },
       queryParamsHandling: 'merge',
+    });
+  }
+
+  closeDetail(): void {
+    this.selectedPatient = null;
+    this.clearSelectionFromUrl();
+  }
+
+  clearSelectionFromUrl(): void {
+    this.ngZone.run(() => {
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParams: { patient: null },
+        queryParamsHandling: 'merge',
+      });
     });
   }
 
   addFilter(): void {
     if (!this.selectedCriterion || !this.filterValue) {
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translateService.instant('gdpApp.patient.search.selectFilterCriteriaErrorTitle'),
+        detail: this.translateService.instant('gdpApp.patient.search.selectFilterCriteriaErrorMsg'),
+      });
       return;
     }
 
@@ -439,19 +555,19 @@ export class PatientComponent implements OnInit {
     return genderMap[gender ?? ''] || 'N/A';
   }
 
-  delete(patient: IPatient): void {
-    const modalRef = this.modalService.open(PatientDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.patient = patient;
-    modalRef.closed
-      .pipe(
-        filter(reason => reason === ITEM_DELETED_EVENT),
-        tap(() => {
-          this.selectedPatient = null;
-          this.load();
-        }),
-      )
-      .subscribe();
-  }
+  // delete(patient: IPatient): void {
+  //   const modalRef = this.modalService.open(PatientDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+  //   modalRef.componentInstance.patient = patient;
+  //   modalRef.closed
+  //     .pipe(
+  //       filter(reason => reason === ITEM_DELETED_EVENT),
+  //       tap(() => {
+  //         this.selectedPatient = null;
+  //         this.load();
+  //       }),
+  //     )
+  //     .subscribe();
+  // }
 
   load(): void {
     this.queryBackend().subscribe({

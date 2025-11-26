@@ -1,3 +1,314 @@
+// :host {
+//   display: block;
+//   height: 100%;
+// }
+
+// .patient-detail-container {
+//   padding: 0;
+//   height: 100%;
+//   overflow-y: auto;
+// }
+
+// .detail-card {
+//   background: var(--surface-0);
+//   border-radius: 12px;
+//   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+//   overflow: hidden;
+// }
+
+// // Personnalisation des onglets
+// ::ng-deep {
+//   .custom-tabview {
+//     .p-tabview-nav {
+//       background: var(--surface-50);
+//       border-bottom: 2px solid var(--surface-200);
+//       padding: 0.5rem 1rem;
+
+//       li {
+//         .p-tabview-nav-link {
+//           border: none;
+//           background: transparent;
+//           padding: 1rem 1.5rem;
+//           transition: all 0.3s ease;
+
+//           &:not(.p-disabled):focus {
+//             box-shadow: none;
+//           }
+
+//           &:hover {
+//             background: var(--surface-100);
+//           }
+//         }
+
+//         &.p-highlight {
+//           .p-tabview-nav-link {
+//             background: var(--surface-0);
+//             border-bottom: 3px solid var(--primary-color);
+//             color: var(--primary-color);
+//             font-weight: 600;
+//           }
+//         }
+//       }
+//     }
+
+//     .p-tabview-panels {
+//       background: var(--surface-0);
+//       padding: 0;
+//     }
+//   }
+// }
+
+// .tab-header {
+//   display: flex;
+//   align-items: center;
+//   gap: 0.5rem;
+//   font-size: 0.95rem;
+
+//   i {
+//     font-size: 1.1rem;
+//   }
+// }
+
+// .detail-content {
+//   padding: 1.5rem;
+// }
+
+// .detail-section {
+//   margin-bottom: 2rem;
+//   padding-bottom: 1.5rem;
+//   border-bottom: 1px solid var(--surface-200);
+
+//   &:last-child {
+//     border-bottom: none;
+//     margin-bottom: 0;
+//   }
+
+//   &.emergency-section {
+//     background: linear-gradient(to right, rgba(239, 68, 68, 0.05), transparent);
+//     border-left: 4px solid var(--red-500);
+//     padding: 1rem;
+//     border-radius: 8px;
+//   }
+
+//   &.alert-section {
+//     background: linear-gradient(to right, rgba(251, 191, 36, 0.05), transparent);
+//     border-left: 4px solid var(--yellow-500);
+//     padding: 1rem;
+//     border-radius: 8px;
+//   }
+// }
+
+// .section-title {
+//   display: flex;
+//   align-items: center;
+//   gap: 0.75rem;
+//   font-size: 1.1rem;
+//   font-weight: 600;
+//   color: var(--text-color);
+//   margin: 0 0 1.25rem 0;
+
+//   i {
+//     color: var(--primary-color);
+//     font-size: 1.25rem;
+//   }
+
+//   &.alert-title i {
+//     color: var(--yellow-600);
+//   }
+// }
+
+// .detail-grid {
+//   display: grid;
+//   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+//   gap: 1.5rem;
+//   align-items: start;
+// }
+
+// .detail-item {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 0.5rem;
+
+//   &.full-width {
+//     grid-column: 1 / -1;
+//   }
+// }
+
+// .detail-label {
+//   font-size: 0.85rem;
+//   font-weight: 600;
+//   color: var(--text-color-secondary);
+//   text-transform: uppercase;
+//   letter-spacing: 0.5px;
+// }
+
+// .detail-value {
+//   font-size: 1rem;
+//   color: var(--text-color);
+//   font-weight: 500;
+//   word-break: break-word;
+
+//   &.detail-code {
+//     font-family: 'Courier New', monospace;
+//     background: var(--surface-100);
+//     padding: 0.25rem 0.5rem;
+//     border-radius: 4px;
+//     font-size: 0.9rem;
+//     display: inline-block;
+//   }
+
+//   &.detail-highlight {
+//     color: var(--primary-color);
+//     font-weight: 600;
+//   }
+// }
+
+// .detail-link {
+//   color: var(--primary-color);
+//   text-decoration: none;
+//   transition: all 0.2s ease;
+
+//   &:hover {
+//     text-decoration: underline;
+//     color: var(--primary-color-dark);
+//   }
+
+//   i {
+//     margin-left: 0.25rem;
+//   }
+// }
+
+// .detail-text-area {
+//   background: var(--surface-50);
+//   padding: 1rem;
+//   border-radius: 8px;
+//   border-left: 3px solid var(--primary-color);
+
+//   p {
+//     margin: 0;
+//     line-height: 1.6;
+//     color: var(--text-color);
+//     white-space: pre-wrap;
+//   }
+// }
+
+// .alert-content {
+//   ::ng-deep {
+//     .p-message {
+//       margin: 0;
+//       border-radius: 8px;
+
+//       .p-message-wrapper {
+//         padding: 1rem;
+//       }
+
+//       .p-message-text {
+//         font-size: 0.95rem;
+//         line-height: 1.5;
+//       }
+//     }
+//   }
+// }
+
+// .empty-state {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   padding: 3rem;
+//   text-align: center;
+//   color: var(--text-color-secondary);
+
+//   i {
+//     font-size: 3rem;
+//     margin-bottom: 1rem;
+//     opacity: 0.5;
+//   }
+
+//   p {
+//     font-size: 1rem;
+//     margin: 0;
+//   }
+// }
+
+// .text-danger {
+//   color: var(--red-500) !important;
+// }
+
+// .text-green-500 {
+//   color: var(--green-500);
+// }
+
+// .text-orange-500 {
+//   color: var(--orange-500);
+// }
+
+// // Responsive
+// @media (max-width: 768px) {
+//   .detail-grid {
+//     grid-template-columns: 1fr;
+//   }
+
+//   .detail-content {
+//     padding: 1rem;
+//   }
+
+//   .tab-header span {
+//     display: none;
+//   }
+// }
+
 :host {
   display: block;
+  height: 100%;
+}
+
+// Personnalisation des onglets PrimeNG avec styles minimaux
+::ng-deep {
+  .custom-tabview {
+    .p-tabview-nav {
+      @apply border-b-2;
+      padding: 0.5rem 1rem;
+
+      li {
+        .p-tabview-nav-link {
+          @apply border-0 bg-transparent transition-all duration-300;
+          padding: 1rem 1.5rem;
+
+          &:not(.p-disabled):focus {
+            box-shadow: none;
+          }
+
+          &:hover {
+            background-color: var(--surface-100);
+          }
+        }
+
+        &.p-highlight {
+          .p-tabview-nav-link {
+            @apply font-semibold;
+            // border-bottom: 3px solid var(--primary-color);
+            // color: var(--primary-color);
+          }
+        }
+      }
+    }
+
+    .p-tabview-panels {
+      @apply p-0;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  ::ng-deep {
+    .custom-tabview {
+      .p-tabview-nav {
+        li .p-tabview-nav-link {
+          padding: 0.75rem 1rem;
+        }
+      }
+    }
+  }
 }

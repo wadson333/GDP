@@ -124,6 +124,8 @@ export class PatientService {
       deceasedDate: restPatient.deceasedDate ? dayjs(restPatient.deceasedDate) : undefined,
       insuranceValidFrom: restPatient.insuranceValidFrom ? dayjs(restPatient.insuranceValidFrom) : undefined,
       insuranceValidTo: restPatient.insuranceValidTo ? dayjs(restPatient.insuranceValidTo) : undefined,
+      createdDate: restPatient.createdDate ? dayjs(restPatient.createdDate) : undefined,
+      lastModifiedDate: restPatient.lastModifiedDate ? dayjs(restPatient.lastModifiedDate) : undefined,
     };
   }
 

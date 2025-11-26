@@ -4,9 +4,11 @@
       "home": {
         "title": "Patients",
         "refreshListLabel": "Refresh list",
-        "createLabel": "Create a new Patient",
+        "createLabel": "new",
+        "createLabelTootltip": "Create a new Patient",
         "createOrEditLabel": "Create or edit a Patient",
-        "notFound": "No Patients found"
+        "notFound": "No Patients found",
+        "export": "Export"
       },
       "created": "A new Patient is created with identifier {{ param }}",
       "updated": "A Patient is updated with identifier {{ param }}",
@@ -15,23 +17,98 @@
         "question": "Are you sure you want to delete Patient {{ id }}?"
       },
       "detail": {
-        "title": "Patient"
+        "title": "Patient",
+        "noPatientSelected": "Select a patient to see the detail",
+        "tabs": {
+          "general": "General Information",
+          "medical": "Medical Information",
+          "insurance": "Insurance",
+          "system": "System"
+        },
+        "sections": {
+          "identity": "Identity",
+          "officialDocs": "Official Documents",
+          "contact": "Contact Details",
+          "emergency": "Emergency Contact",
+          "medicalRecord": "Medical Record",
+          "physicalParams": "Physical Parameters",
+          "insuranceInfo": "Insurance Information",
+          "validity": "Validity Period",
+          "audit": "Audit Trail",
+          "gdpr": "GDPR & Privacy",
+          "systemIds": "System Identifiers"
+        },
+        "bmi": "BMI",
+        "insuranceStatus": "Status",
+        "insuranceValid": "Valid",
+        "insuranceExpired": "Expired",
+        "insuranceExpiringSoon": "Expiring Soon",
+        "insuranceStatusUnknown": "Unknown",
+        "noInsurance": "No insurance information available",
+        "noConsent": "Not provided",
+        "createdBy": "Created by",
+        "createdDate": "Creation date",
+        "lastModifiedBy": "Modified by",
+        "lastModifiedDate": "Modification date"
+      },
+      "search": {
+        "searchGlobalPlaceholder": "Search Patients",
+        "noResult": "No Patients found",
+        "clearPlaceholder": "Clear",
+        "addFilterCriteria": "Add to filter",
+        "selectFilterCriteria": "Select a criteria",
+        "enterLabel": "Enter a ",
+        "enterLabelPlaceholder": "Enter a name, medical record number etc...",
+        "selectFilterCriteriaErrorTitle": "Error Filter",
+        "selectFilterCriteriaErrorMsg": "You have to select a criteria first",
+        "selectDOBPlaceholder": "Select a Date of Birth",
+        "searchType": {
+          "title": "Search Type",
+          "simple": "Simple",
+          "advanced": "Advanced"
+        }
+      },
+      "enumValues": {
+        "gender": {
+          "title": "Gender",
+          "male": "Male",
+          "female": "Female",
+          "other": "Other"
+        },
+        "status": {
+          "title": "Status",
+          "actif": "Active",
+          "inactif": "Inactive",
+          "deceased": "Deceased",
+          "archive": "Archived"
+        },
+        "bloodType": {
+          "title": "Blood Type",
+          "aPositive": "A+",
+          "aNegative": "A-",
+          "bPositive": "B+",
+          "bNegative": "B-",
+          "abPositive": "AB+",
+          "abNegative": "AB-",
+          "oPositive": "O+",
+          "oNegative": "O-"
+        }
       },
       "id": "ID",
-      "uid": "Uid",
+      "uid": "UID",
       "firstName": "First Name",
       "lastName": "Last Name",
       "birthDate": "Birth Date",
       "gender": "Gender",
       "bloodType": "Blood Type",
       "address": "Address",
-      "phone1": "Phone 1",
+      "phone1": "Phone",
       "phone2": "Phone 2",
-      "nif": "Nif",
-      "ninu": "Ninu",
+      "nif": "NIF",
+      "ninu": "NINU",
       "medicalRecordNumber": "Medical Record Number",
-      "heightCm": "Height Cm",
-      "weightKg": "Weight Kg",
+      "heightCm": "Height (cm)",
+      "weightKg": "Weight (kg)",
       "passportNumber": "Passport Number",
       "contactPersonName": "Contact Person Name",
       "contactPersonPhone": "Contact Person Phone",
@@ -39,11 +116,11 @@
       "allergies": "Allergies",
       "clinicalNotes": "Clinical Notes",
       "smokingStatus": "Smoking Status",
-      "gdprConsentDate": "Gdpr Consent Date",
+      "gdprConsentDate": "GDPR Consent Date",
       "status": "Status",
       "deceasedDate": "Deceased Date",
       "insuranceCompanyName": "Insurance Company Name",
-      "patientInsuranceId": "Patient Insurance Id",
+      "patientInsuranceId": "Patient Insurance ID",
       "insurancePolicyNumber": "Insurance Policy Number",
       "insuranceCoverageType": "Insurance Coverage Type",
       "insuranceValidFrom": "Insurance Valid From",
