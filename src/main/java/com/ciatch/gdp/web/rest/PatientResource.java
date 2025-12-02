@@ -272,19 +272,18 @@ public class PatientResource {
         Optional<PatientDTO> patientDTO = patientService.findOne(id);
         return ResponseUtil.wrapOrNotFound(patientDTO);
     }
-
-    /**
-     * {@code DELETE  /patients/:id} : delete the "id" patient.
-     *
-     * @param id the id of the patientDTO to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePatient(@PathVariable("id") Long id) {
-        LOG.debug("REST request to delete Patient : {}", id);
-        patientService.delete(id);
-        return ResponseEntity.noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-            .build();
-    }
+    // /**
+    //  * {@code DELETE  /patients/:id} : delete the "id" patient.
+    //  *
+    //  * @param id the id of the patientDTO to delete.
+    //  * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+    //  */
+    // @DeleteMapping("/{id}")
+    // public ResponseEntity<Void> deletePatient(@PathVariable("id") Long id) {
+    //     LOG.debug("REST request to delete Patient : {}", id);
+    //     patientService.delete(id);
+    //     return ResponseEntity.noContent()
+    //         .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+    //         .build();
+    // }
 }

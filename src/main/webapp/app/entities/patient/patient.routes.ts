@@ -13,30 +13,30 @@ const patientRoute: Routes = [
     },
     canActivate: [UserRouteAccessService],
   },
-  {
-    path: ':id/view',
-    loadComponent: () => import('./detail/patient-detail.component').then(m => m.PatientDetailComponent),
-    resolve: {
-      patient: PatientResolve,
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: 'new',
-    loadComponent: () => import('./update/patient-update.component').then(m => m.PatientUpdateComponent),
-    resolve: {
-      patient: PatientResolve,
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: ':id/edit',
-    loadComponent: () => import('./update/patient-update.component').then(m => m.PatientUpdateComponent),
-    resolve: {
-      patient: PatientResolve,
-    },
-    canActivate: [UserRouteAccessService],
-  },
+  // {
+  //   path: ':id/view',
+  //   loadComponent: () => import('./detail/patient-detail.component').then(m => m.PatientDetailComponent),
+  //   resolve: {
+  //     patient: PatientResolve,
+  //   },
+  //   canActivate: [UserRouteAccessService],
+  // },
+  // {
+  //   path: 'new',
+  //   loadComponent: () => import('./update/patient-update.component').then(m => m.PatientUpdateComponent),
+  //   resolve: {
+  //     patient: PatientResolve,
+  //   },
+  //   canActivate: [UserRouteAccessService],
+  // },
+  // {
+  //   path: ':id/edit',
+  //   loadComponent: () => import('./update/patient-update.component').then(m => m.PatientUpdateComponent),
+  //   resolve: {
+  //     patient: PatientResolve,
+  //   },
+  //   canActivate: [UserRouteAccessService],
+  // },
 ];
 
 export default patientRoute;
