@@ -167,6 +167,7 @@ import { IPatient } from '../patient.model';
 import { EntityArrayResponseType, PatientService } from '../service/patient.service';
 import { PatientDeleteDialogComponent } from '../delete/patient-delete-dialog.component';
 import { PatientDetailComponent } from '../detail/patient-detail.component';
+import { PatientUpdateComponent } from '../update/patient-update.component';
 
 // PrimeNG Imports
 import { ButtonModule } from 'primeng/button';
@@ -182,11 +183,13 @@ import { CalendarModule } from 'primeng/calendar';
 import { CommonModule } from '@angular/common';
 import { SkeletonModule } from 'primeng/skeleton';
 import { MenuModule } from 'primeng/menu';
-import { MenuItem, MessageService } from 'primeng/api';
+import { MenuItem, MessageService, ConfirmationService } from 'primeng/api';
 import { ToolbarModule } from 'primeng/toolbar';
 import { DividerModule } from 'primeng/divider';
 import { ToastModule } from 'primeng/toast';
 import { TabViewModule } from 'primeng/tabview';
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 interface FilterCriterion {
   field: string;
@@ -214,9 +217,6 @@ interface ActiveFilter {
     RouterModule,
     FormsModule,
     SharedModule,
-    SortDirective,
-    SortByDirective,
-    DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     ItemCountComponent,
@@ -237,13 +237,18 @@ interface ActiveFilter {
     DividerModule,
     ToastModule,
     TabViewModule,
+    DialogModule,
+    PatientUpdateComponent,
+    ConfirmDialogModule,
   ],
-  providers: [MessageService],
+  providers: [MessageService, ConfirmationService],
 })
 export class PatientComponent implements OnInit {
   subscription: Subscription | null = null;
   patients?: IPatient[];
   isLoading = false;
+  showDialog = false;
+  dialogMode: 'CREATE' | 'EDIT' = 'CREATE';
   selectedPatient: IPatient | null = null;
 
   sortState = sortStateSignal({});
@@ -256,55 +261,6 @@ export class PatientComponent implements OnInit {
   activeFilters: ActiveFilter[] = [];
   selectedCriterion: FilterCriterion | null = null;
   filterValue: any = null;
-
-  // availableCriteria: FilterCriterion[] = [
-  //   { field: 'firstName', label: 'Prénom', type: 'text', operator: 'contains' },
-  //   { field: 'lastName', label: 'Nom', type: 'text', operator: 'contains' },
-  //   { field: 'nif', label: 'NIF', type: 'text', operator: 'contains' },
-  //   { field: 'medicalRecordNumber', label: 'N° Dossier Médical', type: 'text', operator: 'contains' },
-  //   { field: 'phone1', label: 'Téléphone', type: 'text', operator: 'contains' },
-  //   {
-  //     field: 'status',
-  //     label: 'Statut',
-  //     type: 'enum',
-  //     operator: 'equals',
-  //     enumValues: [
-  //       { label: 'Actif', value: 'ACTIVE' },
-  //       { label: 'Inactif', value: 'INACTIVE' },
-  //       { label: 'Décédé', value: 'DECEASED' },
-  //       { label: 'Archivé', value: 'ARCHIVED' },
-  //     ],
-  //   },
-  //   {
-  //     field: 'gender',
-  //     label: 'Sexe',
-  //     type: 'enum',
-  //     operator: 'equals',
-  //     enumValues: [
-  //       { label: 'Homme', value: 'MALE' },
-  //       { label: 'Femme', value: 'FEMALE' },
-  //       { label: 'Autre', value: 'OTHER' },
-  //     ],
-  //   },
-  //   {
-  //     field: 'bloodType',
-  //     label: 'Groupe Sanguin',
-  //     type: 'enum',
-  //     operator: 'equals',
-  //     enumValues: [
-  //       { label: 'A+', value: 'A_POS' },
-  //       { label: 'A-', value: 'A_NEG' },
-  //       { label: 'B+', value: 'B_POS' },
-  //       { label: 'B-', value: 'B_NEG' },
-  //       { label: 'AB+', value: 'AB_POS' },
-  //       { label: 'AB-', value: 'AB_NEG' },
-  //       { label: 'O+', value: 'O_POS' },
-  //       { label: 'O-', value: 'O_NEG' },
-  //       { label: 'Inconnu', value: 'UNKNOWN' },
-  //     ],
-  //   },
-  //   { field: 'birthDate', label: 'Date de naissance', type: 'date', operator: 'equals' },
-  // ];
 
   searchType!: 'simple' | 'advanced';
 
@@ -414,11 +370,11 @@ export class PatientComponent implements OnInit {
   onSelect(patient: IPatient): void {
     this.selectedPatient = patient;
     // Optionnel : Mettre à jour l'URL sans recharger
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParams: { patient: patient.uid },
-      queryParamsHandling: 'merge',
-    });
+    // this.router.navigate([], {
+    //   // relativeTo: this.activatedRoute,
+    //   queryParams: { patient: patient.uid },
+    //   queryParamsHandling: 'merge',
+    // });
   }
 
   closeDetail(): void {
@@ -427,13 +383,13 @@ export class PatientComponent implements OnInit {
   }
 
   clearSelectionFromUrl(): void {
-    this.ngZone.run(() => {
-      this.router.navigate([], {
-        relativeTo: this.activatedRoute,
-        queryParams: { patient: null },
-        queryParamsHandling: 'merge',
-      });
-    });
+    // this.ngZone.run(() => {
+    // this.router.navigate([], {
+    //   // relativeTo: this.activatedRoute,
+    //   queryParams: { patient: null },
+    //   queryParamsHandling: 'merge',
+    // });
+    // });
   }
 
   addFilter(): void {
@@ -555,26 +511,14 @@ export class PatientComponent implements OnInit {
     return genderMap[gender ?? ''] || 'N/A';
   }
 
-  // delete(patient: IPatient): void {
-  //   const modalRef = this.modalService.open(PatientDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-  //   modalRef.componentInstance.patient = patient;
-  //   modalRef.closed
-  //     .pipe(
-  //       filter(reason => reason === ITEM_DELETED_EVENT),
-  //       tap(() => {
-  //         this.selectedPatient = null;
-  //         this.load();
-  //       }),
-  //     )
-  //     .subscribe();
-  // }
-
   load(): void {
     this.queryBackend().subscribe({
       next: (res: EntityArrayResponseType) => {
         this.onResponseSuccess(res);
       },
     });
+
+    console.error('Load method called');
   }
 
   navigateToWithComponentValues(event: SortState): void {
@@ -589,6 +533,70 @@ export class PatientComponent implements OnInit {
     // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     this.page = event.page + 1; // PrimeNG utilise un index 0-based
     this.load();
+  }
+
+  // Dialog Methods
+  openCreateDialog(): void {
+    this.dialogMode = 'CREATE';
+    // this.selectedPatient = null;
+    this.showDialog = true;
+  }
+
+  openEditDialog(): void {
+    this.dialogMode = 'EDIT';
+    // this.selectedPatient = patient;
+    this.showDialog = true;
+  }
+
+  closeDialog(): void {
+    this.showDialog = false;
+    // this.selectedPatient = null;
+  }
+
+  onPatientSaved(patient: IPatient): void {
+    this.showDialog = false;
+    this.selectedPatient = patient;
+    this.load(); // Reload the list
+  }
+
+  onDialogCancelled(): void {
+    this.showDialog = false;
+    this.selectedPatient = null;
+  }
+
+  // Gender Icon
+  getGenderIcon(gender: string | undefined): string {
+    switch (gender?.toLowerCase()) {
+      case 'male':
+        return 'pi pi-mars';
+      case 'female':
+        return 'pi pi-venus';
+      default:
+        return 'pi pi-question';
+    }
+  }
+
+  // Age Calculation
+  calculateAge(birthDate: any): number | null {
+    if (!birthDate) return null;
+    const today = new Date();
+    const birth = new Date(birthDate);
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+      age--;
+    }
+    return age;
+  }
+
+  // Export functionality
+  exportPatients(): void {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Export',
+      detail: 'Export functionality to be implemented',
+      life: 3000,
+    });
   }
 
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {

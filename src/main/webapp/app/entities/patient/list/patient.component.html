@@ -370,6 +370,7 @@
   }
 </div> -->
 <p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
 <!-- Toolbar -->
 <div>
   <p-toolbar>
@@ -520,7 +521,7 @@
           <p-button
             icon="pi pi-plus"
             [label]="'gdpApp.patient.home.createLabel' | translate"
-            [routerLink]="['/patient/new']"
+            (onClick)="openCreateDialog()"
             severity="primary"
             tooltipPosition="bottom"
             [pTooltip]="'gdpApp.patient.home.createLabelTooltip' | translate"
@@ -721,7 +722,7 @@
                     icon="pi pi-pencil"
                     [rounded]="true"
                     [text]="true"
-                    [routerLink]="['/patient', selectedPatient.id, 'edit']"
+                    (onClick)="openEditDialog()"
                     severity="primary"
                     pTooltip="Modifier"
                   ></p-button>
@@ -757,3 +758,45 @@
     }
   </div>
 </div>
+
+<!-- Create Patient Dialog -->
+@if (selectedPatient && dialogMode === 'EDIT') {
+  <p-dialog
+    [(visible)]="showDialog"
+    [header]="'gdpApp.patient.wizard.titleEdit' | translate"
+    [modal]="true"
+    [style]="{ width: '90vw', maxWidth: '1200px' }"
+    [draggable]="false"
+    [resizable]="false"
+    styleClass="patient-dialog"
+    (onHide)="closeDialog()"
+  >
+    <jhi-patient-update
+      [isDialog]="true"
+      [mode]="dialogMode"
+      [patientUid]="selectedPatient.uid"
+      (patientSaved)="onPatientSaved($event)"
+      (cancelled)="onDialogCancelled()"
+    ></jhi-patient-update>
+  </p-dialog>
+} @else {
+  <p-dialog
+    [(visible)]="showDialog"
+    [header]="'gdpApp.patient.wizard.title' | translate"
+    [modal]="true"
+    [style]="{ width: '90vw', maxWidth: '1200px' }"
+    [draggable]="false"
+    [resizable]="false"
+    styleClass="patient-dialog"
+    (onHide)="closeDialog()"
+    (onShow)="updateComponent.onOpen()"
+  >
+    <jhi-patient-update
+      #updateComponent
+      [isDialog]="true"
+      [mode]="dialogMode"
+      (patientSaved)="onPatientSaved($event)"
+      (cancelled)="onDialogCancelled()"
+    ></jhi-patient-update>
+  </p-dialog>
+}

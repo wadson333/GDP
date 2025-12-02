@@ -16,6 +16,103 @@
       "delete": {
         "question": "Are you sure you want to delete Patient {{ id }}?"
       },
+      "wizard": {
+        "title": "Create Patient with User Account",
+        "titleEdit": "Edit Patient",
+        "steps": {
+          "userInfo": "User Information",
+          "patientBasic": "Patient Basic Info",
+          "contactIdentity": "Contact & Identity",
+          "medicalInfo": "Medical Information",
+          "insurance": "Insurance",
+          "review": "Review"
+        },
+        "navigation": {
+          "previous": "Previous",
+          "next": "Next",
+          "save": "Save",
+          "submit": "Create Patient",
+          "submitEdit": "Update Patient",
+          "cancel": "Cancel"
+        }
+      },
+      "form": {
+        "userSection": {
+          "title": "User Account",
+          "subtitle": "Create login credentials for the patient",
+          "loginHelp": "Username for system access",
+          "emailHelp": "Email for notifications and password recovery",
+          "langKeyHelp": "Preferred language for communications"
+        },
+        "patientSection": {
+          "title": "Patient Information",
+          "subtitle": "Basic demographic information"
+        },
+        "contactSection": {
+          "title": "Contact Details",
+          "subtitle": "How to reach the patient"
+        },
+        "identitySection": {
+          "title": "Identity Documents",
+          "subtitle": "Official identification numbers"
+        },
+        "emergencySection": {
+          "title": "Emergency Contact",
+          "subtitle": "Person to contact in case of emergency"
+        },
+        "medicalSection": {
+          "title": "Medical Record",
+          "subtitle": "Clinical history and notes"
+        },
+        "insuranceSection": {
+          "title": "Insurance Information",
+          "subtitle": "Coverage details"
+        },
+        "reviewSection": {
+          "title": "Review Information",
+          "subtitle": "Please verify all details before submitting"
+        },
+        "flags": {
+          "sendActivationEmail": "Send activation email",
+          "sendActivationEmailHelp": "Patient will receive an email to activate their account",
+          "activatedOnCreate": "Activate immediately",
+          "activatedOnCreateHelp": "Account will be active without email confirmation"
+        }
+      },
+
+      "validation": {
+        "loginPattern": "Login can only contain letters, numbers and these characters: _ . @ -",
+        "loginRequired": "Login is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Please enter a valid email address",
+        "firstNameRequired": "First name is required",
+        "lastNameRequired": "Last name is required",
+        "birthDateRequired": "Birth date is required",
+        "phone1Required": "Phone number is required",
+        "phone1Pattern": "Please enter a valid phone number (E.164 format)",
+        "nifLength": "NIF must be exactly 10 characters",
+        "ninuLength": "NINU must be exactly 10 characters",
+        "passportLength": "Passport number must be between 3 and 15 characters",
+        "stepInvalid": "Please complete all required fields before proceeding"
+      },
+      "immutable": "Read-only",
+      "success": {
+        "created": "Patient Created Successfully",
+        "createdDetail": "Patient {{ name }} ({{ mrn }}) has been created successfully.",
+        "updated": "Patient Updated Successfully",
+        "updatedDetail": "Patient {{ name }} ({{ mrn }}) has been updated successfully."
+      },
+      "errors": {
+        "createFailed": "Failed to create patient. Please check the form and try again.",
+        "updateFailed": "Failed to update patient. Please check the form and try again.",
+        "loadFailed": "Failed to load patient data.",
+        "usernameAlreadyUsed": "This username is already in use.",
+        "emailAlreadyUsed": "This email address is already registered.",
+        "nifAlreadyUsed": "This NIF number is already registered.",
+        "ninuAlreadyUsed": "This NINU number is already registered.",
+        "passportAlreadyUsed": "This passport number is already registered.",
+        "insuranceIdAlreadyUsed": "This insurance ID is already registered."
+      },
       "detail": {
         "title": "Patient",
         "noPatientSelected": "Select a patient to see the detail",
@@ -91,11 +188,27 @@
           "abPositive": "AB+",
           "abNegative": "AB-",
           "oPositive": "O+",
-          "oNegative": "O-"
+          "oNegative": "O-",
+          "unknown": "Unknown"
+        },
+        "smokingStatus": {
+          "title": "Smoking Status",
+          "never": "Never",
+          "former": "Former",
+          "current": "Current",
+          "unknown": "Unknown"
         }
+      },
+      "confirmation": {
+        "header": "Confirm Save",
+        "save": "Are you sure you want to save this patient?",
+        "required": "Fields marked with * are required"
       },
       "id": "ID",
       "uid": "UID",
+      "login": "Login",
+      "email": "Email",
+      "langKey": "Language",
       "firstName": "First Name",
       "lastName": "Last Name",
       "birthDate": "Birth Date",

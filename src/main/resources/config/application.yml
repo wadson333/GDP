@@ -224,3 +224,15 @@ jhipster:
 # ===================================================================
 
 # application:
+application:
+  security:
+    # AES-256 encryption key for sensitive patient data (Base64 encoded 32 bytes)
+    # Generate with: openssl rand -base64 32
+    # IMPORTANT: Use environment variable in production: JHIPSTER_SECURITY_CONTENT_ENCRYPTION_KEY
+    content-encryption-key: ${CONTENT_ENCRYPTION_KEY:6Xb/N4W1f8zKj1mPq3rS5t7v9yA0cB2dE4fG6hI8jK0=}
+  encryption:
+    # Encryption algorithm configuration
+    algorithm: AES/GCM/NoPadding
+    key-size: 256
+    iv-size: 12 # GCM standard IV size in bytes
+    tag-size: 128 # GCM authentication tag size in bits

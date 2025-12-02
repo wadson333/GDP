@@ -1,576 +1,899 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-patient-heading" data-cy="PatientCreateUpdateHeading" jhiTranslate="gdpApp.patient.home.createOrEditLabel">
-        Créer ou éditer un Patient
-      </h2>
+<jhi-alert-error></jhi-alert-error>
+<!-- <p-confirmDialog></p-confirmDialog> -->
+<jhi-alert></jhi-alert>
+<div class="patient-form-container">
+  <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+    <!-- Required fields notice -->
+    <div class="text-sm text-surface-600 mb-4">
+      <i class="pi pi-info-circle mr-1"></i>
+      {{ 'gdpApp.patient.confirmation.required' | translate }}
+    </div>
 
-      <div>
-        <jhi-alert-error></jhi-alert-error>
+    <!-- Loading Overlay -->
+    <div *ngIf="isSaving" class="absolute inset-0 bg-black/50 flex items-center justify-center z-50">
+      <p-progressSpinner strokeWidth="4" />
+    </div>
+    <!-- Stepper -->
+    <p-stepper [(activeStep)]="currentStep" [linear]="true" styleClass="mb-3">
+      <p-stepperPanel [header]="'gdpApp.patient.wizard.steps.userInfo' | translate">
+        <ng-template pTemplate="content" let-nextCallback="nextCallback">
+          <div class="step-content">
+            <!-- User Information Section -->
+            <div class="section-header">
+              <h3 class="text-xl font-semibold section-title">
+                <span> {{ 'gdpApp.patient.form.userSection.title' | translate }}</span>
+                <span class="ml-2 sub-title" [pTooltip]="'gdpApp.patient.form.userSection.subtitle' | translate">
+                  <i class="pi pi-info-circle text-lg"></i>
+                </span>
+              </h3>
+            </div>
 
-        @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
-            <label class="form-label" for="field_id" jhiTranslate="gdpApp.patient.id">ID</label>
-            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-3 gap-y-2 mt-2">
+              <!-- Login -->
+              <div class="field">
+                <label for="login" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.login' | translate }}
+                  <span class="text-red-500">*</span>
+                  <span class="ml-2 sub-title" [pTooltip]="'gdpApp.patient.form.userSection.subtitle' | translate">
+                    <i class="pi pi-info-circle text-lg"></i>
+                  </span>
+                </label>
+                <input
+                  pInputText
+                  id="login"
+                  formControlName="login"
+                  class="w-full"
+                  [ngClass]="{ 'ng-invalid ng-dirty': hasFieldError('login') }"
+                  [placeholder]="'gdpApp.patient.login' | translate"
+                />
+                <!-- <small class="block mt-1 ">
+                  {{ 'gdpApp.patient.form.userSection.loginHelp' | translate }}
+                </small> -->
+                <small *ngIf="hasFieldError('login')" class="p-error block mt-1">
+                  {{ getFieldError('login') }}
+                </small>
+              </div>
+
+              <!-- Email -->
+              <div class="field">
+                <label for="email" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.email' | translate }}
+                  <span class="text-red-500">*</span>
+                  <span class="ml-2 sub-title" [pTooltip]="'gdpApp.patient.form.userSection.emailHelp' | translate">
+                    <i class="pi pi-info-circle text-lg"></i>
+                  </span>
+                </label>
+                <input
+                  pInputText
+                  type="email"
+                  id="email"
+                  formControlName="email"
+                  class="w-full"
+                  [ngClass]="{ 'ng-invalid ng-dirty': hasFieldError('email') }"
+                  [placeholder]="'gdpApp.patient.email' | translate"
+                />
+                <!-- <small class="block mt-1 ">
+                  {{ 'gdpApp.patient.form.userSection.emailHelp' | translate }}
+                </small> -->
+                <small *ngIf="hasFieldError('email')" class="p-error block mt-1">
+                  {{ getFieldError('email') }}
+                </small>
+              </div>
+
+              <!-- Language Key -->
+              <div class="field">
+                <label for="langKey" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.langKey' | translate }}
+                  <span class="ml-2 sub-title" [pTooltip]="'gdpApp.patient.form.userSection.langKeyHelp' | translate">
+                    <i class="pi pi-info-circle text-lg"></i>
+                  </span>
+                </label>
+                <p-dropdown
+                  id="langKey"
+                  formControlName="langKey"
+                  [options]="[
+                    { label: 'English', value: 'en' },
+                    { label: 'Français', value: 'fr' },
+                  ]"
+                  optionLabel="label"
+                  optionValue="value"
+                  [placeholder]="'gdpApp.patient.langKey' | translate"
+                  styleClass="w-full"
+                ></p-dropdown>
+                <!-- <small class="block mt-1 ">
+                  {{ 'gdpApp.patient.form.userSection.langKeyHelp' | translate }}
+                </small> -->
+              </div>
+            </div>
+
+            <!-- Patient Basic Info Section -->
+            <div class="section-header mt-4">
+              <h3 class="text-xl font-semibold text-primary-700">
+                <span>{{ 'gdpApp.patient.form.patientSection.title' | translate }}</span>
+                <span class="ml-2 sub-title" [pTooltip]="'gdpApp.patient.form.patientSection.subtitle' | translate">
+                  <i class="pi pi-info-circle text-lg"></i>
+                </span>
+              </h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-2 mt-4">
+              <!-- First Name -->
+              <div class="field">
+                <label for="firstName" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.firstName' | translate }}
+                  <span class="text-red-500">*</span>
+                </label>
+                <input
+                  pInputText
+                  id="firstName"
+                  formControlName="firstName"
+                  class="w-full"
+                  [ngClass]="{ 'ng-invalid ng-dirty': hasFieldError('firstName') }"
+                  [placeholder]="'gdpApp.patient.firstName' | translate"
+                />
+                <small *ngIf="hasFieldError('firstName')" class="p-error block mt-1">
+                  {{ getFieldError('firstName') }}
+                </small>
+              </div>
+
+              <!-- Last Name -->
+              <div class="field">
+                <label for="lastName" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.lastName' | translate }}
+                  <span class="text-red-500">*</span>
+                </label>
+                <input
+                  pInputText
+                  id="lastName"
+                  formControlName="lastName"
+                  class="w-full"
+                  [ngClass]="{ 'ng-invalid ng-dirty': hasFieldError('lastName') }"
+                  [placeholder]="'gdpApp.patient.lastName' | translate"
+                />
+                <small *ngIf="hasFieldError('lastName')" class="p-error block mt-1">
+                  {{ getFieldError('lastName') }}
+                </small>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+              <!-- Birth Date -->
+              <div class="field">
+                <label for="birthDate" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.birthDate' | translate }}
+                  <span class="text-red-500">*</span>
+                </label>
+                <p-calendar
+                  id="birthDate"
+                  formControlName="birthDate"
+                  dateFormat="yy-mm-dd"
+                  [showIcon]="true"
+                  [maxDate]="today"
+                  [placeholder]="'gdpApp.patient.birthDate' | translate"
+                  styleClass="w-full"
+                  [ngClass]="{ 'ng-invalid ng-dirty': hasFieldError('birthDate') }"
+                ></p-calendar>
+                <small *ngIf="hasFieldError('birthDate')" class="p-error block mt-1">
+                  {{ getFieldError('birthDate') }}
+                </small>
+              </div>
+
+              <!-- Gender -->
+              <div class="field">
+                <label for="gender" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.gender' | translate }}
+                </label>
+                <p-dropdown
+                  id="gender"
+                  formControlName="gender"
+                  [options]="genderOptions"
+                  optionLabel="label"
+                  optionValue="value"
+                  [placeholder]="'gdpApp.patient.gender' | translate"
+                  styleClass="w-full"
+                >
+                </p-dropdown>
+              </div>
+
+              <!-- Blood Type -->
+              <div class="field">
+                <label for="bloodType" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.bloodType' | translate }}
+                </label>
+                <p-dropdown
+                  id="bloodType"
+                  formControlName="bloodType"
+                  [options]="blodTypeOptions"
+                  optionLabel="label"
+                  optionValue="value"
+                  [placeholder]="'gdpApp.patient.bloodType' | translate"
+                  styleClass="w-full"
+                >
+                </p-dropdown>
+              </div>
+            </div>
+
+            <!-- Activation Flags -->
+            <p-divider></p-divider>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="field-checkbox">
+                <p-checkbox formControlName="sendActivationEmail" [binary]="true" inputId="sendActivationEmail"></p-checkbox>
+                <label for="sendActivationEmail" class="ml-2">
+                  <span>{{ 'gdpApp.patient.form.flags.sendActivationEmail' | translate }}</span>
+                  <span class="ml-2 sub-title" [pTooltip]="'gdpApp.patient.form.flags.sendActivationEmailHelp' | translate">
+                    <i class="pi pi-info-circle text-lg"></i>
+                  </span>
+                </label>
+                <!-- <small class="block mt-1 ml-7">
+                  {{ 'gdpApp.patient.form.flags.sendActivationEmailHelp' | translate }}
+                </small> -->
+              </div>
+
+              <div class="field-checkbox">
+                <p-checkbox formControlName="activatedOnCreate" [binary]="true" inputId="activatedOnCreate"></p-checkbox>
+                <label for="activatedOnCreate" class="ml-2">
+                  <span>{{ 'gdpApp.patient.form.flags.activatedOnCreate' | translate }}</span>
+                  <span class="ml-2 sub-title" [pTooltip]="'gdpApp.patient.form.flags.activatedOnCreateHelp' | translate">
+                    <i class="pi pi-info-circle text-lg"></i>
+                  </span>
+                </label>
+                <!-- <small class="block mt-1 ml-7">
+                  {{ 'gdpApp.patient.form.flags.activatedOnCreateHelp' | translate }}
+                </small> -->
+              </div>
+            </div>
+
+            <div class="flex justify-end mt-6">
+              <p-button
+                [label]="'gdpApp.patient.wizard.navigation.next' | translate"
+                icon="pi pi-arrow-right"
+                iconPos="right"
+                severity="primary"
+                (onClick)="nextStep()"
+                [disabled]="!isStepValid(0)"
+              ></p-button>
+            </div>
           </div>
-        }
+        </ng-template>
+      </p-stepperPanel>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_uid" jhiTranslate="gdpApp.patient.uid">Uid</label>
-          <input type="text" class="form-control" name="uid" id="field_uid" data-cy="uid" formControlName="uid" />
-        </div>
+      <!-- <p-stepperPanel [header]="'gdpApp.patient.wizard.steps.patientBasic' | translate">
+        <ng-template pTemplate="content">
+          <div class="step-content">
+            
 
-        @let firstNameRef = editForm.get('firstName')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_firstName" jhiTranslate="gdpApp.patient.firstName">First Name</label>
-          <input type="text" class="form-control" name="firstName" id="field_firstName" data-cy="firstName" formControlName="firstName" />
-          @if (firstNameRef.invalid && (firstNameRef.dirty || firstNameRef.touched)) {
-            <div>
-              @if (editForm.get('firstName')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
+            <div class="flex justify-between mt-6">
+              <p-button
+                [label]="'gdpApp.patient.wizard.navigation.previous' | translate"
+                icon="pi pi-arrow-left"
+                (onClick)="previousStep()"
+                styleClass="p-button-secondary"
+              ></p-button>
+              <p-button
+                [label]="'gdpApp.patient.wizard.navigation.next' | translate"
+                icon="pi pi-arrow-right"
+                iconPos="right"
+                (onClick)="nextStep()"
+                [disabled]="!isStepValid(1)"
+              ></p-button>
             </div>
-          }
-        </div>
-
-        @let lastNameRef = editForm.get('lastName')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_lastName" jhiTranslate="gdpApp.patient.lastName">Last Name</label>
-          <input type="text" class="form-control" name="lastName" id="field_lastName" data-cy="lastName" formControlName="lastName" />
-          @if (lastNameRef.invalid && (lastNameRef.dirty || lastNameRef.touched)) {
-            <div>
-              @if (editForm.get('lastName')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-            </div>
-          }
-        </div>
-
-        @let birthDateRef = editForm.get('birthDate')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_birthDate" jhiTranslate="gdpApp.patient.birthDate">Birth Date</label>
-          <div class="input-group">
-            <input
-              id="field_birthDate"
-              data-cy="birthDate"
-              type="text"
-              class="form-control"
-              name="birthDate"
-              ngbDatepicker
-              #birthDateDp="ngbDatepicker"
-              formControlName="birthDate"
-            />
-            <button type="button" class="btn btn-secondary" (click)="birthDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
           </div>
-          @if (birthDateRef.invalid && (birthDateRef.dirty || birthDateRef.touched)) {
-            <div>
-              @if (editForm.get('birthDate')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
+        </ng-template>
+      </p-stepperPanel> -->
+
+      <p-stepperPanel [header]="'gdpApp.patient.wizard.steps.contactIdentity' | translate">
+        <ng-template pTemplate="content">
+          <div class="step-content">
+            <!-- Contact & Identity Section -->
+            <div class="section-header mb-4">
+              <h3 class="text-xl font-semibold">
+                {{ 'gdpApp.patient.form.contactSection.title' | translate }}
+                <span class="ml-2 sub-title" [pTooltip]="'gdpApp.patient.form.contactSection.subtitle' | translate">
+                  <i class="pi pi-info-circle text-lg"></i>
+                </span>
+              </h3>
             </div>
-          }
-        </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_gender" jhiTranslate="gdpApp.patient.gender">Gender</label>
-          <select class="form-control" name="gender" formControlName="gender" id="field_gender" data-cy="gender">
-            <option [ngValue]="null">{{ 'gdpApp.Gender.null' | translate }}</option>
-            @for (gender of genderValues; track $index) {
-              <option [value]="gender">{{ 'gdpApp.Gender.' + gender | translate }}</option>
-            }
-          </select>
-        </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-y-2 gap-x-4">
+              <!-- Phone 1 -->
+              <div class="field">
+                <label for="phone1" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.phone1' | translate }}
+                  <span class="text-red-500">*</span>
+                </label>
+                <input
+                  pInputText
+                  id="phone1"
+                  formControlName="phone1"
+                  class="w-full"
+                  [ngClass]="{ 'ng-invalid ng-dirty': hasFieldError('phone1') }"
+                  placeholder="+33612345678"
+                />
+                <small *ngIf="hasFieldError('phone1')" class="p-error block mt-1">
+                  {{ getFieldError('phone1') }}
+                </small>
+              </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_bloodType" jhiTranslate="gdpApp.patient.bloodType">Blood Type</label>
-          <select class="form-control" name="bloodType" formControlName="bloodType" id="field_bloodType" data-cy="bloodType">
-            <option [ngValue]="null">{{ 'gdpApp.BloodType.null' | translate }}</option>
-            @for (bloodType of bloodTypeValues; track $index) {
-              <option [value]="bloodType">{{ 'gdpApp.BloodType.' + bloodType | translate }}</option>
-            }
-          </select>
-        </div>
+              <!-- Phone 2 -->
+              <div class="field">
+                <label for="phone2" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.phone2' | translate }}
+                </label>
+                <input
+                  pInputText
+                  id="phone2"
+                  formControlName="phone2"
+                  class="w-full"
+                  [ngClass]="{ 'ng-invalid ng-dirty': hasFieldError('phone2') }"
+                  placeholder="+33612345678"
+                />
+                <small *ngIf="hasFieldError('phone2')" class="p-error block mt-1">
+                  {{ getFieldError('phone2') }}
+                </small>
+              </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_address" jhiTranslate="gdpApp.patient.address">Address</label>
-          <textarea class="form-control" name="address" id="field_address" data-cy="address" formControlName="address"></textarea>
-        </div>
-
-        @let phone1Ref = editForm.get('phone1')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_phone1" jhiTranslate="gdpApp.patient.phone1">Phone 1</label>
-          <input type="text" class="form-control" name="phone1" id="field_phone1" data-cy="phone1" formControlName="phone1" />
-          @if (phone1Ref.invalid && (phone1Ref.dirty || phone1Ref.touched)) {
-            <div>
-              @if (editForm.get('phone1')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-              @if (editForm.get('phone1')?.errors?.pattern) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.pattern" [translateValues]="{ pattern: 'Phone 1' }"
-                  >Ce champ doit suivre l&apos;expression régulière Phone 1.</small
-                >
-              }
+              <!-- Address -->
+              <div class="field md:col-span-2">
+                <label for="address" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.address' | translate }}
+                </label>
+                <textarea
+                  pInputTextarea
+                  id="address"
+                  formControlName="address"
+                  rows="3"
+                  class="w-full"
+                  [placeholder]="'gdpApp.patient.address' | translate"
+                ></textarea>
+              </div>
             </div>
-          }
-        </div>
 
-        @let phone2Ref = editForm.get('phone2')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_phone2" jhiTranslate="gdpApp.patient.phone2">Phone 2</label>
-          <input type="text" class="form-control" name="phone2" id="field_phone2" data-cy="phone2" formControlName="phone2" />
-          @if (phone2Ref.invalid && (phone2Ref.dirty || phone2Ref.touched)) {
-            <div>
-              @if (editForm.get('phone2')?.errors?.pattern) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.pattern" [translateValues]="{ pattern: 'Phone 2' }"
-                  >Ce champ doit suivre l&apos;expression régulière Phone 2.</small
-                >
-              }
+            <p-divider></p-divider>
+
+            <!-- Identity Documents Section -->
+            <div class="section-header mb-4">
+              <h3 class="text-xl font-semibold text-primary-700">
+                {{ 'gdpApp.patient.form.identitySection.title' | translate }}
+                <span class="ml-2 sub-title" [pTooltip]="'gdpApp.patient.form.identitySection.subtitle' | translate">
+                  <i class="pi pi-info-circle text-lg"></i>
+                </span>
+              </h3>
+              <!-- <p class="text-sm  mt-1">
+                {{ 'gdpApp.patient.form.identitySection.subtitle' | translate }}
+              </p> -->
             </div>
-          }
-        </div>
 
-        @let nifRef = editForm.get('nif')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_nif" jhiTranslate="gdpApp.patient.nif">Nif</label>
-          <input type="text" class="form-control" name="nif" id="field_nif" data-cy="nif" formControlName="nif" />
-          @if (nifRef.invalid && (nifRef.dirty || nifRef.touched)) {
-            <div>
-              @if (editForm.get('nif')?.errors?.minlength) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: '10' }"
-                  >Ce champ doit faire au minimum 10 caractères.</small
-                >
-              }
-              @if (editForm.get('nif')?.errors?.maxlength) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '10' }"
-                  >Ce champ doit faire moins de 10 caractères.</small
-                >
-              }
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-2">
+              <!-- NIF -->
+              <div class="field">
+                <label for="nif" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.nif' | translate }}
+                </label>
+                <input
+                  pInputText
+                  id="nif"
+                  formControlName="nif"
+                  class="w-full"
+                  [ngClass]="{ 'ng-invalid ng-dirty': hasFieldError('nif') }"
+                  [placeholder]="'gdpApp.patient.nif' | translate"
+                  maxlength="10"
+                />
+                <small *ngIf="hasFieldError('nif')" class="p-error block mt-1">
+                  {{ getFieldError('nif') }}
+                </small>
+              </div>
+
+              <!-- NINU -->
+              <div class="field">
+                <label for="ninu" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.ninu' | translate }}
+                </label>
+                <input
+                  pInputText
+                  id="ninu"
+                  formControlName="ninu"
+                  class="w-full"
+                  [ngClass]="{ 'ng-invalid ng-dirty': hasFieldError('ninu') }"
+                  [placeholder]="'gdpApp.patient.ninu' | translate"
+                  maxlength="10"
+                />
+                <small *ngIf="hasFieldError('ninu')" class="p-error block mt-1">
+                  {{ getFieldError('ninu') }}
+                </small>
+              </div>
+
+              <!-- Passport Number -->
+              <div class="field">
+                <label for="passportNumber" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.passportNumber' | translate }}
+                </label>
+                <input
+                  pInputText
+                  id="passportNumber"
+                  formControlName="passportNumber"
+                  class="w-full"
+                  [ngClass]="{ 'ng-invalid ng-dirty': hasFieldError('passportNumber') }"
+                  [placeholder]="'gdpApp.patient.passportNumber' | translate"
+                  maxlength="15"
+                />
+                <small *ngIf="hasFieldError('passportNumber')" class="p-error block mt-1">
+                  {{ getFieldError('passportNumber') }}
+                </small>
+              </div>
             </div>
-          }
-        </div>
 
-        @let ninuRef = editForm.get('ninu')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_ninu" jhiTranslate="gdpApp.patient.ninu">Ninu</label>
-          <input type="text" class="form-control" name="ninu" id="field_ninu" data-cy="ninu" formControlName="ninu" />
-          @if (ninuRef.invalid && (ninuRef.dirty || ninuRef.touched)) {
-            <div>
-              @if (editForm.get('ninu')?.errors?.minlength) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: '10' }"
-                  >Ce champ doit faire au minimum 10 caractères.</small
-                >
-              }
-              @if (editForm.get('ninu')?.errors?.maxlength) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '10' }"
-                  >Ce champ doit faire moins de 10 caractères.</small
-                >
-              }
+            <p-divider></p-divider>
+
+            <!-- Emergency Contact Section -->
+            <div class="section-header mb-4">
+              <h3 class="text-xl font-semibold text-primary-700">
+                {{ 'gdpApp.patient.form.emergencySection.title' | translate }}
+                <span class="ml-2 sub-title" [pTooltip]="'gdpApp.patient.form.emergencySection.subtitle' | translate">
+                  <i class="pi pi-info-circle text-lg"></i>
+                </span>
+              </h3>
+              <!-- <p class="text-sm  mt-1">
+                {{ 'gdpApp.patient.form.emergencySection.subtitle' | translate }}
+              </p> -->
             </div>
-          }
-        </div>
 
-        @let medicalRecordNumberRef = editForm.get('medicalRecordNumber')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_medicalRecordNumber" jhiTranslate="gdpApp.patient.medicalRecordNumber"
-            >Medical Record Number</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="medicalRecordNumber"
-            id="field_medicalRecordNumber"
-            data-cy="medicalRecordNumber"
-            formControlName="medicalRecordNumber"
-          />
-          @if (medicalRecordNumberRef.invalid && (medicalRecordNumberRef.dirty || medicalRecordNumberRef.touched)) {
-            <div></div>
-          }
-        </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Contact Person Name -->
+              <div class="field">
+                <label for="contactPersonName" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.contactPersonName' | translate }}
+                </label>
+                <input
+                  pInputText
+                  id="contactPersonName"
+                  formControlName="contactPersonName"
+                  class="w-full"
+                  [placeholder]="'gdpApp.patient.contactPersonName' | translate"
+                />
+              </div>
 
-        @let heightCmRef = editForm.get('heightCm')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_heightCm" jhiTranslate="gdpApp.patient.heightCm">Height Cm</label>
-          <input type="number" class="form-control" name="heightCm" id="field_heightCm" data-cy="heightCm" formControlName="heightCm" />
-          @if (heightCmRef.invalid && (heightCmRef.dirty || heightCmRef.touched)) {
-            <div>
-              @if (editForm.get('heightCm')?.errors?.min) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
-                  >Ce champ doit être supérieur à 0.</small
-                >
-              }
-              @if (editForm.get('heightCm')?.errors?.max) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.max" [translateValues]="{ max: '300' }"
-                  >Ce champ doit être inférieur à 300.</small
-                >
-              }
-              <small
-                class="form-text text-danger"
-                [hidden]="!editForm.get('heightCm')?.errors?.number"
-                jhiTranslate="entity.validation.number"
-                >Ce champ doit être un nombre.</small
-              >
+              <!-- Contact Person Phone -->
+              <div class="field">
+                <label for="contactPersonPhone" class="block text-sm font-mediummb-2">
+                  {{ 'gdpApp.patient.contactPersonPhone' | translate }}
+                </label>
+                <input
+                  pInputText
+                  id="contactPersonPhone"
+                  formControlName="contactPersonPhone"
+                  class="w-full"
+                  [ngClass]="{ 'ng-invalid ng-dirty': hasFieldError('contactPersonPhone') }"
+                  placeholder="+33612345678"
+                />
+                <small *ngIf="hasFieldError('contactPersonPhone')" class="p-error block mt-1">
+                  {{ getFieldError('contactPersonPhone') }}
+                </small>
+              </div>
             </div>
-          }
-        </div>
 
-        @let weightKgRef = editForm.get('weightKg')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_weightKg" jhiTranslate="gdpApp.patient.weightKg">Weight Kg</label>
-          <input type="number" class="form-control" name="weightKg" id="field_weightKg" data-cy="weightKg" formControlName="weightKg" />
-          @if (weightKgRef.invalid && (weightKgRef.dirty || weightKgRef.touched)) {
-            <div>
-              @if (editForm.get('weightKg')?.errors?.min) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
-                  >Ce champ doit être supérieur à 0.</small
-                >
-              }
-              @if (editForm.get('weightKg')?.errors?.max) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.max" [translateValues]="{ max: '500' }"
-                  >Ce champ doit être inférieur à 500.</small
-                >
-              }
-              <small
-                class="form-text text-danger"
-                [hidden]="!editForm.get('weightKg')?.errors?.number"
-                jhiTranslate="entity.validation.number"
-                >Ce champ doit être un nombre.</small
-              >
+            <div class="flex justify-between mt-6">
+              <p-button
+                [label]="'gdpApp.patient.wizard.navigation.previous' | translate"
+                icon="pi pi-arrow-left"
+                severity="secondary"
+                (onClick)="previousStep()"
+              ></p-button>
+              <p-button
+                [label]="'gdpApp.patient.wizard.navigation.next' | translate"
+                icon="pi pi-arrow-right"
+                iconPos="right"
+                severity="primary"
+                (onClick)="nextStep()"
+                [disabled]="!isStepValid(2)"
+              ></p-button>
             </div>
-          }
-        </div>
-
-        @let passportNumberRef = editForm.get('passportNumber')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_passportNumber" jhiTranslate="gdpApp.patient.passportNumber">Passport Number</label>
-          <input
-            type="text"
-            class="form-control"
-            name="passportNumber"
-            id="field_passportNumber"
-            data-cy="passportNumber"
-            formControlName="passportNumber"
-          />
-          @if (passportNumberRef.invalid && (passportNumberRef.dirty || passportNumberRef.touched)) {
-            <div>
-              @if (editForm.get('passportNumber')?.errors?.minlength) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: '3' }"
-                  >Ce champ doit faire au minimum 3 caractères.</small
-                >
-              }
-              @if (editForm.get('passportNumber')?.errors?.maxlength) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '15' }"
-                  >Ce champ doit faire moins de 15 caractères.</small
-                >
-              }
-            </div>
-          }
-        </div>
-
-        @let contactPersonNameRef = editForm.get('contactPersonName')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_contactPersonName" jhiTranslate="gdpApp.patient.contactPersonName"
-            >Contact Person Name</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="contactPersonName"
-            id="field_contactPersonName"
-            data-cy="contactPersonName"
-            formControlName="contactPersonName"
-          />
-          @if (contactPersonNameRef.invalid && (contactPersonNameRef.dirty || contactPersonNameRef.touched)) {
-            <div>
-              @if (editForm.get('contactPersonName')?.errors?.maxlength) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '100' }"
-                  >Ce champ doit faire moins de 100 caractères.</small
-                >
-              }
-            </div>
-          }
-        </div>
-
-        @let contactPersonPhoneRef = editForm.get('contactPersonPhone')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_contactPersonPhone" jhiTranslate="gdpApp.patient.contactPersonPhone"
-            >Contact Person Phone</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="contactPersonPhone"
-            id="field_contactPersonPhone"
-            data-cy="contactPersonPhone"
-            formControlName="contactPersonPhone"
-          />
-          @if (contactPersonPhoneRef.invalid && (contactPersonPhoneRef.dirty || contactPersonPhoneRef.touched)) {
-            <div>
-              @if (editForm.get('contactPersonPhone')?.errors?.pattern) {
-                <small
-                  class="form-text text-danger"
-                  jhiTranslate="entity.validation.pattern"
-                  [translateValues]="{ pattern: 'Contact Person Phone' }"
-                  >Ce champ doit suivre l&apos;expression régulière Contact Person Phone.</small
-                >
-              }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_antecedents" jhiTranslate="gdpApp.patient.antecedents">Antecedents</label>
-          <textarea
-            class="form-control"
-            name="antecedents"
-            id="field_antecedents"
-            data-cy="antecedents"
-            formControlName="antecedents"
-          ></textarea>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_allergies" jhiTranslate="gdpApp.patient.allergies">Allergies</label>
-          <textarea class="form-control" name="allergies" id="field_allergies" data-cy="allergies" formControlName="allergies"></textarea>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_clinicalNotes" jhiTranslate="gdpApp.patient.clinicalNotes">Clinical Notes</label>
-          <textarea
-            class="form-control"
-            name="clinicalNotes"
-            id="field_clinicalNotes"
-            data-cy="clinicalNotes"
-            formControlName="clinicalNotes"
-          ></textarea>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_smokingStatus" jhiTranslate="gdpApp.patient.smokingStatus">Smoking Status</label>
-          <select
-            class="form-control"
-            name="smokingStatus"
-            formControlName="smokingStatus"
-            id="field_smokingStatus"
-            data-cy="smokingStatus"
-          >
-            <option [ngValue]="null">{{ 'gdpApp.SmokingStatus.null' | translate }}</option>
-            @for (smokingStatus of smokingStatusValues; track $index) {
-              <option [value]="smokingStatus">{{ 'gdpApp.SmokingStatus.' + smokingStatus | translate }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_gdprConsentDate" jhiTranslate="gdpApp.patient.gdprConsentDate">Gdpr Consent Date</label>
-          <div class="d-flex">
-            <input
-              id="field_gdprConsentDate"
-              data-cy="gdprConsentDate"
-              type="datetime-local"
-              class="form-control"
-              name="gdprConsentDate"
-              formControlName="gdprConsentDate"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
           </div>
-        </div>
+        </ng-template>
+      </p-stepperPanel>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_status" jhiTranslate="gdpApp.patient.status">Status</label>
-          <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
-            <option [ngValue]="null">{{ 'gdpApp.PatientStatus.null' | translate }}</option>
-            @for (patientStatus of patientStatusValues; track $index) {
-              <option [value]="patientStatus">{{ 'gdpApp.PatientStatus.' + patientStatus | translate }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_deceasedDate" jhiTranslate="gdpApp.patient.deceasedDate">Deceased Date</label>
-          <div class="d-flex">
-            <input
-              id="field_deceasedDate"
-              data-cy="deceasedDate"
-              type="datetime-local"
-              class="form-control"
-              name="deceasedDate"
-              formControlName="deceasedDate"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-        </div>
-
-        @let insuranceCompanyNameRef = editForm.get('insuranceCompanyName')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_insuranceCompanyName" jhiTranslate="gdpApp.patient.insuranceCompanyName"
-            >Insurance Company Name</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="insuranceCompanyName"
-            id="field_insuranceCompanyName"
-            data-cy="insuranceCompanyName"
-            formControlName="insuranceCompanyName"
-          />
-          @if (insuranceCompanyNameRef.invalid && (insuranceCompanyNameRef.dirty || insuranceCompanyNameRef.touched)) {
-            <div>
-              @if (editForm.get('insuranceCompanyName')?.errors?.maxlength) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '200' }"
-                  >Ce champ doit faire moins de 200 caractères.</small
-                >
-              }
+      <p-stepperPanel [header]="'gdpApp.patient.wizard.steps.medicalInfo' | translate">
+        <ng-template pTemplate="content">
+          <div class="step-content">
+            <!-- Medical Information Section -->
+            <div class="section-header mb-4">
+              <h3 class="text-xl font-semibold">
+                {{ 'gdpApp.patient.form.medicalSection.title' | translate }}
+                <span class="ml-2 sub-title" [pTooltip]="'gdpApp.patient.form.medicalSection.subtitle' | translate">
+                  <i class="pi pi-info-circle text-lg"></i>
+                </span>
+              </h3>
+              <!-- <p class="text-sm text-gray-600 mt-1">
+                {{ 'gdpApp.patient.form.medicalSection.subtitle' | translate }}
+              </p> -->
             </div>
-          }
-        </div>
 
-        @let patientInsuranceIdRef = editForm.get('patientInsuranceId')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_patientInsuranceId" jhiTranslate="gdpApp.patient.patientInsuranceId"
-            >Patient Insurance Id</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="patientInsuranceId"
-            id="field_patientInsuranceId"
-            data-cy="patientInsuranceId"
-            formControlName="patientInsuranceId"
-          />
-          @if (patientInsuranceIdRef.invalid && (patientInsuranceIdRef.dirty || patientInsuranceIdRef.touched)) {
-            <div>
-              @if (editForm.get('patientInsuranceId')?.errors?.maxlength) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '100' }"
-                  >Ce champ doit faire moins de 100 caractères.</small
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-2">
+              <!-- Height -->
+              <div class="field">
+                <label for="heightCm" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.heightCm' | translate }}
+                </label>
+                <p-inputNumber
+                  id="heightCm"
+                  formControlName="heightCm"
+                  [min]="0"
+                  [max]="300"
+                  suffix=" cm"
+                  [placeholder]="'gdpApp.patient.heightCm' | translate"
+                  styleClass="w-full"
+                ></p-inputNumber>
+              </div>
+
+              <!-- Weight -->
+              <div class="field">
+                <label for="weightKg" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.weightKg' | translate }}
+                </label>
+                <p-inputNumber
+                  id="weightKg"
+                  formControlName="weightKg"
+                  [min]="0"
+                  [max]="500"
+                  [minFractionDigits]="1"
+                  [maxFractionDigits]="2"
+                  suffix=" kg"
+                  [placeholder]="'gdpApp.patient.weightKg' | translate"
+                  styleClass="w-full"
+                ></p-inputNumber>
+              </div>
+
+              <!-- Smoking Status -->
+              <div class="field">
+                <label for="smokingStatus" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.smokingStatus' | translate }}
+                </label>
+                <p-dropdown
+                  id="smokingStatus"
+                  formControlName="smokingStatus"
+                  optionLabel="label"
+                  optionValue="value"
+                  [options]="smokingStatusOptions"
+                  [placeholder]="'gdpApp.patient.smokingStatus' | translate"
+                  styleClass="w-full"
                 >
-              }
+                  <!-- <ng-template let-option pTemplate="item">
+                    {{ 'gdpApp.patient.enumValues.smokingStatus.' + option | translate }}
+                  </ng-template>
+                  <ng-template let-selectedOption pTemplate="selectedItem">
+                    {{ 'gdpApp.patient.enumValues.smokingStatus.' + selectedOption | translate }}
+                  </ng-template> -->
+                </p-dropdown>
+              </div>
+
+              <!-- Antecedents -->
+              <div class="field md:col-span-3">
+                <label for="antecedents" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.antecedents' | translate }}
+                </label>
+                <textarea
+                  pInputTextarea
+                  id="antecedents"
+                  formControlName="antecedents"
+                  rows="3"
+                  class="w-full"
+                  [placeholder]="'gdpApp.patient.antecedents' | translate"
+                ></textarea>
+              </div>
+
+              <!-- Allergies -->
+              <div class="field md:col-span-3">
+                <label for="allergies" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.allergies' | translate }}
+                </label>
+                <textarea
+                  pInputTextarea
+                  id="allergies"
+                  formControlName="allergies"
+                  rows="3"
+                  class="w-full"
+                  [placeholder]="'gdpApp.patient.allergies' | translate"
+                ></textarea>
+              </div>
+
+              <!-- Clinical Notes -->
+              <div class="field md:col-span-3">
+                <label for="clinicalNotes" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.clinicalNotes' | translate }}
+                </label>
+                <textarea
+                  pInputTextarea
+                  id="clinicalNotes"
+                  formControlName="clinicalNotes"
+                  rows="4"
+                  class="w-full"
+                  [placeholder]="'gdpApp.patient.clinicalNotes' | translate"
+                ></textarea>
+              </div>
             </div>
-          }
-        </div>
 
-        @let insurancePolicyNumberRef = editForm.get('insurancePolicyNumber')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_insurancePolicyNumber" jhiTranslate="gdpApp.patient.insurancePolicyNumber"
-            >Insurance Policy Number</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="insurancePolicyNumber"
-            id="field_insurancePolicyNumber"
-            data-cy="insurancePolicyNumber"
-            formControlName="insurancePolicyNumber"
-          />
-          @if (insurancePolicyNumberRef.invalid && (insurancePolicyNumberRef.dirty || insurancePolicyNumberRef.touched)) {
-            <div>
-              @if (editForm.get('insurancePolicyNumber')?.errors?.maxlength) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '100' }"
-                  >Ce champ doit faire moins de 100 caractères.</small
-                >
-              }
+            <div class="flex justify-between mt-4">
+              <p-button
+                [label]="'gdpApp.patient.wizard.navigation.previous' | translate"
+                icon="pi pi-arrow-left"
+                severity="secondary"
+                (onClick)="previousStep()"
+                styleClass="p-button-secondary"
+              ></p-button>
+              <p-button
+                [label]="'gdpApp.patient.wizard.navigation.next' | translate"
+                icon="pi pi-arrow-right"
+                iconPos="right"
+                severity="primary"
+                (onClick)="nextStep()"
+                [disabled]="!isStepValid(3)"
+              ></p-button>
             </div>
-          }
-        </div>
+          </div>
+        </ng-template>
+      </p-stepperPanel>
 
-        @let insuranceCoverageTypeRef = editForm.get('insuranceCoverageType')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_insuranceCoverageType" jhiTranslate="gdpApp.patient.insuranceCoverageType"
-            >Insurance Coverage Type</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="insuranceCoverageType"
-            id="field_insuranceCoverageType"
-            data-cy="insuranceCoverageType"
-            formControlName="insuranceCoverageType"
-          />
-          @if (insuranceCoverageTypeRef.invalid && (insuranceCoverageTypeRef.dirty || insuranceCoverageTypeRef.touched)) {
-            <div>
-              @if (editForm.get('insuranceCoverageType')?.errors?.maxlength) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '100' }"
-                  >Ce champ doit faire moins de 100 caractères.</small
-                >
-              }
+      <p-stepperPanel [header]="'gdpApp.patient.wizard.steps.insurance' | translate">
+        <ng-template pTemplate="content">
+          <div class="step-content">
+            <!-- Insurance Section -->
+            <div class="section-header mb-4">
+              <h3 class="text-xl font-semibold">
+                {{ 'gdpApp.patient.form.insuranceSection.title' | translate }}
+                <span class="ml-2 sub-title" [pTooltip]="'gdpApp.patient.form.insuranceSection.subtitle' | translate">
+                  <i class="pi pi-info-circle text-lg"></i>
+                </span>
+              </h3>
+              <!-- <p class="text-sm mt-1">
+                {{ 'gdpApp.patient.form.insuranceSection.subtitle' | translate }}
+              </p> -->
             </div>
-          }
-        </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_insuranceValidFrom" jhiTranslate="gdpApp.patient.insuranceValidFrom"
-            >Insurance Valid From</label
-          >
-          <div class="input-group">
-            <input
-              id="field_insuranceValidFrom"
-              data-cy="insuranceValidFrom"
-              type="text"
-              class="form-control"
-              name="insuranceValidFrom"
-              ngbDatepicker
-              #insuranceValidFromDp="ngbDatepicker"
-              formControlName="insuranceValidFrom"
-            />
-            <button type="button" class="btn btn-secondary" (click)="insuranceValidFromDp.toggle()">
-              <fa-icon icon="calendar-alt"></fa-icon>
-            </button>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-2">
+              <!-- Insurance Company Name -->
+              <div class="field">
+                <label for="insuranceCompanyName" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.insuranceCompanyName' | translate }}
+                </label>
+                <input
+                  pInputText
+                  id="insuranceCompanyName"
+                  formControlName="insuranceCompanyName"
+                  class="w-full"
+                  [placeholder]="'gdpApp.patient.insuranceCompanyName' | translate"
+                />
+              </div>
+
+              <!-- Patient Insurance ID -->
+              <div class="field">
+                <label for="patientInsuranceId" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.patientInsuranceId' | translate }}
+                </label>
+                <input
+                  pInputText
+                  id="patientInsuranceId"
+                  formControlName="patientInsuranceId"
+                  class="w-full"
+                  [ngClass]="{ 'ng-invalid ng-dirty': hasFieldError('patientInsuranceId') }"
+                  [placeholder]="'gdpApp.patient.patientInsuranceId' | translate"
+                />
+                <small *ngIf="hasFieldError('patientInsuranceId')" class="p-error block mt-1">
+                  {{ getFieldError('patientInsuranceId') }}
+                </small>
+              </div>
+
+              <!-- Insurance Policy Number -->
+              <div class="field">
+                <label for="insurancePolicyNumber" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.insurancePolicyNumber' | translate }}
+                </label>
+                <input
+                  pInputText
+                  id="insurancePolicyNumber"
+                  formControlName="insurancePolicyNumber"
+                  class="w-full"
+                  [placeholder]="'gdpApp.patient.insurancePolicyNumber' | translate"
+                />
+              </div>
+
+              <!-- Insurance Coverage Type -->
+              <div class="field">
+                <label for="insuranceCoverageType" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.insuranceCoverageType' | translate }}
+                </label>
+                <input
+                  pInputText
+                  id="insuranceCoverageType"
+                  formControlName="insuranceCoverageType"
+                  class="w-full"
+                  [placeholder]="'gdpApp.patient.insuranceCoverageType' | translate"
+                />
+              </div>
+
+              <!-- Insurance Valid From -->
+              <div class="field">
+                <label for="insuranceValidFrom" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.insuranceValidFrom' | translate }}
+                </label>
+                <p-calendar
+                  id="insuranceValidFrom"
+                  formControlName="insuranceValidFrom"
+                  dateFormat="yy-mm-dd"
+                  [showIcon]="true"
+                  [placeholder]="'gdpApp.patient.insuranceValidFrom' | translate"
+                  styleClass="w-full"
+                ></p-calendar>
+              </div>
+
+              <!-- Insurance Valid To -->
+              <div class="field">
+                <label for="insuranceValidTo" class="block text-sm font-medium mb-2">
+                  {{ 'gdpApp.patient.insuranceValidTo' | translate }}
+                </label>
+                <p-calendar
+                  id="insuranceValidTo"
+                  formControlName="insuranceValidTo"
+                  dateFormat="yy-mm-dd"
+                  [showIcon]="true"
+                  [placeholder]="'gdpApp.patient.insuranceValidTo' | translate"
+                  styleClass="w-full"
+                ></p-calendar>
+              </div>
+            </div>
+
+            <div class="flex justify-between mt-4">
+              <p-button
+                [label]="'gdpApp.patient.wizard.navigation.previous' | translate"
+                icon="pi pi-arrow-left"
+                severity="secondary"
+                (onClick)="previousStep()"
+                styleClass="p-button-secondary"
+              ></p-button>
+              <p-button
+                [label]="'gdpApp.patient.wizard.navigation.next' | translate"
+                icon="pi pi-arrow-right"
+                severity="primary"
+                iconPos="right"
+                (onClick)="nextStep()"
+                [disabled]="!isStepValid(4)"
+              ></p-button>
+            </div>
           </div>
-        </div>
+        </ng-template>
+      </p-stepperPanel>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_insuranceValidTo" jhiTranslate="gdpApp.patient.insuranceValidTo">Insurance Valid To</label>
-          <div class="input-group">
-            <input
-              id="field_insuranceValidTo"
-              data-cy="insuranceValidTo"
-              type="text"
-              class="form-control"
-              name="insuranceValidTo"
-              ngbDatepicker
-              #insuranceValidToDp="ngbDatepicker"
-              formControlName="insuranceValidTo"
-            />
-            <button type="button" class="btn btn-secondary" (click)="insuranceValidToDp.toggle()">
-              <fa-icon icon="calendar-alt"></fa-icon>
-            </button>
+      <p-stepperPanel [header]="'gdpApp.patient.wizard.steps.review' | translate">
+        <ng-template pTemplate="content">
+          <div class="step-content">
+            <!-- Review Section -->
+            <div class="section-header mb-4">
+              <h3 class="text-xl font-semibold">
+                {{ 'gdpApp.patient.form.reviewSection.title' | translate }}
+                <span class="ml-2 sub-title" [pTooltip]="'gdpApp.patient.form.reviewSection.subtitle' | translate">
+                  <i class="pi pi-info-circle text-lg"></i>
+                </span>
+              </h3>
+              <!-- <p class="text-sm mt-1">
+                {{ 'gdpApp.patient.form.reviewSection.subtitle' | translate }}
+              </p> -->
+            </div>
+
+            <!-- Review Summary -->
+            <div class="review-summary space-y-4">
+              <!-- User Information Review -->
+              <div class="review-section px-4 py-2 rounded-lg">
+                <h4 class="text-lg font-semibold mb-3">
+                  {{ 'gdpApp.patient.form.userSection.title' | translate }}
+                </h4>
+                <div class="grid grid-cols-2 gap-2">
+                  <div class="text-sm">
+                    <span class="font-medium" style="color: var(--surface-500)">{{ 'gdpApp.patient.login' | translate }}:</span>
+                    <span class="ml-2" style="color: var(--surface-700)">{{ editForm.get('login')?.value || '-' }}</span>
+                  </div>
+                  <div class="text-sm">
+                    <span class="font-medium" style="color: var(--surface-500)">{{ 'gdpApp.patient.email' | translate }}:</span>
+                    <span class="ml-2" style="color: var(--surface-700)">{{ editForm.get('email')?.value || '-' }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Patient Basic Info Review -->
+              <div class="review-section px-4 py-2 rounded-lg">
+                <h4 class="text-lg font-semibold mb-3">
+                  {{ 'gdpApp.patient.form.patientSection.title' | translate }}
+                </h4>
+                <div class="grid grid-cols-2 gap-2">
+                  <div class="text-sm">
+                    <span class="font-medium" style="color: var(--surface-500)">{{ 'gdpApp.patient.firstName' | translate }}:</span>
+                    <span class="ml-2" style="color: var(--surface-700)">{{ editForm.get('firstName')?.value || '-' }}</span>
+                  </div>
+                  <div class="text-sm">
+                    <span class="font-medium" style="color: var(--surface-500)">{{ 'gdpApp.patient.lastName' | translate }}:</span>
+                    <span class="ml-2" style="color: var(--surface-700)">{{ editForm.get('lastName')?.value || '-' }}</span>
+                  </div>
+
+                  <div class="text-sm">
+                    <span class="font-medium" style="color: var(--surface-500)">{{ 'gdpApp.patient.birthDate' | translate }}:</span>
+                    <span class="ml-2" style="color: var(--surface-700)">
+                      {{ (editForm.get('birthDate')?.value | date: 'dd/MM/yyyy') || '-' }}
+                    </span>
+                  </div>
+
+                  <div class="text-sm">
+                    <span class="font-medium" style="color: var(--surface-500)">{{ 'gdpApp.patient.gender' | translate }}:</span>
+                    <span class="ml-2" style="color: var(--surface-700)">
+                      {{ getGenderLabel() }}
+                    </span>
+                  </div>
+                  <div class="text-sm">
+                    <span class="font-medium" style="color: var(--surface-500)">{{ 'gdpApp.patient.bloodType' | translate }}:</span>
+                    <span class="ml-2" style="color: var(--surface-700)">
+                      {{ getBloodTypeLabel() }}
+                    </span>
+                  </div>
+                  <div class="text-sm">
+                    <span class="font-medium" style="color: var(--surface-500)">{{ 'gdpApp.patient.smokingStatus' | translate }}:</span>
+                    <span class="ml-2" style="color: var(--surface-700)">
+                      {{ getSmokingStatusLabel() }}
+                    </span>
+                  </div>
+
+                  <div class="text-sm">
+                    <span class="font-medium" style="color: var(--surface-500)">{{ 'gdpApp.patient.heightCm' | translate }}:</span>
+                    <span class="ml-2" style="color: var(--surface-700)">
+                      {{ editForm.get('heightCm')?.value || '-' }}
+                    </span>
+                  </div>
+
+                  <div class="text-sm">
+                    <span class="font-medium" style="color: var(--surface-500)">{{ 'gdpApp.patient.weightKg' | translate }}:</span>
+                    <span class="ml-2" style="color: var(--surface-700)">
+                      {{ editForm.get('weightKg')?.value || '-' }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Contact Information Review -->
+              <div class="review-section px-4 py-2 rounded-lg">
+                <h4 class="text-lg font-semibold mb-3">
+                  {{ 'gdpApp.patient.form.contactSection.title' | translate }}
+                </h4>
+                <div class="grid grid-cols-2 gap-2">
+                  <div class="text-sm">
+                    <span class="font-medium" style="color: var(--surface-500)">{{ 'gdpApp.patient.phone1' | translate }}:</span>
+                    <span class="ml-2" style="color: var(--surface-700)">{{ editForm.get('phone1')?.value || '-' }}</span>
+                  </div>
+                  <div class="text-sm">
+                    <span class="font-medium" style="color: var(--surface-500)">{{ 'gdpApp.patient.phone2' | translate }}:</span>
+                    <span class="ml-2" style="color: var(--surface-700)">{{ editForm.get('phone2')?.value || '-' }}</span>
+                  </div>
+                  <div class="text-sm col-span-2">
+                    <span class="font-medium" style="color: var(--surface-500)">{{ 'gdpApp.patient.address' | translate }}:</span>
+                    <span class="ml-2" style="color: var(--surface-700)">{{ editForm.get('address')?.value || '-' }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex justify-between mt-6">
+              <p-button
+                [label]="'gdpApp.patient.wizard.navigation.previous' | translate"
+                icon="pi pi-arrow-left"
+                (onClick)="previousStep()"
+                styleClass="p-button-secondary"
+              ></p-button>
+              <p-button
+                type="submit"
+                [label]="'gdpApp.patient.wizard.navigation.save' | translate"
+                icon="pi pi-save"
+                [loading]="isSaving"
+                [disabled]="editForm.invalid || isSaving"
+                styleClass="p-button-success"
+              ></p-button>
+            </div>
           </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_user" jhiTranslate="gdpApp.patient.user">User</label>
-          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user" [compareWith]="compareUser">
-            @if (!editForm.get('user')!.value) {
-              <option [ngValue]="null" selected></option>
-            }
-            @for (userOption of usersSharedCollection; track $index) {
-              <option [ngValue]="userOption">{{ userOption.id }}</option>
-            }
-          </select>
-        </div>
-        @if (editForm.get(['user'])!.invalid && (editForm.get(['user'])!.dirty || editForm.get(['user'])!.touched)) {
-          <div>
-            @if (editForm.get(['user'])?.errors?.required) {
-              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-            }
-          </div>
-        }
-      </div>
-
-      <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
-        </button>
-
-        <button
-          type="submit"
-          id="save-entity"
-          data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
-        >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
-        </button>
-      </div>
-    </form>
-  </div>
+        </ng-template>
+      </p-stepperPanel>
+    </p-stepper>
+  </form>
 </div>

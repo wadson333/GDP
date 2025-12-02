@@ -9,6 +9,7 @@ import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IPatient, NewPatient } from '../patient.model';
+import { IPatientUser } from '../patient-user.model';
 
 export type PartialUpdatePatient = Partial<IPatient> & Pick<IPatient, 'id'>;
 
@@ -23,6 +24,14 @@ type RestOf<T extends IPatient | NewPatient> = Omit<
   insuranceValidTo?: string | null;
 };
 
+type RestPatientUser = Omit<IPatientUser, 'birthDate' | 'gdprConsentDate' | 'deceasedDate' | 'insuranceValidFrom' | 'insuranceValidTo'> & {
+  birthDate?: string | null;
+  gdprConsentDate?: string | null;
+  deceasedDate?: string | null;
+  insuranceValidFrom?: string | null;
+  insuranceValidTo?: string | null;
+};
+
 export type RestPatient = RestOf<IPatient>;
 
 export type NewRestPatient = RestOf<NewPatient>;
@@ -30,6 +39,7 @@ export type NewRestPatient = RestOf<NewPatient>;
 export type PartialUpdateRestPatient = RestOf<PartialUpdatePatient>;
 
 export type EntityResponseType = HttpResponse<IPatient>;
+export type PatientUserResponseType = HttpResponse<IPatientUser>;
 export type EntityArrayResponseType = HttpResponse<IPatient[]>;
 
 @Injectable({ providedIn: 'root' })
@@ -38,11 +48,44 @@ export class PatientService {
   protected applicationConfigService = inject(ApplicationConfigService);
 
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/patients');
+  protected patientWithUserUrl = this.applicationConfigService.getEndpointFor('api/patients/patient-with-user');
 
   create(patient: NewPatient): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(patient);
     return this.http
       .post<RestPatient>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
+  }
+
+  /**
+   * Create a patient with associated user account atomically
+   */
+  createPatientWithUser(patientUser: IPatientUser): Observable<EntityResponseType> {
+    const copy = this.convertPatientUserDateFromClient(patientUser);
+    return this.http
+      .post<RestPatient>(this.patientWithUserUrl, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
+  }
+
+  /**
+   * Find a patient with associated user by UID.
+   * @param uid Patient unique identifier
+   */
+  findPatientWithUser(uid: string): Observable<PatientUserResponseType> {
+    return this.http
+      .get<IPatientUser>(`${this.patientWithUserUrl}/${uid}`, { observe: 'response' })
+
+      .pipe(map(res => this.convertPatientUserDateFromServer(res)));
+  }
+
+  /**
+   * Update an existing patient with associated user.
+   * @param patientUser Updated patient and user data
+   */
+  updatePatientWithUser(patientUser: IPatientUser): Observable<EntityResponseType> {
+    const copy = this.convertPatientUserDateFromClient(patientUser);
+    return this.http
+      .put<RestPatient>(this.patientWithUserUrl, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
@@ -114,6 +157,33 @@ export class PatientService {
       insuranceValidFrom: patient.insuranceValidFrom?.format(DATE_FORMAT) ?? null,
       insuranceValidTo: patient.insuranceValidTo?.format(DATE_FORMAT) ?? null,
     };
+  }
+
+  protected convertPatientUserDateFromClient(patientUser: IPatientUser): RestPatientUser {
+    return {
+      ...patientUser,
+      // CORRECTION : On enveloppe la valeur dans dayjs() pour gérer à la fois les objets Date JS et Dayjs
+      birthDate: patientUser.birthDate ? dayjs(patientUser.birthDate).format(DATE_FORMAT) : null,
+
+      // Pour les ZonedDateTime (heure incluse), on utilise aussi dayjs() par sécurité
+      gdprConsentDate: patientUser.gdprConsentDate ? dayjs(patientUser.gdprConsentDate).toJSON() : null,
+      deceasedDate: patientUser.deceasedDate ? dayjs(patientUser.deceasedDate).toJSON() : null,
+
+      // Idem pour les autres LocalDate
+      insuranceValidFrom: patientUser.insuranceValidFrom ? dayjs(patientUser.insuranceValidFrom).format(DATE_FORMAT) : null,
+      insuranceValidTo: patientUser.insuranceValidTo ? dayjs(patientUser.insuranceValidTo).format(DATE_FORMAT) : null,
+    };
+  }
+
+  protected convertPatientUserDateFromServer(res: HttpResponse<IPatientUser>): HttpResponse<IPatientUser> {
+    if (res.body) {
+      res.body.birthDate = res.body.birthDate ? dayjs(res.body.birthDate) : undefined;
+      res.body.gdprConsentDate = res.body.gdprConsentDate ? dayjs(res.body.gdprConsentDate) : undefined;
+      res.body.deceasedDate = res.body.deceasedDate ? dayjs(res.body.deceasedDate) : undefined;
+      res.body.insuranceValidFrom = res.body.insuranceValidFrom ? dayjs(res.body.insuranceValidFrom) : undefined;
+      res.body.insuranceValidTo = res.body.insuranceValidTo ? dayjs(res.body.insuranceValidTo) : undefined;
+    }
+    return res;
   }
 
   protected convertDateFromServer(restPatient: RestPatient): IPatient {

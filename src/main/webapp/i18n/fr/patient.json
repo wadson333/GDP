@@ -16,6 +16,102 @@
       "delete": {
         "question": "Êtes-vous certain de vouloir supprimer le Patient {{ id }} ?"
       },
+      "wizard": {
+        "title": "Créer un Patient avec Compte Utilisateur",
+        "titleEdit": "Modifier le Patient",
+        "steps": {
+          "userInfo": "Informations Utilisateur",
+          "patientBasic": "Informations de Base",
+          "contactIdentity": "Contact & Identité",
+          "medicalInfo": "Informations Médicales",
+          "insurance": "Assurance",
+          "review": "Vérification"
+        },
+        "navigation": {
+          "previous": "Précédent",
+          "next": "Suivant",
+          "save": "Enregistrer",
+          "submit": "Créer le Patient",
+          "submitEdit": "Mettre à jour le Patient",
+          "cancel": "Annuler"
+        }
+      },
+      "form": {
+        "userSection": {
+          "title": "Compte Utilisateur",
+          "subtitle": "Créer les identifiants de connexion du patient",
+          "loginHelp": "Nom d'utilisateur pour l'accès au système",
+          "emailHelp": "Email pour les notifications et la récupération du mot de passe",
+          "langKeyHelp": "Langue préférée pour les communications"
+        },
+        "patientSection": {
+          "title": "Informations Patient",
+          "subtitle": "Informations démographiques de base"
+        },
+        "contactSection": {
+          "title": "Coordonnées",
+          "subtitle": "Comment joindre le patient"
+        },
+        "identitySection": {
+          "title": "Documents d'Identité",
+          "subtitle": "Numéros d'identification officiels"
+        },
+        "emergencySection": {
+          "title": "Contact d'Urgence",
+          "subtitle": "Personne à contacter en cas d'urgence"
+        },
+        "medicalSection": {
+          "title": "Dossier Médical",
+          "subtitle": "Historique clinique et notes"
+        },
+        "insuranceSection": {
+          "title": "Informations d'Assurance",
+          "subtitle": "Détails de la couverture"
+        },
+        "reviewSection": {
+          "title": "Vérifier les Informations",
+          "subtitle": "Veuillez vérifier tous les détails avant de soumettre"
+        },
+        "flags": {
+          "sendActivationEmail": "Envoyer l'email d'activation",
+          "sendActivationEmailHelp": "Le patient recevra un email pour activer son compte",
+          "activatedOnCreate": "Activer immédiatement",
+          "activatedOnCreateHelp": "Le compte sera actif sans confirmation par email"
+        }
+      },
+      "validation": {
+        "loginPattern": "Le login ne peut contenir que des lettres, chiffres et ces caractères : _ . @ -",
+        "loginRequired": "Le login est obligatoire",
+        "emailRequired": "L'email est obligatoire",
+        "emailInvalid": "Veuillez saisir une adresse email valide",
+        "firstNameRequired": "Le prénom est obligatoire",
+        "lastNameRequired": "Le nom est obligatoire",
+        "birthDateRequired": "La date de naissance est obligatoire",
+        "phone1Required": "Le numéro de téléphone est obligatoire",
+        "phone1Pattern": "Veuillez saisir un numéro de téléphone valide (format E.164)",
+        "nifLength": "Le NIF doit contenir exactement 10 caractères",
+        "ninuLength": "Le NINU doit contenir exactement 10 caractères",
+        "passportLength": "Le numéro de passeport doit contenir entre 3 et 15 caractères",
+        "stepInvalid": "Veuillez compléter tous les champs requis avant de continuer"
+      },
+      "immutable": "Lecture seule",
+      "success": {
+        "created": "Patient Créé avec Succès",
+        "createdDetail": "Le patient {{ name }} ({{ mrn }}) a été créé avec succès.",
+        "updated": "Patient Mis à Jour avec Succès",
+        "updatedDetail": "Le patient {{ name }} ({{ mrn }}) a été mis à jour avec succès."
+      },
+      "errors": {
+        "createFailed": "Échec de la création du patient. Veuillez vérifier le formulaire et réessayer.",
+        "updateFailed": "Échec de la mise à jour du patient. Veuillez vérifier le formulaire et réessayer.",
+        "loadFailed": "Échec du chargement des données du patient.",
+        "usernameAlreadyUsed": "Ce nom d'utilisateur est déjà utilisé.",
+        "emailAlreadyUsed": "Cette adresse email est déjà enregistrée.",
+        "nifAlreadyUsed": "Ce numéro NIF est déjà enregistré.",
+        "ninuAlreadyUsed": "Ce numéro NINU est déjà enregistré.",
+        "passportAlreadyUsed": "Ce numéro de passeport est déjà enregistré.",
+        "insuranceIdAlreadyUsed": "Cet identifiant d'assurance est déjà enregistré."
+      },
       "detail": {
         "title": "Patient",
         "noPatientSelected": "Sélectionnez un patient pour voir les détails",
@@ -91,11 +187,27 @@
           "abPositive": "AB+",
           "abNegative": "AB-",
           "oPositive": "O+",
-          "oNegative": "O-"
+          "oNegative": "O-",
+          "unknown": "Inconnu"
+        },
+        "smokingStatus": {
+          "title": "Statut tabagique",
+          "never": "Jamais",
+          "former": "Ancien",
+          "current": "Actuel",
+          "unknown": "Inconnu"
         }
+      },
+      "confirmation": {
+        "header": "Confirmer l'enregistrement",
+        "save": "Êtes-vous sûr de vouloir enregistrer ce patient ?",
+        "required": "Les champs marqués d'un * sont obligatoires"
       },
       "id": "ID",
       "uid": "UID",
+      "login": "Login",
+      "email": "Email",
+      "langKey": "Langue",
       "firstName": "Prénom",
       "lastName": "Nom",
       "birthDate": "Date de naissance",

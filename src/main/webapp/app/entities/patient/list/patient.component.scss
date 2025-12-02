@@ -356,6 +356,12 @@
   .divider-h .p-divider {
     @apply h-0 py-0 m-0;
   }
+
+  .p-divider-horizontal {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 0 !important;
+  }
 }
 
 .search-container {

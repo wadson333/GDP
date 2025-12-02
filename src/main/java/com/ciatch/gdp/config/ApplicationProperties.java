@@ -2,24 +2,79 @@ package com.ciatch.gdp.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/**
- * Properties specific to Gdp.
- * <p>
- * Properties are configured in the {@code application.yml} file.
- * See {@link tech.jhipster.config.JHipsterProperties} for a good example.
- */
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 
     private final Liquibase liquibase = new Liquibase();
-
-    // jhipster-needle-application-properties-property
+    private final Security security = new Security();
+    private final Encryption encryption = new Encryption();
 
     public Liquibase getLiquibase() {
         return liquibase;
     }
 
-    // jhipster-needle-application-properties-property-getter
+    public Security getSecurity() {
+        return security;
+    }
+
+    public Encryption getEncryption() {
+        return encryption;
+    }
+
+    // --- Nested Classes ---
+
+    public static class Security {
+
+        private String contentEncryptionKey;
+
+        public String getContentEncryptionKey() {
+            return contentEncryptionKey;
+        }
+
+        public void setContentEncryptionKey(String contentEncryptionKey) {
+            this.contentEncryptionKey = contentEncryptionKey;
+        }
+    }
+
+    public static class Encryption {
+
+        private String algorithm = "AES/GCM/NoPadding";
+        private int keySize = 256;
+        private int ivSize = 12;
+        private int tagSize = 128;
+
+        public String getAlgorithm() {
+            return algorithm;
+        }
+
+        public void setAlgorithm(String algorithm) {
+            this.algorithm = algorithm;
+        }
+
+        public int getKeySize() {
+            return keySize;
+        }
+
+        public void setKeySize(int keySize) {
+            this.keySize = keySize;
+        }
+
+        public int getIvSize() {
+            return ivSize;
+        }
+
+        public void setIvSize(int ivSize) {
+            this.ivSize = ivSize;
+        }
+
+        public int getTagSize() {
+            return tagSize;
+        }
+
+        public void setTagSize(int tagSize) {
+            this.tagSize = tagSize;
+        }
+    }
 
     public static class Liquibase {
 
@@ -33,5 +88,4 @@ public class ApplicationProperties {
             this.asyncStart = asyncStart;
         }
     }
-    // jhipster-needle-application-properties-property-class
 }

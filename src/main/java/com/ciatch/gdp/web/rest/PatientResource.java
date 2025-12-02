@@ -1,10 +1,13 @@
 package com.ciatch.gdp.web.rest;
 
 import com.ciatch.gdp.repository.PatientRepository;
+import com.ciatch.gdp.security.AuthoritiesConstants;
+import com.ciatch.gdp.service.PatientLifecycleService;
 import com.ciatch.gdp.service.PatientQueryService;
 import com.ciatch.gdp.service.PatientService;
 import com.ciatch.gdp.service.criteria.PatientCriteria;
 import com.ciatch.gdp.service.dto.PatientDTO;
+import com.ciatch.gdp.service.dto.PatientUserDTO;
 import com.ciatch.gdp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -13,6 +16,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -46,10 +51,18 @@ public class PatientResource {
 
     private final PatientQueryService patientQueryService;
 
-    public PatientResource(PatientService patientService, PatientRepository patientRepository, PatientQueryService patientQueryService) {
+    private final PatientLifecycleService patientLifecycleService;
+
+    public PatientResource(
+        PatientService patientService,
+        PatientLifecycleService patientLifecycleService,
+        PatientRepository patientRepository,
+        PatientQueryService patientQueryService
+    ) {
         this.patientService = patientService;
         this.patientRepository = patientRepository;
         this.patientQueryService = patientQueryService;
+        this.patientLifecycleService = patientLifecycleService;
     }
 
     /**
@@ -69,6 +82,69 @@ public class PatientResource {
         return ResponseEntity.created(new URI("/api/patients/" + patientDTO.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, patientDTO.getId().toString()))
             .body(patientDTO);
+    }
+
+    /**
+     * {@code POST  /patient-with-user} : Create a new patient and associated user.
+     * <p>
+     * This operation is atomic: if either user or patient creation fails, the entire transaction is rolled back.
+     *
+     * @param patientUserDTO the DTO containing user and patient information.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new patientDTO.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("/patient-with-user")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<PatientDTO> createPatientWithUser(@Valid @RequestBody PatientUserDTO patientUserDTO) throws URISyntaxException {
+        LOG.debug("REST request to create Patient with User : {}", patientUserDTO);
+
+        // Note: Exceptions like NifAlreadyUsedException are thrown by the service
+        // and automatically handled by JHipster's global exception translator
+        // to return 400 Bad Request with the correct error headers.
+        PatientDTO result = patientLifecycleService.createPatientWithUser(patientUserDTO);
+
+        return ResponseEntity.created(new URI("/api/patients/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    /**
+     * {@code GET  /patient-with-user/:uid} : Get patient with associated user by UID.
+     *
+     * @param uid the UUID of the patient to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the patientUserDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/patient-with-user/{uid}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<PatientUserDTO> getPatientWithUser(@PathVariable("uid") UUID uid) {
+        LOG.debug("REST request to get Patient with User by UID : {}", uid);
+        Optional<PatientUserDTO> patientUserDTO = patientLifecycleService.findPatientWithUserByUid(uid);
+        return ResponseUtil.wrapOrNotFound(patientUserDTO);
+    }
+
+    /**
+     * {@code PUT  /patient-with-user} : Update an existing patient and associated user.
+     * <p>
+     * This operation is atomic: if either user or patient update fails, the entire transaction is rolled back.
+     *
+     * @param patientUserDTO the DTO containing updated user and patient information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated patientDTO.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PutMapping("/patient-with-user")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<PatientDTO> updatePatientWithUser(@Valid @RequestBody PatientUserDTO patientUserDTO) throws URISyntaxException {
+        LOG.debug("REST request to update Patient with User : {}", patientUserDTO);
+
+        if (patientUserDTO.getUid() == null) {
+            throw new BadRequestAlertException("Invalid UID", ENTITY_NAME, "uidnull");
+        }
+
+        PatientDTO result = patientLifecycleService.updatePatientWithUser(patientUserDTO);
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     /**

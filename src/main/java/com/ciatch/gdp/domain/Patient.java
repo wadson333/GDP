@@ -4,6 +4,7 @@ import com.ciatch.gdp.domain.enumeration.BloodType;
 import com.ciatch.gdp.domain.enumeration.Gender;
 import com.ciatch.gdp.domain.enumeration.PatientStatus;
 import com.ciatch.gdp.domain.enumeration.SmokingStatus;
+import com.ciatch.gdp.security.CryptoAttributeConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -54,27 +55,35 @@ public class Patient extends AbstractAuditingEntity<Long> implements Serializabl
     @Column(name = "blood_type")
     private BloodType bloodType;
 
-    // @Lob
-    @Column(name = "address")
+    // ENCRYPTED: Address contains sensitive location information
+    @Convert(converter = CryptoAttributeConverter.class)
+    @Column(name = "address", length = 1000) // Increased for encrypted data
     private String address;
 
+    // ENCRYPTED: Primary phone number
     @NotNull
     @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$")
-    @Column(name = "phone_1", nullable = false)
+    @Convert(converter = CryptoAttributeConverter.class)
+    @Column(name = "phone_1", nullable = false, length = 500)
     private String phone1;
 
+    // ENCRYPTED: Secondary phone number
     @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$")
-    @Column(name = "phone_2")
+    @Convert(converter = CryptoAttributeConverter.class)
+    @Column(name = "phone_2", length = 500)
     private String phone2;
 
+    // CLEARTEXT: Required for unique constraint and lookup
     @Size(min = 10, max = 10)
     @Column(name = "nif", length = 10, unique = true)
     private String nif;
 
+    // CLEARTEXT: Required for unique constraint and lookup
     @Size(min = 10, max = 10)
     @Column(name = "ninu", length = 10, unique = true)
     private String ninu;
 
+    // CLEARTEXT: Required for unique constraint and lookup
     @Column(name = "medical_record_number", unique = true)
     private String medicalRecordNumber;
 
@@ -88,28 +97,36 @@ public class Patient extends AbstractAuditingEntity<Long> implements Serializabl
     @Column(name = "weight_kg", precision = 21, scale = 2)
     private BigDecimal weightKg;
 
+    // CLEARTEXT: Required for unique constraint
     @Size(min = 3, max = 15)
     @Column(name = "passport_number", length = 15, unique = true)
     private String passportNumber;
 
+    // ENCRYPTED: Emergency contact information
     @Size(max = 100)
-    @Column(name = "contact_person_name", length = 100)
+    @Convert(converter = CryptoAttributeConverter.class)
+    @Column(name = "contact_person_name", length = 500)
     private String contactPersonName;
 
+    // ENCRYPTED: Emergency contact phone
     @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$")
-    @Column(name = "contact_person_phone")
+    @Convert(converter = CryptoAttributeConverter.class)
+    @Column(name = "contact_person_phone", length = 500)
     private String contactPersonPhone;
 
-    // @Lob
-    @Column(name = "antecedents")
+    // ENCRYPTED: Medical history (sensitive medical data)
+    @Convert(converter = CryptoAttributeConverter.class)
+    @Column(name = "antecedents", length = 10000)
     private String antecedents;
 
-    // @Lob
-    @Column(name = "allergies")
+    // ENCRYPTED: Allergies (critical medical information)
+    @Convert(converter = CryptoAttributeConverter.class)
+    @Column(name = "allergies", length = 10000)
     private String allergies;
 
-    // @Lob
-    @Column(name = "clinical_notes")
+    // ENCRYPTED: Clinical notes (sensitive medical observations)
+    @Convert(converter = CryptoAttributeConverter.class)
+    @Column(name = "clinical_notes", length = 10000)
     private String clinicalNotes;
 
     @Enumerated(EnumType.STRING)
@@ -130,8 +147,10 @@ public class Patient extends AbstractAuditingEntity<Long> implements Serializabl
     @Column(name = "insurance_company_name", length = 200)
     private String insuranceCompanyName;
 
+    // ENCRYPTED: Insurance ID contains sensitive personal information
     @Size(max = 100)
-    @Column(name = "patient_insurance_id", length = 100)
+    @Convert(converter = CryptoAttributeConverter.class)
+    @Column(name = "patient_insurance_id", length = 500)
     private String patientInsuranceId;
 
     @Size(max = 100)
@@ -591,40 +610,87 @@ public class Patient extends AbstractAuditingEntity<Long> implements Serializabl
     }
 
     // prettier-ignore
+    /**
+     * toString() without sensitive fields to prevent accidental logging of encrypted data.
+     * Sensitive fields are marked as [ENCRYPTED] or [REDACTED].
+     */
     @Override
     public String toString() {
-        return "Patient{" +
-            "id=" + getId() +
-            ", uid='" + getUid() + "'" +
-            ", firstName='" + getFirstName() + "'" +
-            ", lastName='" + getLastName() + "'" +
-            ", birthDate='" + getBirthDate() + "'" +
-            ", gender='" + getGender() + "'" +
-            ", bloodType='" + getBloodType() + "'" +
-            ", address='" + getAddress() + "'" +
-            ", phone1='" + getPhone1() + "'" +
-            ", phone2='" + getPhone2() + "'" +
-            ", nif='" + getNif() + "'" +
-            ", ninu='" + getNinu() + "'" +
-            ", medicalRecordNumber='" + getMedicalRecordNumber() + "'" +
-            ", heightCm=" + getHeightCm() +
-            ", weightKg=" + getWeightKg() +
-            ", passportNumber='" + getPassportNumber() + "'" +
-            ", contactPersonName='" + getContactPersonName() + "'" +
-            ", contactPersonPhone='" + getContactPersonPhone() + "'" +
-            ", antecedents='" + getAntecedents() + "'" +
-            ", allergies='" + getAllergies() + "'" +
-            ", clinicalNotes='" + getClinicalNotes() + "'" +
-            ", smokingStatus='" + getSmokingStatus() + "'" +
-            ", gdprConsentDate='" + getGdprConsentDate() + "'" +
-            ", status='" + getStatus() + "'" +
-            ", deceasedDate='" + getDeceasedDate() + "'" +
-            ", insuranceCompanyName='" + getInsuranceCompanyName() + "'" +
-            ", patientInsuranceId='" + getPatientInsuranceId() + "'" +
-            ", insurancePolicyNumber='" + getInsurancePolicyNumber() + "'" +
-            ", insuranceCoverageType='" + getInsuranceCoverageType() + "'" +
-            ", insuranceValidFrom='" + getInsuranceValidFrom() + "'" +
-            ", insuranceValidTo='" + getInsuranceValidTo() + "'" +
-            "}";
+        return (
+            "Patient{" +
+            "id=" +
+            getId() +
+            ", uid='" +
+            getUid() +
+            "'" +
+            ", firstName='" +
+            getFirstName() +
+            "'" +
+            ", lastName='" +
+            getLastName() +
+            "'" +
+            ", birthDate='" +
+            getBirthDate() +
+            "'" +
+            ", gender='" +
+            getGender() +
+            "'" +
+            ", bloodType='" +
+            getBloodType() +
+            "'" +
+            ", address='[ENCRYPTED]'" +
+            ", phone1='[ENCRYPTED]'" +
+            ", phone2='[ENCRYPTED]'" +
+            ", nif='" +
+            (getNif() != null ? "***" : "null") +
+            "'" +
+            ", ninu='" +
+            (getNinu() != null ? "***" : "null") +
+            "'" +
+            ", medicalRecordNumber='" +
+            getMedicalRecordNumber() +
+            "'" +
+            ", heightCm=" +
+            getHeightCm() +
+            ", weightKg=" +
+            getWeightKg() +
+            ", passportNumber='" +
+            (getPassportNumber() != null ? "***" : "null") +
+            "'" +
+            ", contactPersonName='[ENCRYPTED]'" +
+            ", contactPersonPhone='[ENCRYPTED]'" +
+            ", antecedents='[ENCRYPTED]'" +
+            ", allergies='[ENCRYPTED]'" +
+            ", clinicalNotes='[ENCRYPTED]'" +
+            ", smokingStatus='" +
+            getSmokingStatus() +
+            "'" +
+            ", gdprConsentDate='" +
+            getGdprConsentDate() +
+            "'" +
+            ", status='" +
+            getStatus() +
+            "'" +
+            ", deceasedDate='" +
+            getDeceasedDate() +
+            "'" +
+            ", insuranceCompanyName='" +
+            getInsuranceCompanyName() +
+            "'" +
+            ", patientInsuranceId='[ENCRYPTED]'" +
+            ", insurancePolicyNumber='" +
+            getInsurancePolicyNumber() +
+            "'" +
+            ", insuranceCoverageType='" +
+            getInsuranceCoverageType() +
+            "'" +
+            ", insuranceValidFrom='" +
+            getInsuranceValidFrom() +
+            "'" +
+            ", insuranceValidTo='" +
+            getInsuranceValidTo() +
+            "'" +
+            "}"
+        );
     }
 }

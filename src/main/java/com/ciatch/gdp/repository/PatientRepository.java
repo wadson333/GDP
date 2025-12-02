@@ -1,6 +1,8 @@
 package com.ciatch.gdp.repository;
 
 import com.ciatch.gdp.domain.Patient;
+import java.util.Optional;
+import java.util.UUID;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +11,17 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface PatientRepository extends JpaRepository<Patient, Long>, JpaSpecificationExecutor<Patient> {}
+public interface PatientRepository extends JpaRepository<Patient, Long>, JpaSpecificationExecutor<Patient> {
+    boolean existsByNif(String nif);
+    boolean existsByNinu(String ninu);
+    boolean existsByUid(UUID uid);
+    boolean existsByPassportNumber(String passportNumber);
+    boolean existsByPatientInsuranceId(String patientInsuranceId);
+    boolean existsByMedicalRecordNumber(String medicalRecordNumber);
+
+    /**
+     * Find a patient by UID with its associated user eagerly loaded.
+     */
+    @Query("SELECT p FROM Patient p LEFT JOIN FETCH p.user WHERE p.uid = :uid")
+    Optional<Patient> findOneWithUserByUid(UUID uid);
+}
