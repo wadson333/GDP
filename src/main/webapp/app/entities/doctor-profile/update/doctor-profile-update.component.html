@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-center">
+<!-- <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2
@@ -19,39 +19,184 @@
           </div>
         }
 
-        @let specialtyRef = editForm.get('specialty')!;
+        @let codeClinicRef = editForm.get('codeClinic')!;
         <div class="mb-3">
-          <label class="form-label" for="field_specialty" jhiTranslate="gdpApp.doctorProfile.specialty">Specialty</label>
-          <input type="text" class="form-control" name="specialty" id="field_specialty" data-cy="specialty" formControlName="specialty" />
-          @if (specialtyRef.invalid && (specialtyRef.dirty || specialtyRef.touched)) {
-            <div>
-              @if (editForm.get('specialty')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-            </div>
-          }
-        </div>
-
-        @let licenseNumberRef = editForm.get('licenseNumber')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_licenseNumber" jhiTranslate="gdpApp.doctorProfile.licenseNumber">License Number</label>
+          <label class="form-label" for="field_codeClinic" jhiTranslate="gdpApp.doctorProfile.codeClinic">Code Clinic</label>
           <input
             type="text"
             class="form-control"
-            name="licenseNumber"
-            id="field_licenseNumber"
-            data-cy="licenseNumber"
-            formControlName="licenseNumber"
+            name="codeClinic"
+            id="field_codeClinic"
+            data-cy="codeClinic"
+            formControlName="codeClinic"
           />
-          @if (licenseNumberRef.invalid && (licenseNumberRef.dirty || licenseNumberRef.touched)) {
+          @if (codeClinicRef.invalid && (codeClinicRef.dirty || codeClinicRef.touched)) {
             <div>
-              @if (editForm.get('licenseNumber')?.errors?.required) {
+              @if (editForm.get('codeClinic')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '10' }"
+                  >Ce champ doit faire moins de 10 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let uidRef = editForm.get('uid')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_uid" jhiTranslate="gdpApp.doctorProfile.uid">Uid</label>
+          <input type="text" class="form-control" name="uid" id="field_uid" data-cy="uid" formControlName="uid" />
+          @if (uidRef.invalid && (uidRef.dirty || uidRef.touched)) {
+            <div>
+              @if (editForm.get('uid')?.errors?.required) {
                 <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
               }
             </div>
           }
         </div>
 
+        @let medicalLicenseNumberRef = editForm.get('medicalLicenseNumber')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_medicalLicenseNumber" jhiTranslate="gdpApp.doctorProfile.medicalLicenseNumber"
+            >Medical License Number</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="medicalLicenseNumber"
+            id="field_medicalLicenseNumber"
+            data-cy="medicalLicenseNumber"
+            formControlName="medicalLicenseNumber"
+          />
+          @if (medicalLicenseNumberRef.invalid && (medicalLicenseNumberRef.dirty || medicalLicenseNumberRef.touched)) {
+            <div>
+              @if (editForm.get('medicalLicenseNumber')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              @if (editForm.get('medicalLicenseNumber')?.errors?.minlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: '5' }"
+                  >Ce champ doit faire au minimum 5 caractères.</small
+                >
+              }
+              @if (editForm.get('medicalLicenseNumber')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '50' }"
+                  >Ce champ doit faire moins de 50 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let firstNameRef = editForm.get('firstName')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_firstName" jhiTranslate="gdpApp.doctorProfile.firstName">First Name</label>
+          <input type="text" class="form-control" name="firstName" id="field_firstName" data-cy="firstName" formControlName="firstName" />
+          @if (firstNameRef.invalid && (firstNameRef.dirty || firstNameRef.touched)) {
+            <div>
+              @if (editForm.get('firstName')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let lastNameRef = editForm.get('lastName')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_lastName" jhiTranslate="gdpApp.doctorProfile.lastName">Last Name</label>
+          <input type="text" class="form-control" name="lastName" id="field_lastName" data-cy="lastName" formControlName="lastName" />
+          @if (lastNameRef.invalid && (lastNameRef.dirty || lastNameRef.touched)) {
+            <div>
+              @if (editForm.get('lastName')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let birthDateRef = editForm.get('birthDate')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_birthDate" jhiTranslate="gdpApp.doctorProfile.birthDate">Birth Date</label>
+          <div class="input-group">
+            <input
+              id="field_birthDate"
+              data-cy="birthDate"
+              type="text"
+              class="form-control"
+              name="birthDate"
+              ngbDatepicker
+              #birthDateDp="ngbDatepicker"
+              formControlName="birthDate"
+            />
+            <button type="button" class="btn btn-secondary" (click)="birthDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          </div>
+          @if (birthDateRef.invalid && (birthDateRef.dirty || birthDateRef.touched)) {
+            <div>
+              @if (editForm.get('birthDate')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_gender" jhiTranslate="gdpApp.doctorProfile.gender">Gender</label>
+          <select class="form-control" name="gender" formControlName="gender" id="field_gender" data-cy="gender">
+            <option [ngValue]="null">{{ 'gdpApp.Gender.null' | translate }}</option>
+            @for (gender of genderValues; track $index) {
+              <option [value]="gender">{{ 'gdpApp.Gender.' + gender | translate }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_bloodType" jhiTranslate="gdpApp.doctorProfile.bloodType">Blood Type</label>
+          <select class="form-control" name="bloodType" formControlName="bloodType" id="field_bloodType" data-cy="bloodType">
+            <option [ngValue]="null">{{ 'gdpApp.BloodType.null' | translate }}</option>
+            @for (bloodType of bloodTypeValues; track $index) {
+              <option [value]="bloodType">{{ 'gdpApp.BloodType.' + bloodType | translate }}</option>
+            }
+          </select>
+        </div>
+
+        @let primarySpecialtyRef = editForm.get('primarySpecialty')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_primarySpecialty" jhiTranslate="gdpApp.doctorProfile.primarySpecialty"
+            >Primary Specialty</label
+          >
+          <select
+            class="form-control"
+            name="primarySpecialty"
+            formControlName="primarySpecialty"
+            id="field_primarySpecialty"
+            data-cy="primarySpecialty"
+          >
+            <option [ngValue]="null">{{ 'gdpApp.MedicalSpecialty.null' | translate }}</option>
+            @for (medicalSpecialty of medicalSpecialtyValues; track $index) {
+              <option [value]="medicalSpecialty">{{ 'gdpApp.MedicalSpecialty.' + medicalSpecialty | translate }}</option>
+            }
+          </select>
+          @if (primarySpecialtyRef.invalid && (primarySpecialtyRef.dirty || primarySpecialtyRef.touched)) {
+            <div>
+              @if (editForm.get('primarySpecialty')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_otherSpecialties" jhiTranslate="gdpApp.doctorProfile.otherSpecialties"
+            >Other Specialties</label
+          >
+          <textarea
+            class="form-control"
+            name="otherSpecialties"
+            id="field_otherSpecialties"
+            data-cy="otherSpecialties"
+            formControlName="otherSpecialties"
+          ></textarea>
+        </div>
+
+        @let universityRef = editForm.get('university')!;
         <div class="mb-3">
           <label class="form-label" for="field_university" jhiTranslate="gdpApp.doctorProfile.university">University</label>
           <input
@@ -62,6 +207,48 @@
             data-cy="university"
             formControlName="university"
           />
+          @if (universityRef.invalid && (universityRef.dirty || universityRef.touched)) {
+            <div>
+              @if (editForm.get('university')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '100' }"
+                  >Ce champ doit faire moins de 100 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let graduationYearRef = editForm.get('graduationYear')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_graduationYear" jhiTranslate="gdpApp.doctorProfile.graduationYear">Graduation Year</label>
+          <input
+            type="number"
+            class="form-control"
+            name="graduationYear"
+            id="field_graduationYear"
+            data-cy="graduationYear"
+            formControlName="graduationYear"
+          />
+          @if (graduationYearRef.invalid && (graduationYearRef.dirty || graduationYearRef.touched)) {
+            <div>
+              @if (editForm.get('graduationYear')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '1950' }"
+                  >Ce champ doit être supérieur à 1950.</small
+                >
+              }
+              @if (editForm.get('graduationYear')?.errors?.max) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.max" [translateValues]="{ max: '2100' }"
+                  >Ce champ doit être inférieur à 2100.</small
+                >
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('graduationYear')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Ce champ doit être un nombre.</small
+              >
+            </div>
+          }
         </div>
 
         @let startDateOfPracticeRef = editForm.get('startDateOfPractice')!;
@@ -91,6 +278,382 @@
               }
             </div>
           }
+        </div>
+
+        @let consultationDurationMinutesRef = editForm.get('consultationDurationMinutes')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_consultationDurationMinutes" jhiTranslate="gdpApp.doctorProfile.consultationDurationMinutes"
+            >Consultation Duration Minutes</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="consultationDurationMinutes"
+            id="field_consultationDurationMinutes"
+            data-cy="consultationDurationMinutes"
+            formControlName="consultationDurationMinutes"
+          />
+          @if (consultationDurationMinutesRef.invalid && (consultationDurationMinutesRef.dirty || consultationDurationMinutesRef.touched)) {
+            <div>
+              @if (editForm.get('consultationDurationMinutes')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              @if (editForm.get('consultationDurationMinutes')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '5' }"
+                  >Ce champ doit être supérieur à 5.</small
+                >
+              }
+              @if (editForm.get('consultationDurationMinutes')?.errors?.max) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.max" [translateValues]="{ max: '120' }"
+                  >Ce champ doit être inférieur à 120.</small
+                >
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('consultationDurationMinutes')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Ce champ doit être un nombre.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let acceptingNewPatientsRef = editForm.get('acceptingNewPatients')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_acceptingNewPatients" jhiTranslate="gdpApp.doctorProfile.acceptingNewPatients"
+            >Accepting New Patients</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="acceptingNewPatients"
+            id="field_acceptingNewPatients"
+            data-cy="acceptingNewPatients"
+            formControlName="acceptingNewPatients"
+          />
+          @if (acceptingNewPatientsRef.invalid && (acceptingNewPatientsRef.dirty || acceptingNewPatientsRef.touched)) {
+            <div>
+              @if (editForm.get('acceptingNewPatients')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let allowsTeleconsultationRef = editForm.get('allowsTeleconsultation')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_allowsTeleconsultation" jhiTranslate="gdpApp.doctorProfile.allowsTeleconsultation"
+            >Allows Teleconsultation</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="allowsTeleconsultation"
+            id="field_allowsTeleconsultation"
+            data-cy="allowsTeleconsultation"
+            formControlName="allowsTeleconsultation"
+          />
+          @if (allowsTeleconsultationRef.invalid && (allowsTeleconsultationRef.dirty || allowsTeleconsultationRef.touched)) {
+            <div>
+              @if (editForm.get('allowsTeleconsultation')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let consultationFeeRef = editForm.get('consultationFee')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_consultationFee" jhiTranslate="gdpApp.doctorProfile.consultationFee">Consultation Fee</label>
+          <input
+            type="number"
+            class="form-control"
+            name="consultationFee"
+            id="field_consultationFee"
+            data-cy="consultationFee"
+            formControlName="consultationFee"
+          />
+          @if (consultationFeeRef.invalid && (consultationFeeRef.dirty || consultationFeeRef.touched)) {
+            <div>
+              @if (editForm.get('consultationFee')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
+                  >Ce champ doit être supérieur à 0.</small
+                >
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('consultationFee')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Ce champ doit être un nombre.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let teleconsultationFeeRef = editForm.get('teleconsultationFee')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_teleconsultationFee" jhiTranslate="gdpApp.doctorProfile.teleconsultationFee"
+            >Teleconsultation Fee</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="teleconsultationFee"
+            id="field_teleconsultationFee"
+            data-cy="teleconsultationFee"
+            formControlName="teleconsultationFee"
+          />
+          @if (teleconsultationFeeRef.invalid && (teleconsultationFeeRef.dirty || teleconsultationFeeRef.touched)) {
+            <div>
+              @if (editForm.get('teleconsultationFee')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
+                  >Ce champ doit être supérieur à 0.</small
+                >
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('teleconsultationFee')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Ce champ doit être un nombre.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_bio" jhiTranslate="gdpApp.doctorProfile.bio">Bio</label>
+          <textarea class="form-control" name="bio" id="field_bio" data-cy="bio" formControlName="bio"></textarea>
+        </div>
+
+        @let spokenLanguagesRef = editForm.get('spokenLanguages')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_spokenLanguages" jhiTranslate="gdpApp.doctorProfile.spokenLanguages">Spoken Languages</label>
+          <input
+            type="text"
+            class="form-control"
+            name="spokenLanguages"
+            id="field_spokenLanguages"
+            data-cy="spokenLanguages"
+            formControlName="spokenLanguages"
+          />
+          @if (spokenLanguagesRef.invalid && (spokenLanguagesRef.dirty || spokenLanguagesRef.touched)) {
+            <div>
+              @if (editForm.get('spokenLanguages')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '255' }"
+                  >Ce champ doit faire moins de 255 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let websiteUrlRef = editForm.get('websiteUrl')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_websiteUrl" jhiTranslate="gdpApp.doctorProfile.websiteUrl">Website Url</label>
+          <input
+            type="text"
+            class="form-control"
+            name="websiteUrl"
+            id="field_websiteUrl"
+            data-cy="websiteUrl"
+            formControlName="websiteUrl"
+          />
+          @if (websiteUrlRef.invalid && (websiteUrlRef.dirty || websiteUrlRef.touched)) {
+            <div>
+              @if (editForm.get('websiteUrl')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '255' }"
+                  >Ce champ doit faire moins de 255 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let officePhoneRef = editForm.get('officePhone')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_officePhone" jhiTranslate="gdpApp.doctorProfile.officePhone">Office Phone</label>
+          <input
+            type="text"
+            class="form-control"
+            name="officePhone"
+            id="field_officePhone"
+            data-cy="officePhone"
+            formControlName="officePhone"
+          />
+          @if (officePhoneRef.invalid && (officePhoneRef.dirty || officePhoneRef.touched)) {
+            <div>
+              @if (editForm.get('officePhone')?.errors?.pattern) {
+                <small
+                  class="form-text text-danger"
+                  jhiTranslate="entity.validation.pattern"
+                  [translateValues]="{ pattern: 'Office Phone' }"
+                  >Ce champ doit suivre l&apos;expression régulière Office Phone.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_officeAddress" jhiTranslate="gdpApp.doctorProfile.officeAddress">Office Address</label>
+          <textarea
+            class="form-control"
+            name="officeAddress"
+            id="field_officeAddress"
+            data-cy="officeAddress"
+            formControlName="officeAddress"
+          ></textarea>
+        </div>
+
+        @let statusRef = editForm.get('status')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_status" jhiTranslate="gdpApp.doctorProfile.status">Status</label>
+          <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
+            <option [ngValue]="null">{{ 'gdpApp.DoctorStatus.null' | translate }}</option>
+            @for (doctorStatus of doctorStatusValues; track $index) {
+              <option [value]="doctorStatus">{{ 'gdpApp.DoctorStatus.' + doctorStatus | translate }}</option>
+            }
+          </select>
+          @if (statusRef.invalid && (statusRef.dirty || statusRef.touched)) {
+            <div>
+              @if (editForm.get('status')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_isVerified" jhiTranslate="gdpApp.doctorProfile.isVerified">Is Verified</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="isVerified"
+            id="field_isVerified"
+            data-cy="isVerified"
+            formControlName="isVerified"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_verifiedAt" jhiTranslate="gdpApp.doctorProfile.verifiedAt">Verified At</label>
+          <div class="d-flex">
+            <input
+              id="field_verifiedAt"
+              data-cy="verifiedAt"
+              type="datetime-local"
+              class="form-control"
+              name="verifiedAt"
+              formControlName="verifiedAt"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        @let nifRef = editForm.get('nif')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_nif" jhiTranslate="gdpApp.doctorProfile.nif">Nif</label>
+          <input type="text" class="form-control" name="nif" id="field_nif" data-cy="nif" formControlName="nif" />
+          @if (nifRef.invalid && (nifRef.dirty || nifRef.touched)) {
+            <div>
+              @if (editForm.get('nif')?.errors?.minlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: '10' }"
+                  >Ce champ doit faire au minimum 10 caractères.</small
+                >
+              }
+              @if (editForm.get('nif')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '10' }"
+                  >Ce champ doit faire moins de 10 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let ninuRef = editForm.get('ninu')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_ninu" jhiTranslate="gdpApp.doctorProfile.ninu">Ninu</label>
+          <input type="text" class="form-control" name="ninu" id="field_ninu" data-cy="ninu" formControlName="ninu" />
+          @if (ninuRef.invalid && (ninuRef.dirty || ninuRef.touched)) {
+            <div>
+              @if (editForm.get('ninu')?.errors?.minlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: '10' }"
+                  >Ce champ doit faire au minimum 10 caractères.</small
+                >
+              }
+              @if (editForm.get('ninu')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '10' }"
+                  >Ce champ doit faire moins de 10 caractères.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let averageRatingRef = editForm.get('averageRating')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_averageRating" jhiTranslate="gdpApp.doctorProfile.averageRating">Average Rating</label>
+          <input
+            type="number"
+            class="form-control"
+            name="averageRating"
+            id="field_averageRating"
+            data-cy="averageRating"
+            formControlName="averageRating"
+          />
+          @if (averageRatingRef.invalid && (averageRatingRef.dirty || averageRatingRef.touched)) {
+            <div>
+              @if (editForm.get('averageRating')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
+                  >Ce champ doit être supérieur à 0.</small
+                >
+              }
+              @if (editForm.get('averageRating')?.errors?.max) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.max" [translateValues]="{ max: '5' }"
+                  >Ce champ doit être inférieur à 5.</small
+                >
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('averageRating')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Ce champ doit être un nombre.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let reviewCountRef = editForm.get('reviewCount')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_reviewCount" jhiTranslate="gdpApp.doctorProfile.reviewCount">Review Count</label>
+          <input
+            type="number"
+            class="form-control"
+            name="reviewCount"
+            id="field_reviewCount"
+            data-cy="reviewCount"
+            formControlName="reviewCount"
+          />
+          @if (reviewCountRef.invalid && (reviewCountRef.dirty || reviewCountRef.touched)) {
+            <div>
+              @if (editForm.get('reviewCount')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
+                  >Ce champ doit être supérieur à 0.</small
+                >
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('reviewCount')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Ce champ doit être un nombre.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_version" jhiTranslate="gdpApp.doctorProfile.version">Version</label>
+          <input type="number" class="form-control" name="version" id="field_version" data-cy="version" formControlName="version" />
         </div>
 
         <div class="mb-3">
@@ -129,5 +692,486 @@
         </button>
       </div>
     </form>
+  </div>
+</div> -->
+
+<div class="flex flex-col">
+  <p-toast></p-toast>
+  <p-confirmDialog [style]="{ width: '450px' }" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+
+  <div class="container">
+    <div class="rounded-lg overflow-hidden">
+      <!-- HEADER -->
+      <div class="flex items-center justify-between px-3 py-2 border-b">
+        <div>
+          <p class="text-sm" style="color: var(--surface-400)">
+            {{ 'gdpApp.doctorProfile.wizard.subtitle' | translate }}
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 px-3 py-2">
+        <!-- MAIN WIZARD (left: 2/3) -->
+        <div class="lg:col-span-2">
+          <p-stepper #stepper [linear]="true" (onStepChange)="onStepChange($event)" class="mb-4">
+            <p-stepperPanel>
+              <ng-template pTemplate="header">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="text-white w-10 h-10 rounded-full flex items-center justify-center"
+                    style="background-color: var(--primary-color)"
+                  >
+                    <i class="pi pi-user" [pTooltip]="'gdpApp.doctorProfile.wizard.step1.subtitle' | translate"></i>
+                  </div>
+                  <div>
+                    <div class="font-semibold">{{ 'gdpApp.doctorProfile.wizard.step1.title' | translate }}</div>
+                  </div>
+                </div>
+              </ng-template>
+
+              <ng-template pTemplate="content">
+                <form [formGroup]="doctorForm" class="space-y-6">
+                  <!-- Account row -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm font-medium" style="color: var(--surface-600)"
+                        >{{ 'gdpApp.doctorProfile.wizard.step1.login' | translate }}
+                        <span class="text-red-500">*</span>
+                      </label>
+                      <input pInputText id="login" formControlName="login" class="mt-1 w-full rounded-md" />
+                      <small *ngIf="isFieldInvalid('login')" class="text-red-600">{{ getFieldError('login') }}</small>
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium" style="color: var(--surface-600)">
+                        {{ 'gdpApp.doctorProfile.wizard.step1.email' | translate }}<span class="text-red-500">*</span>
+                      </label>
+                      <input pInputText id="email" formControlName="email" class="mt-1 w-full rounded-md" />
+                      <small *ngIf="isFieldInvalid('email')" class="text-red-600">{{ getFieldError('email') }}</small>
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm font-medium" style="color: var(--surface-600)">
+                        {{ 'gdpApp.doctorProfile.firstName' | translate }}<span class="text-red-500">*</span>
+                      </label>
+                      <input pInputText id="firstName" formControlName="firstName" class="mt-1 w-full rounded-md" />
+                      <small *ngIf="isFieldInvalid('firstName')" class="text-red-600">{{ getFieldError('firstName') }}</small>
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium" style="color: var(--surface-600)">
+                        {{ 'gdpApp.doctorProfile.lastName' | translate }}<span class="text-red-500">*</span>
+                      </label>
+                      <input pInputText id="lastName" formControlName="lastName" class="mt-1 w-full rounded-md" />
+                      <small *ngIf="isFieldInvalid('lastName')" class="text-red-600">{{ getFieldError('lastName') }}</small>
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label class="block text-sm font-medium" style="color: var(--surface-600)">
+                        {{ 'gdpApp.doctorProfile.birthDate' | translate }}
+                        <span class="text-red-500">*</span>
+                      </label>
+                      <p-calendar
+                        id="birthDate"
+                        formControlName="birthDate"
+                        dateFormat="yy-mm-dd"
+                        [maxDate]="maxBirthDate"
+                        [showIcon]="true"
+                        class="mt-1 w-full"
+                      ></p-calendar>
+                      <small *ngIf="isFieldInvalid('birthDate')" class="text-red-600">{{ getFieldError('birthDate') }}</small>
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium" style="color: var(--surface-600)">{{
+                        'gdpApp.doctorProfile.gender' | translate
+                      }}</label>
+                      <p-dropdown
+                        [options]="genderOptions"
+                        formControlName="gender"
+                        optionLabel="label"
+                        optionValue="value"
+                        placeholder="{{ 'gdpApp.doctorProfile.wizard.selectGender' | translate }}"
+                        class="mt-1 w-full"
+                      ></p-dropdown>
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium" style="color: var(--surface-600)">{{
+                        'gdpApp.doctorProfile.bloodType' | translate
+                      }}</label>
+                      <p-dropdown
+                        [options]="bloodTypeOptions"
+                        formControlName="bloodType"
+                        optionLabel="label"
+                        optionValue="value"
+                        placeholder="{{ 'gdpApp.doctorProfile.wizard.selectBloodType' | translate }}"
+                        class="mt-1 w-full"
+                      ></p-dropdown>
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm font-medium" style="color: var(--surface-600)">{{
+                        'gdpApp.doctorProfile.nif' | translate
+                      }}</label>
+                      <input pInputText id="nif" formControlName="nif" maxlength="10" class="mt-1 w-full" />
+                      <small *ngIf="isFieldInvalid('nif')" class="text-red-600">{{ getFieldError('nif') }}</small>
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium" style="color: var(--surface-600)">{{
+                        'gdpApp.doctorProfile.ninu' | translate
+                      }}</label>
+                      <input pInputText id="ninu" formControlName="ninu" maxlength="10" class="mt-1 w-full" />
+                      <small *ngIf="isFieldInvalid('ninu')" class="text-red-600">{{ getFieldError('ninu') }}</small>
+                    </div>
+                  </div>
+
+                  <div class="flex justify-end gap-3">
+                    <button
+                      type="button"
+                      pButton
+                      label="{{ 'gdpApp.doctorProfile.wizard.next' | translate }}"
+                      icon="pi pi-arrow-right"
+                      (click)="nextStep()"
+                      class="p-button-rounded p-button-outlined"
+                    ></button>
+                  </div>
+                </form>
+              </ng-template>
+            </p-stepperPanel>
+
+            <p-stepperPanel>
+              <ng-template pTemplate="header">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="text-white w-10 h-10 rounded-full flex items-center justify-center"
+                    style="background-color: var(--primary-color)"
+                  >
+                    <i class="pi pi-briefcase" [pTooltip]="'gdpApp.doctorProfile.wizard.step2.subtitle' | translate"></i>
+                  </div>
+                  <div>
+                    <div class="font-semibold">{{ 'gdpApp.doctorProfile.wizard.step2.title' | translate }}</div>
+                  </div>
+                </div>
+              </ng-template>
+
+              <ng-template pTemplate="content">
+                <form [formGroup]="doctorForm" class="space-y-6">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm font-medium" style="color: var(--surface-600)">
+                        {{ 'gdpApp.doctorProfile.medicalLicenseNumber' | translate }}
+                        <span class="text-red-500">*</span>
+                      </label>
+                      <input pInputText id="medicalLicenseNumber" formControlName="medicalLicenseNumber" class="mt-1 w-full" />
+                      <small *ngIf="isFieldInvalid('medicalLicenseNumber')" class="text-red-600">{{
+                        getFieldError('medicalLicenseNumber')
+                      }}</small>
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium mb-1" style="color: var(--surface-600)">
+                        {{ 'gdpApp.doctorProfile.primarySpecialty' | translate }}
+                        <span class="text-red-500">*</span>
+                      </label>
+                      <p-dropdown
+                        [options]="specialtyOptions"
+                        formControlName="primarySpecialty"
+                        optionLabel="label"
+                        optionValue="value"
+                        filter="true"
+                        class="mt-1 w-full"
+                      ></p-dropdown>
+                      <small *ngIf="isFieldInvalid('primarySpecialty')" class="text-red-600">{{ getFieldError('primarySpecialty') }}</small>
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm font-medium mb-1" style="color: var(--surface-600)">
+                        {{ 'gdpApp.doctorProfile.startDateOfPractice' | translate }}
+                        <span class="text-red-500">*</span>
+                      </label>
+                      <p-calendar
+                        id="startDateOfPractice"
+                        formControlName="startDateOfPractice"
+                        dateFormat="yy-mm-dd"
+                        [minDate]="minPracticeDate"
+                        [maxDate]="maxPracticeDate"
+                        class="mt-1 w-full"
+                      ></p-calendar>
+                      <small *ngIf="isFieldInvalid('startDateOfPractice')" class="text-red-600">{{
+                        getFieldError('startDateOfPractice')
+                      }}</small>
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium" style="color: var(--surface-600)">
+                        {{ 'gdpApp.doctorProfile.university' | translate }}</label
+                      >
+                      <input pInputText id="university" formControlName="university" class="mt-1 w-full" />
+                      <small *ngIf="isFieldInvalid('university')" class="text-red-600">{{ getFieldError('university') }}</small>
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm font-medium" style="color: var(--surface-600)">{{
+                        'gdpApp.doctorProfile.graduationYear' | translate
+                      }}</label>
+                      <p-inputNumber
+                        formControlName="graduationYear"
+                        [min]="1950"
+                        [max]="2100"
+                        mode="decimal"
+                        class="mt-1 w-full"
+                      ></p-inputNumber>
+                      <small *ngIf="isFieldInvalid('graduationYear')" class="text-red-600">{{ getFieldError('graduationYear') }}</small>
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium mb-1" style="color: var(--surface-600)">{{
+                        'gdpApp.doctorProfile.otherSpecialties' | translate
+                      }}</label>
+                      <p-chips formControlName="otherSpecialties" rows="2" class="mt-1 w-full"></p-chips>
+                      <small class="" style="color: var(--surface-500)">{{
+                        'gdpApp.doctorProfile.wizard.otherSpecialtiesHint' | translate
+                      }}</small>
+                      <!-- <textarea pInputTextarea formControlName="otherSpecialties" rows="2" class="mt-1 w-full"></textarea> -->
+                    </div>
+                  </div>
+
+                  <div>
+                    <label class="block text-sm font-medium mb-1" style="color: var(--surface-600)">{{
+                      'gdpApp.doctorProfile.spokenLanguages' | translate
+                    }}</label>
+                    <p-chips formControlName="spokenLanguages" class="mt-1 w-full"></p-chips>
+                    <small class="" style="color: var(--surface-500)">{{ 'gdpApp.doctorProfile.wizard.languagesHint' | translate }}</small>
+                  </div>
+
+                  <div class="flex justify-between gap-3">
+                    <button
+                      pButton
+                      type="button"
+                      label="{{ 'gdpApp.doctorProfile.wizard.previous' | translate }}"
+                      icon="pi pi-arrow-left"
+                      (click)="previousStep()"
+                      class="p-button-outlined"
+                    ></button>
+                    <button
+                      pButton
+                      type="button"
+                      label="{{ 'gdpApp.doctorProfile.wizard.next' | translate }}"
+                      icon="pi pi-arrow-right"
+                      (click)="nextStep()"
+                    ></button>
+                  </div>
+                </form>
+              </ng-template>
+            </p-stepperPanel>
+
+            <p-stepperPanel>
+              <ng-template pTemplate="header">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="text-white w-10 h-10 rounded-full flex items-center justify-center"
+                    style="background-color: var(--primary-color)"
+                  >
+                    <i class="pi pi-cog" [pTooltip]="'gdpApp.doctorProfile.wizard.step3.subtitle' | translate"></i>
+                  </div>
+                  <div>
+                    <div class="font-semibold">{{ 'gdpApp.doctorProfile.wizard.step3.title' | translate }}</div>
+                  </div>
+                </div>
+              </ng-template>
+
+              <ng-template pTemplate="content">
+                <form [formGroup]="doctorForm" class="space-y-6">
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-3 align-middle">
+                    <div>
+                      <label class="block text-sm font-medium" style="color: var(--surface-600)">
+                        {{ 'gdpApp.doctorProfile.consultationDurationMinutes' | translate | maxtextlength: 20 }}
+                        <span class="text-red-500">*</span>
+                      </label>
+                      <p-inputNumber
+                        formControlName="consultationDurationMinutes"
+                        [min]="5"
+                        [max]="120"
+                        showButtons="true"
+                        class="mt-1 w-full"
+                      ></p-inputNumber>
+                      <small *ngIf="isFieldInvalid('consultationDurationMinutes')" class="text-red-600">{{
+                        getFieldError('consultationDurationMinutes')
+                      }}</small>
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium" style="color: var(--surface-600)">{{
+                        'gdpApp.doctorProfile.consultationFee' | translate
+                      }}</label>
+                      <p-inputNumber
+                        formControlName="consultationFee"
+                        mode="currency"
+                        currency="USD"
+                        [min]="0"
+                        class="mt-1 w-full"
+                      ></p-inputNumber>
+                      <small *ngIf="isFieldInvalid('consultationFee')" class="text-red-600">{{ getFieldError('consultationFee') }}</small>
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium" style="color: var(--surface-600)">{{
+                        'gdpApp.doctorProfile.teleconsultationFee' | translate
+                      }}</label>
+                      <p-inputNumber
+                        formControlName="teleconsultationFee"
+                        mode="currency"
+                        currency="USD"
+                        [min]="0"
+                        class="mt-1 w-full"
+                      ></p-inputNumber>
+                      <small *ngIf="isFieldInvalid('teleconsultationFee')" class="text-red-600">{{
+                        getFieldError('teleconsultationFee')
+                      }}</small>
+                    </div>
+                  </div>
+
+                  <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                   
+                  </div> -->
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm font-medium" style="color: var(--surface-600)">{{
+                        'gdpApp.doctorProfile.officePhone' | translate
+                      }}</label>
+                      <input pInputText formControlName="officePhone" placeholder="+1234567890" class="mt-1 w-full" />
+                      <small *ngIf="isFieldInvalid('officePhone')" class="text-red-600">{{ getFieldError('officePhone') }}</small>
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium" style="color: var(--surface-600)">{{
+                        'gdpApp.doctorProfile.websiteUrl' | translate
+                      }}</label>
+                      <input pInputText formControlName="websiteUrl" placeholder="https://example.com" class="mt-1 w-full" />
+                      <small *ngIf="isFieldInvalid('websiteUrl')" class="text-red-600">{{ getFieldError('websiteUrl') }}</small>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label class="block text-sm font-medium" style="color: var(--surface-600)">{{
+                      'gdpApp.doctorProfile.officeAddress' | translate
+                    }}</label>
+                    <textarea pInputTextarea formControlName="officeAddress" rows="3" class="mt-1 w-full"></textarea>
+                    <small *ngIf="isFieldInvalid('officeAddress')" class="text-red-600">{{ getFieldError('officeAddress') }}</small>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="flex items-center gap-2">
+                      <p-checkbox inputId="acceptingNewPatients" formControlName="acceptingNewPatients" binary="true"></p-checkbox>
+                      <label for="acceptingNewPatients">{{ 'gdpApp.doctorProfile.acceptingNewPatients' | translate }}</label>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                      <p-checkbox inputId="allowsTeleconsultation" formControlName="allowsTeleconsultation" binary="true"></p-checkbox>
+                      <label for="allowsTeleconsultation">{{ 'gdpApp.doctorProfile.allowsTeleconsultation' | translate }}</label>
+                    </div>
+                  </div>
+
+                  <div class="flex justify-between gap-3">
+                    <button
+                      pButton
+                      type="button"
+                      label="{{ 'gdpApp.doctorProfile.wizard.previous' | translate }}"
+                      icon="pi pi-arrow-left"
+                      (click)="previousStep()"
+                      class="p-button-outlined"
+                    ></button>
+
+                    <div class="flex gap-2">
+                      <!-- <button pButton type="button" label="{{ 'entity.action.cancel' | translate }}" icon="pi pi-times" severity="danger" (click)="previousState()" class="p-button-outlined"></button> -->
+                      <button
+                        pButton
+                        type="button"
+                        label="{{ isEditMode ? ('entity.action.update' | translate) : ('entity.action.save' | translate) }}"
+                        icon="pi pi-check"
+                        (click)="save()"
+                        [loading]="isSaving"
+                        class="p-button-primary"
+                      ></button>
+                    </div>
+                  </div>
+                </form>
+              </ng-template>
+            </p-stepperPanel>
+          </p-stepper>
+        </div>
+
+        <!-- RIGHT PREVIEW / HELP (col 3) -->
+        <aside class="lg:col-span-1 sticky top-6 h-fit">
+          <div class="rounded-lg p-4 shadow-sm border" style="background-color: var(--surface-50)">
+            <div class="flex items-center gap-3">
+              <p-avatar
+                shape="circle"
+                styleClass="mr-2"
+                [label]="getInitials(doctorForm.get('firstName')?.value, doctorForm.get('lastName')?.value)"
+                size="large"
+              ></p-avatar>
+              <div>
+                <div class="font-semibold text-lg">
+                  {{
+                    doctorForm.get('firstName')?.value + ' ' + doctorForm.get('lastName')?.value.toUpperCase() ||
+                      ('gdpApp.doctorProfile.preview.name' | translate)
+                  }}
+                </div>
+                <div class="text-sm" style="color: var(--surface-500)">
+                  {{
+                    doctorForm.get('primarySpecialty')?.value
+                      ? doctorForm.get('primarySpecialty')?.value
+                      : ('gdpApp.doctorProfile.preview.noSpecialty' | translate)
+                  }}
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 space-y-3 text-sm">
+              <div>
+                <div class="text-xs" style="color: var(--surface-400)">{{ 'gdpApp.doctorProfile.preview.status' | translate }}</div>
+                <p-tag [value]="'PENDING_APPROVAL'" severity="warning" class="mt-1"></p-tag>
+              </div>
+
+              <div>
+                <div class="text-xs" style="color: var(--surface-400)">{{ 'gdpApp.doctorProfile.preview.contact' | translate }}</div>
+                <div class="mt-1 text-sm" style="color: var(--surface-600)">
+                  <div>{{ doctorForm.get('email')?.value || ('gdpApp.doctorProfile.preview.noEmail' | translate) }}</div>
+                  <div class="text-xs" style="color: var(--surface-400)">
+                    {{ doctorForm.get('officePhone')?.value || ('gdpApp.doctorProfile.preview.noPhone' | translate) }}
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="text-xs" style="color: var(--surface-400)">{{ 'gdpApp.doctorProfile.preview.quickStats' | translate }}</div>
+                <div class="flex gap-2 mt-1">
+                  <div class="px-3 py-1 rounded text-xs" style="background-color: var(--surface-100)">⭐ 0.0</div>
+                  <div class="px-3 py-1 rounded text-xs" style="background-color: var(--surface-100)">📝 0 reviews</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 text-xs" style="color: var(--surface-400)">
+              {{ 'gdpApp.doctorProfile.wizard.previewHint' | translate }}
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
   </div>
 </div>

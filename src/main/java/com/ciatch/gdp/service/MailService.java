@@ -1,5 +1,6 @@
 package com.ciatch.gdp.service;
 
+import com.ciatch.gdp.domain.DoctorProfile;
 import com.ciatch.gdp.domain.User;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -128,5 +129,53 @@ public class MailService {
     public void sendPasswordResetMail(User user) {
         LOG.debug("Sending password reset email to '{}'", user.getEmail());
         this.sendEmailFromTemplateSync(user, "mail/passwordResetEmail", "email.reset.title");
+    }
+
+    /**
+     * Send an email to inform the doctor that their profile has been approved.
+     *
+     * @param user the user entity
+     * @param doctorProfile the doctor profile entity
+     */
+    @Async
+    public void sendDoctorApprovalEmail(User user, DoctorProfile doctorProfile) {
+        LOG.debug("Sending doctor approval email to '{}'", user.getEmail());
+        if (user.getEmail() == null) {
+            LOG.debug("Email doesn't exist for user '{}'", user.getLogin());
+            return;
+        }
+        Locale locale = Locale.forLanguageTag(user.getLangKey());
+        Context context = new Context(locale);
+        context.setVariable(USER, user);
+        context.setVariable("doctorProfile", doctorProfile);
+        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        String content = templateEngine.process("mail/doctorApprovalEmail", context);
+        String subject = messageSource.getMessage("email.approval.title", null, locale);
+        sendEmail(user.getEmail(), subject, content, false, true);
+    }
+
+    /**
+     * Send an email to inform the doctor that their profile has been rejected.
+     *
+     * @param user the user entity
+     * @param doctorProfile the doctor profile entity
+     * @param reason the reason for rejection
+     */
+    @Async
+    public void sendDoctorRejectionEmail(User user, DoctorProfile doctorProfile, String reason) {
+        LOG.debug("Sending doctor rejection email to '{}'", user.getEmail());
+        if (user.getEmail() == null) {
+            LOG.debug("Email doesn't exist for user '{}'", user.getLogin());
+            return;
+        }
+        Locale locale = Locale.forLanguageTag(user.getLangKey());
+        Context context = new Context(locale);
+        context.setVariable(USER, user);
+        context.setVariable("doctorProfile", doctorProfile);
+        context.setVariable("reason", reason != null ? reason : "No reason provided");
+        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        String content = templateEngine.process("mail/doctorRejectionEmail", context);
+        String subject = messageSource.getMessage("email.rejection.title", null, locale);
+        sendEmail(user.getEmail(), subject, content, false, true);
     }
 }

@@ -2,27 +2,197 @@
   "gdpApp": {
     "doctorProfile": {
       "home": {
-        "title": "DoctorProfiles",
+        "title": "Profils des Médecins",
         "refreshListLabel": "Actualiser la liste",
-        "createLabel": "Créer un nouveau Doctor Profile",
-        "createOrEditLabel": "Créer ou éditer un Doctor Profile",
-        "notFound": "Aucun Doctor Profile trouvé"
+        "createLabel": "Nouveau",
+        "editLabel": "Modifier le Médecin",
+        "createOrEditLabel": "Créer ou éditer un Profil de Médecin",
+        "notFound": "Aucun Profil de Médecin trouvé",
+        "createLabelTooltip": "Créer un nouveau profil de médecin",
+        "dialogCreateTitle": "Créer un nouveau profil de médecin",
+        "dialogEditTitle": "Modifier le profil du médecin {{ codeClinic }}"
       },
-      "created": "Un nouveau Doctor Profile a été créé avec l'identifiant {{ param }}",
-      "updated": "Le Doctor Profile avec l'identifiant {{ param }} a été mis à jour",
-      "deleted": "Le Doctor Profile avec l'identifiant {{ param }} a été supprimé",
+      "createConfirmationDialogTitle": "Création du Profil du Médecin",
+      "createConfirmationDialogTitleQuestion": "Voulez-vous créer ce profil de médecin ?",
+      "updateConfirmationDialogTitle": "Mise à jour du Profil du Médecin",
+      "updateConfirmationDialogTitleQuestion": "Voulez-vous mettre à jour ce profil de médecin ?",
+      "created": "Un nouveau Profil de Médecin a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Profil de Médecin avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Profil de Médecin avec l'identifiant {{ param }} a été supprimé",
       "delete": {
-        "question": "Êtes-vous certain de vouloir supprimer le Doctor Profile {{ id }} ?"
+        "question": "Êtes-vous certain de vouloir supprimer le Profil de Médecin {{ id }} ?"
       },
       "detail": {
-        "title": "Doctor Profile"
+        "title": "Profil du Médecin",
+        "tab": {
+          "professional": "Informations Professionnelles",
+          "practice": "Cabinet & Tarifs",
+          "administrative": "Administratif"
+        },
+        "reviews": "avis",
+        "copy": "Copier dans le presse-papiers",
+        "copiedToClipboard": "Copié dans le presse-papiers !",
+        "copyFailed": "Échec de la copie",
+        "yearsExperience": "ans d'expérience",
+        "verified": "Vérifié",
+        "notVerified": "Non Vérifié",
+        "minutes": "minutes",
+        "contactInfo": "Informations de Contact",
+        "sensitiveInfo": "Cette section contient des informations sensibles. À manipuler avec précaution.",
+        "auditInfo": "Informations d'Audit",
+        "createdBy": "Créé Par",
+        "createdDate": "Date de Création",
+        "notFound": "Profil de médecin introuvable"
+      },
+      "filter": {
+        "status": "Filtrer par Statut",
+        "specialty": "Filtrer par Spécialité",
+        "search": "Rechercher par nom...",
+        "allStatuses": "Tous les Statuts",
+        "allSpecialties": "Toutes les Spécialités"
+      },
+      "column": {
+        "doctor": "Médecin",
+        "professionalInfo": "Info Professionnelle",
+        "contact": "Contact",
+        "actions": "Actions"
+      },
+      "action": {
+        "verify": "Vérifier le Médecin",
+        "export": "Exporter"
+      },
+      "verify": {
+        "title": "Vérifier le Profil du Médecin",
+        "question": "Voulez-vous approuver ou rejeter le profil de {{ name }} ?",
+        "approve": "Approuver",
+        "reject": "Rejeter",
+        "rejectTitle": "Rejeter le Profil du Médecin",
+        "rejectConfirm": "Êtes-vous sûr de vouloir rejeter ce profil de médecin ?",
+        "approved": "Profil du médecin approuvé avec succès",
+        "rejected": "Profil du médecin rejeté"
       },
       "id": "ID",
-      "specialty": "Specialty",
-      "licenseNumber": "License Number",
-      "university": "University",
-      "startDateOfPractice": "Start Date Of Practice",
-      "user": "User"
+      "codeClinic": "Code Clinique",
+      "uid": "Uid",
+      "medicalLicenseNumber": "Numéro de Licence Médicale",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "birthDate": "Date de Naissance",
+      "gender": "Genre",
+      "bloodType": "Groupe Sanguin",
+      "primarySpecialty": "Spécialité Principale",
+      "otherSpecialties": "Autres Spécialités",
+      "university": "Université",
+      "graduationYear": "Année de Diplôme",
+      "startDateOfPractice": "Date de Début de Pratique",
+      "consultationDurationMinutes": "Durée de Consultation (minutes)",
+      "acceptingNewPatients": "Accepte de Nouveaux Patients",
+      "allowsTeleconsultation": "Permet la Téléconsultation",
+      "consultationFee": "Frais de Consultation",
+      "teleconsultationFee": "Frais de Téléconsultation",
+      "bio": "Biographie",
+      "spokenLanguages": "Langues Parlées",
+      "websiteUrl": "URL du Site Web",
+      "officePhone": "Téléphone du Cabinet",
+      "officeAddress": "Adresse du Cabinet",
+      "status": "Statut",
+      "isVerified": "Est Vérifié",
+      "verifiedAt": "Vérifié Le",
+      "nif": "NIF",
+      "ninu": "NINU",
+      "averageRating": "Note Moyenne",
+      "reviewCount": "Nombre d'Avis",
+      "version": "Version",
+      "user": "Utilisateur",
+
+      "table": {
+        "pageDescription": "Affichage de {{first}} à {{last}} sur {{totalRecords}} medecins"
+      },
+      "wizard": {
+        "subtitle": "Utilisez cet assistant pour enregistrer un nouveau médecin. Le profil sera examiné par les RH.",
+        "previewHint": "Aperçu mis à jour en direct. Les champs sensibles ne sont pas affichés.",
+        "step1": {
+          "title": "Compte & Identité",
+          "subtitle": "Créez le compte et les informations personnelles",
+          "login": "Identifiant",
+          "email": "Email",
+          "selectLanguage": "Choisir la langue",
+          "sendActivationEmail": "Envoyer l'email d'activation"
+        },
+        "step2": {
+          "title": "Infos Professionnelles",
+          "subtitle": "Diplômes et qualifications médicales",
+          "credentials": "Qualifications",
+          "education": "Formation",
+          "additional": "Informations supplémentaires"
+        },
+        "step3": {
+          "title": "Cabinet & Tarifs",
+          "subtitle": "Paramètres de cabinet, tarifs et contact",
+          "settings": "Paramètres du cabinet",
+          "fees": "Tarifs",
+          "contact": "Informations de contact",
+          "reviewMessage": "Veuillez vérifier toutes les informations avant de soumettre. Le profil sera mis en attente d'approbation."
+        },
+        "next": "Suivant",
+        "previous": "Précédent",
+        "selectDate": "Sélectionner une date",
+        "selectGender": "Sélectionner le genre",
+        "selectBloodType": "Sélectionner le groupe sanguin",
+        "selectSpecialty": "Sélectionner la spécialité",
+        "languagesHint": "Appuyez sur Entrée pour ajouter chaque langue",
+        "otherSpecialtiesHint": "Appuyez sur Entrée pour ajouter chaque spécialité"
+      },
+      "preview": {
+        "name": "Nom du médecin",
+        "noSpecialty": "Aucune spécialité sélectionnée",
+        "status": "Statut",
+        "contact": "Contact",
+        "noEmail": "Aucun e-mail fourni",
+        "noPhone": "Aucun téléphone fourni",
+        "quickStats": "Statistiques rapides"
+      },
+      "validation": {
+        "completeStep": "Veuillez compléter les champs requis de cette étape.",
+        "formInvalid": "Le formulaire contient des erreurs. Veuillez les corriger.",
+        "serverError": "Une ou plusieurs erreurs sont survenues lors de l'enregistrement. Vérifiez les champs en surbrillance.",
+        "required": "Ce champ est obligatoire.",
+        "email": "Entrez une adresse email valide.",
+        "minlength": "Trop court.",
+        "maxlength": "Trop long.",
+        "pattern": "Format invalide.",
+        "min": "La valeur est trop petite.",
+        "max": "La valeur est trop grande."
+      },
+      "messages": {
+        "confirmDiscard": "Vous avez des modifications non enregistrées. Voulez-vous vraiment les abandonner ?"
+      }
+    },
+    "DoctorStatus": {
+      "PENDING_APPROVAL": "En Attente d'Approbation",
+      "ACTIVE": "Actif",
+      "ON_LEAVE": "En Congé",
+      "SUSPENDED": "Suspendu",
+      "RETIRED": "Retraité",
+      "REJECTED": "Rejeté"
+    }
+  },
+
+  "global": {
+    "messages": {
+      "success": "Success",
+      "error": "Error",
+      "warning": "Warning"
+    },
+    "yes": "Oui",
+    "no": "Non"
+  },
+  "entity": {
+    "action": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "update": "Update",
+      "back": "Back"
     }
   }
 }

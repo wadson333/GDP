@@ -1,0 +1,178 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="PC (generated)" id="1764773588394-24">
+        <createTable tableName="doctor_profile">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="doctor_profilePK"/>
+            </column>
+            <column name="accepting_new_patients" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="allows_teleconsultation" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="average_rating" type="FLOAT(53)"/>
+            <column name="bio" type="OID"/>
+            <column name="birth_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="blood_type" type="VARCHAR(255)"/>
+            <column name="code_clinic" type="VARCHAR(10)"/>
+            <column name="consultation_duration_minutes" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="consultation_fee" type="numeric(21, 2)"/>
+            <column name="first_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="gender" type="VARCHAR(255)"/>
+            <column name="graduation_year" type="INTEGER"/>
+            <column name="is_verified" type="BOOLEAN"/>
+            <column name="last_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="medical_license_number" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nif" type="VARCHAR(10)"/>
+            <column name="ninu" type="VARCHAR(10)"/>
+            <column name="office_address" type="OID"/>
+            <column name="office_phone" type="VARCHAR(255)"/>
+            <column name="other_specialties" type="OID"/>
+            <column name="primary_specialty" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="review_count" type="INTEGER"/>
+            <column name="spoken_languages" type="VARCHAR(255)"/>
+            <column name="start_date_of_practice" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="teleconsultation_fee" type="numeric(21, 2)"/>
+            <column name="uid" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="university" type="VARCHAR(100)"/>
+            <column name="verified_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="BIGINT"/>
+            <column name="website_url" type="VARCHAR(255)"/>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-25">
+        <addColumn tableName="medication">
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-26">
+        <addColumn tableName="medication">
+            <column name="created_date" type="timestamp(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-27">
+        <addColumn tableName="medication">
+            <column name="last_modified_by" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-28">
+        <addColumn tableName="medication">
+            <column name="last_modified_date" type="timestamp(6)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-29">
+        <addUniqueConstraint columnNames="medical_license_number" constraintName="UC_DOCTOR_PROFILEMEDICAL_LICENSE_NUMBER_COL" tableName="doctor_profile"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-30">
+        <addUniqueConstraint columnNames="nif" constraintName="UC_DOCTOR_PROFILENIF_COL" tableName="doctor_profile"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-31">
+        <addUniqueConstraint columnNames="ninu" constraintName="UC_DOCTOR_PROFILENINU_COL" tableName="doctor_profile"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-32">
+        <addUniqueConstraint columnNames="uid" constraintName="UC_DOCTOR_PROFILEUID_COL" tableName="doctor_profile"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-33">
+        <addUniqueConstraint columnNames="user_id" constraintName="UC_DOCTOR_PROFILEUSER_ID_COL" tableName="doctor_profile"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-34">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="doctor_profile" constraintName="FKovjaa315m8tga7r4w0exl9kp5" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user" validate="true"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-35">
+        <dropTable tableName="jhi_date_time_wrapper"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-1">
+        <setTableRemarks tableName="appointment"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-2">
+        <setTableRemarks tableName="consultation"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-3">
+        <setTableRemarks tableName="hospitalization"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-4">
+        <setTableRemarks tableName="lab_test_result"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-5">
+        <setTableRemarks tableName="medical_document"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-6">
+        <setTableRemarks tableName="medication"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-7">
+        <setTableRemarks tableName="notification"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-8">
+        <setTableRemarks tableName="patient"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-9">
+        <setTableRemarks tableName="prescription"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-10">
+        <setTableRemarks tableName="prescription_item"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-11">
+        <setTableRemarks tableName="user_configuration"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-12">
+        <modifyDataType columnName="contact_person_name" newDataType="varchar(100)" tableName="patient"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-13">
+        <modifyDataType columnName="contact_person_phone" newDataType="varchar(500)" tableName="patient"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-14">
+        <modifyDataType columnName="email" newDataType="varchar(254)" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-15">
+        <setColumnRemarks columnDataType="timestamp(6)" columnName="expiry_date" tableName="medication"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-16">
+        <setColumnRemarks columnDataType="timestamp(6)" columnName="marketing_authorization_date" tableName="medication"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-17">
+        <modifyDataType columnName="name" newDataType="varchar(100)" tableName="medication"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-18">
+        <modifyDataType columnName="nif" newDataType="varchar(10)" tableName="patient"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-19">
+        <modifyDataType columnName="ninu" newDataType="varchar(10)" tableName="patient"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-20">
+        <modifyDataType columnName="passport_number" newDataType="varchar(15)" tableName="patient"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-21">
+        <modifyDataType columnName="phone_1" newDataType="varchar(500)" tableName="patient"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-22">
+        <modifyDataType columnName="phone_2" newDataType="varchar(500)" tableName="patient"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1764773588394-23">
+        <setColumnRemarks columnDataType="number(21,2)" columnName="unit_price" tableName="medication"/>
+    </changeSet>
+</databaseChangeLog>

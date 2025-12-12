@@ -46,5 +46,8 @@
     <include file="config/liquibase/changelog/20251117184449_updated_entity_Patient.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20251117184449_updated_entity_migrate_Patient.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20251117184449_updated_entity_constraints_Patient.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20251203142531_updated_entity_DoctorProfile.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20251203142531_updated_entity_migrate_DoctorProfile.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20251203142531_updated_entity_constraints_DoctorProfile.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

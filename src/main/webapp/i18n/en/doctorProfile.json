@@ -4,10 +4,18 @@
       "home": {
         "title": "Doctor Profiles",
         "refreshListLabel": "Refresh list",
-        "createLabel": "Create a new Doctor Profile",
+        "createLabel": "New",
+        "editLabel": "Edit Doctor",
         "createOrEditLabel": "Create or edit a Doctor Profile",
-        "notFound": "No Doctor Profiles found"
+        "notFound": "No Doctor Profiles found",
+        "createLabelTooltip": "Create a new doctor profile",
+        "dialogCreateTitle": "Create a new doctor profile",
+        "dialogEditTitle": "Edit doctor profile {{ codeClinic }}"
       },
+      "createConfirmationDialogTitle": "Create Doctor Profile",
+      "createConfirmationDialogTitleQuestion": "Do you want to create this doctor profile?",
+      "updateConfirmationDialogTitle": "Update Doctor Profile",
+      "updateConfirmationDialogTitleQuestion": "Do you want to update this doctor profile?",
       "created": "A new Doctor Profile is created with identifier {{ param }}",
       "updated": "A Doctor Profile is updated with identifier {{ param }}",
       "deleted": "A Doctor Profile is deleted with identifier {{ param }}",
@@ -15,14 +23,175 @@
         "question": "Are you sure you want to delete Doctor Profile {{ id }}?"
       },
       "detail": {
-        "title": "Doctor Profile"
+        "title": "Doctor Profile",
+        "tab": {
+          "professional": "Professional Information",
+          "practice": "Practice & Fees",
+          "administrative": "Administrative"
+        },
+        "reviews": "reviews",
+        "copy": "Copy to clipboard",
+        "copiedToClipboard": "Copied to clipboard!",
+        "copyFailed": "Failed to copy",
+        "yearsExperience": "years of experience",
+        "verified": "Verified",
+        "notVerified": "Not Verified",
+        "minutes": "minutes",
+        "contactInfo": "Contact Information",
+        "sensitiveInfo": "This section contains sensitive information. Handle with care.",
+        "auditInfo": "Audit Information",
+        "createdBy": "Created By",
+        "createdDate": "Created Date",
+        "notFound": "Doctor profile not found"
+      },
+      "filter": {
+        "status": "Filter by Status",
+        "specialty": "Filter by Specialty",
+        "search": "Search by name...",
+        "allStatuses": "All Statuses",
+        "allSpecialties": "All Specialties"
+      },
+      "column": {
+        "doctor": "Doctor",
+        "professionalInfo": "Professional Info",
+        "contact": "Contact",
+        "actions": "Actions"
+      },
+      "action": {
+        "verify": "Verify Doctor",
+        "export": "Export"
+      },
+      "verify": {
+        "title": "Verify Doctor Profile",
+        "question": "Do you want to approve or reject the profile of {{ name }}?",
+        "approve": "Approve",
+        "reject": "Reject",
+        "rejectTitle": "Reject Doctor Profile",
+        "rejectConfirm": "Are you sure you want to reject this doctor profile?",
+        "approved": "Doctor profile approved successfully",
+        "rejected": "Doctor profile rejected"
       },
       "id": "ID",
-      "specialty": "Specialty",
-      "licenseNumber": "License Number",
+      "codeClinic": "Code Clinic",
+      "uid": "Uid",
+      "medicalLicenseNumber": "Medical License Number",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "birthDate": "Birth Date",
+      "gender": "Gender",
+      "bloodType": "Blood Type",
+      "primarySpecialty": "Primary Specialty",
+      "otherSpecialties": "Other Specialties",
       "university": "University",
+      "graduationYear": "Graduation Year",
       "startDateOfPractice": "Start Date Of Practice",
-      "user": "User"
+      "consultationDurationMinutes": "Consultation Duration Minutes",
+      "acceptingNewPatients": "Accepting New Patients",
+      "allowsTeleconsultation": "Allows Teleconsultation",
+      "consultationFee": "Consultation Fee",
+      "teleconsultationFee": "Teleconsultation Fee",
+      "bio": "Bio",
+      "spokenLanguages": "Spoken Languages",
+      "websiteUrl": "Website Url",
+      "officePhone": "Office Phone",
+      "officeAddress": "Office Address",
+      "status": "Status",
+      "isVerified": "Is Verified",
+      "verifiedAt": "Verified At",
+      "nif": "Nif",
+      "ninu": "Ninu",
+      "averageRating": "Average Rating",
+      "reviewCount": "Review Count",
+      "version": "Version",
+      "user": "User",
+      "table": {
+        "pageDescription": "Displaying {{first}} to {{last}} of {{totalRecords}} doctors"
+      },
+      "DoctorStatus": {
+        "PENDING_APPROVAL": "Pending Approval",
+        "ACTIVE": "Active",
+        "ON_LEAVE": "On Leave",
+        "SUSPENDED": "Suspended",
+        "RETIRED": "Retired",
+        "REJECTED": "Rejected"
+      },
+      "wizard": {
+        "subtitle": "Use this wizard to register a new doctor. The profile will be reviewed by HR.",
+        "previewHint": "Preview updates as you type. Sensitive fields are not displayed.",
+        "step1": {
+          "title": "Account & Personal",
+          "subtitle": "Create the account and basic identity",
+          "login": "Login",
+          "email": "Email",
+          "selectLanguage": "Select language",
+          "sendActivationEmail": "Send activation email"
+        },
+        "step2": {
+          "title": "Professional Info",
+          "subtitle": "Medical credentials and education",
+          "credentials": "Credentials",
+          "education": "Education",
+          "additional": "Additional"
+        },
+        "step3": {
+          "title": "Practice & Fees",
+          "subtitle": "Practice settings, fees and contact",
+          "settings": "Practice Settings",
+          "fees": "Fees",
+          "contact": "Contact Information",
+          "reviewMessage": "Please review all information before submitting. The doctor profile will be set to PENDING_APPROVAL status."
+        },
+        "next": "Next",
+        "previous": "Previous",
+        "selectDate": "Select date",
+        "selectGender": "Select gender",
+        "selectBloodType": "Select blood type",
+        "selectSpecialty": "Select specialty",
+        "languagesHint": "Press Enter to add each language",
+        "otherSpecialtiesHint": "Press Enter to add each specialty"
+      },
+      "preview": {
+        "name": "Doctor Name",
+        "noSpecialty": "No specialty selected",
+        "status": "Status",
+        "contact": "Contact",
+        "noEmail": "No email provided",
+        "noPhone": "No phone provided",
+        "quickStats": "Quick stats"
+      },
+      "validation": {
+        "completeStep": "Please complete required fields on this step.",
+        "formInvalid": "The form contains errors. Please correct them.",
+        "serverError": "One or more errors occurred while saving. Please check highlighted fields.",
+        "required": "This field is required.",
+        "email": "Enter a valid email address.",
+        "minlength": "Too short.",
+        "maxlength": "Too long.",
+        "pattern": "Invalid format.",
+        "min": "Value is too small.",
+        "max": "Value is too large."
+      },
+      "messages": {
+        "confirmDiscard": "You have unsaved changes. Are you sure you want to discard them?"
+      }
+    }
+  },
+
+  "global": {
+    "messages": {
+      "success": "Success",
+      "error": "Error",
+      "warning": "Warning"
+    },
+    "yes": "Yes",
+    "no": "No"
+  },
+  "entity": {
+    "action": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "update": "Update",
+      "back": "Back"
     }
   }
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added columns to the entity DoctorProfile.
+    -->
+    <changeSet id="20251202230606-1-add-columns" author="jhipster">
+        <addColumn tableName="doctor_profile">
+            <column name="first_name" type="varchar(255)"/>
+            <column name="last_name" type="varchar(255)"/>
+            <column name="birth_date" type="date"/>
+            <column name="gender" type="varchar(255)"/>
+            <column name="blood_type" type="varchar(255)"/>
+            <column name="nif" type="varchar(10)"/>
+            <column name="ninu" type="varchar(10)"/>
+        </addColumn>
+    </changeSet>
+
+    <!--
+        Dropped columns to the entity DoctorProfile.
+    -->
+    <changeSet id="20251202230606-1-drop-columns" author="jhipster">
+        <dropColumn tableName="doctor_profile">
+            <column name="n_inu"/>
+        </dropColumn>
+    </changeSet>
+
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+</databaseChangeLog>

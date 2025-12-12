@@ -1,9 +1,12 @@
 package com.ciatch.gdp.service;
 
 import com.ciatch.gdp.domain.Notification;
+import com.ciatch.gdp.domain.User;
+import com.ciatch.gdp.domain.enumeration.NotificationType;
 import com.ciatch.gdp.repository.NotificationRepository;
 import com.ciatch.gdp.service.dto.NotificationDTO;
 import com.ciatch.gdp.service.mapper.NotificationMapper;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -117,5 +120,45 @@ public class NotificationService {
     public void delete(Long id) {
         LOG.debug("Request to delete Notification : {}", id);
         notificationRepository.deleteById(id);
+    }
+
+    /**
+     * Create and persist a notification for a user.
+     *
+     * @param targetUser the user who will receive the notification
+     * @param type the type of notification
+     * @param message the notification message
+     * @param relatedEntityId optional ID of related entity (e.g., DoctorProfile ID)
+     * @return the persisted notification
+     */
+    @Transactional
+    public Notification create(User targetUser, NotificationType type, String message, Long relatedEntityId) {
+        LOG.debug("Creating notification for user '{}' of type '{}'", targetUser.getLogin(), type);
+
+        Notification notification = new Notification();
+        notification.setTargetUser(targetUser);
+        notification.setNotificationType(type);
+        notification.setMessage(message);
+        notification.setRelatedEntityId(relatedEntityId);
+        notification.setIsRead(false);
+        notification.setCreationDate(ZonedDateTime.now());
+
+        notification = notificationRepository.save(notification);
+        LOG.debug("Created notification with ID: {}", notification.getId());
+
+        return notification;
+    }
+
+    /**
+     * Create and persist a notification for a user without related entity.
+     *
+     * @param targetUser the user who will receive the notification
+     * @param type the type of notification
+     * @param message the notification message
+     * @return the persisted notification
+     */
+    @Transactional
+    public Notification create(User targetUser, NotificationType type, String message) {
+        return create(targetUser, type, message, null);
     }
 }

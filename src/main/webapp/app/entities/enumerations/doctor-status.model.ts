@@ -1,0 +1,11 @@
+export enum DoctorStatus {
+  PENDING_APPROVAL = 'PENDING_APPROVAL',
+
+  ACTIVE = 'ACTIVE',
+
+  ON_LEAVE = 'ON_LEAVE',
+
+  SUSPENDED = 'SUSPENDED',
+
+  RETIRED = 'RETIRED',
+}

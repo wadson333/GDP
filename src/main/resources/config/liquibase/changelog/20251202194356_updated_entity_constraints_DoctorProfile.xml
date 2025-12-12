@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the field constraints for entity DoctorProfile.
+    -->
+    <changeSet id="20251202194356-fields-constraints" author="jhipster">
+        <addUniqueConstraint tableName="doctor_profile"
+            columnNames="uid"
+            constraintName="ux_doctor_profile__uid"/>
+        <addNotNullConstraint tableName="doctor_profile"
+            columnName="uid"
+            columnDataType="${uuidType}"/>
+        <addUniqueConstraint tableName="doctor_profile"
+            columnNames="medical_license_number"
+            constraintName="ux_doctor_profile__medical_license_number"/>
+        <addNotNullConstraint tableName="doctor_profile"
+            columnName="medical_license_number"
+            columnDataType="varchar(50)"/>
+        <addNotNullConstraint tableName="doctor_profile"
+            columnName="primary_specialty"
+            columnDataType="varchar(255)"/>
+        <addNotNullConstraint tableName="doctor_profile"
+            columnName="consultation_duration_minutes"
+            columnDataType="integer"/>
+        <addNotNullConstraint tableName="doctor_profile"
+            columnName="accepting_new_patients"
+            columnDataType="boolean"/>
+        <addNotNullConstraint tableName="doctor_profile"
+            columnName="allows_teleconsultation"
+            columnDataType="boolean"/>
+        <addNotNullConstraint tableName="doctor_profile"
+            columnName="status"
+            columnDataType="varchar(255)"/>
+    </changeSet>
+</databaseChangeLog>

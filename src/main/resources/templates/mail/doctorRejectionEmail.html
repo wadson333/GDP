@@ -1,0 +1,24 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" lang="en">
+  <head>
+    <title th:text="#{email.rejection.title}">Doctor Profile Rejected</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="shortcut icon" href="../../static/images/favicon.ico" th:href="@{|${baseUrl}/favicon.ico|}" />
+  </head>
+  <body>
+    <p th:text="#{email.rejection.greeting(${user.login})}">Dear</p>
+    <p th:text="#{email.rejection.text1}">
+      We regret to inform you that your doctor profile application has not been approved at this time.
+    </p>
+    <p>
+      <strong th:text="#{email.rejection.reason}">Reason:</strong>
+      <span th:text="${reason}">Reason</span>
+    </p>
+    <p th:text="#{email.rejection.text2}">If you have any questions, please contact our support team.</p>
+    <p>
+      <span th:text="#{email.rejection.text3}">Kind regards,</span>
+      <br />
+      <em th:text="#{email.signature}">The Team.</em>
+    </p>
+  </body>
+</html>

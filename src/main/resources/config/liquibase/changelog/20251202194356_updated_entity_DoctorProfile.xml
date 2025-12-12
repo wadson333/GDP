@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added columns to the entity DoctorProfile.
+    -->
+    <changeSet id="20251202194356-1-add-columns" author="jhipster">
+        <addColumn tableName="doctor_profile">
+            <column name="code_clinic" type="varchar(10)"/>
+            <column name="uid" type="${uuidType}"/>
+            <column name="medical_license_number" type="varchar(50)"/>
+            <column name="primary_specialty" type="varchar(255)"/>
+            <column name="other_specialties" type="${clobType}"/>
+            <column name="graduation_year" type="integer"/>
+            <column name="consultation_duration_minutes" type="integer"/>
+            <column name="accepting_new_patients" type="boolean"/>
+            <column name="allows_teleconsultation" type="boolean"/>
+            <column name="consultation_fee" type="decimal(21,2)"/>
+            <column name="teleconsultation_fee" type="decimal(21,2)"/>
+            <column name="bio" type="${clobType}"/>
+            <column name="spoken_languages" type="varchar(255)"/>
+            <column name="website_url" type="varchar(255)"/>
+            <column name="office_phone" type="varchar(255)"/>
+            <column name="office_address" type="${clobType}"/>
+            <column name="status" type="varchar(255)"/>
+            <column name="is_verified" type="boolean"/>
+            <column name="verified_at" type="${datetimeType}"/>
+            <column name="n_inu" type="varchar(10)"/>
+            <column name="average_rating" type="double"/>
+            <column name="review_count" type="integer"/>
+            <column name="version" type="bigint"/>
+        </addColumn>
+        <dropDefaultValue tableName="doctor_profile" columnName="verified_at" columnDataType="${datetimeType}"/>
+    </changeSet>
+
+    <!--
+        Dropped columns to the entity DoctorProfile.
+    -->
+    <changeSet id="20251202194356-1-drop-columns" author="jhipster">
+        <dropColumn tableName="doctor_profile">
+            <column name="specialty"/>
+            <column name="license_number"/>
+        </dropColumn>
+    </changeSet>
+
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+</databaseChangeLog>

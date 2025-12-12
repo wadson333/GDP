@@ -4,10 +4,7 @@ import com.ciatch.gdp.domain.DoctorProfile;
 import com.ciatch.gdp.repository.DoctorProfileRepository;
 import com.ciatch.gdp.service.dto.DoctorProfileDTO;
 import com.ciatch.gdp.service.mapper.DoctorProfileMapper;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -77,17 +74,6 @@ public class DoctorProfileService {
             })
             .map(doctorProfileRepository::save)
             .map(doctorProfileMapper::toDto);
-    }
-
-    /**
-     * Get all the doctorProfiles.
-     *
-     * @return the list of entities.
-     */
-    @Transactional(readOnly = true)
-    public List<DoctorProfileDTO> findAll() {
-        LOG.debug("Request to get all DoctorProfiles");
-        return doctorProfileRepository.findAll().stream().map(doctorProfileMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**

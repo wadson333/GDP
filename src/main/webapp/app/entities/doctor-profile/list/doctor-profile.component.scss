@@ -1,0 +1,60 @@
+:host ::ng-deep {
+  .p-toolbar {
+    @apply mb-4 rounded-lg shadow-sm py-1 px-2;
+  }
+
+  .p-datatable-thead {
+    @apply rounded-sm;
+    background-color: var(--surface-100) !important;
+  }
+
+  .p-button {
+    @apply transition-all duration-200;
+    &:hover {
+      @apply transform scale-105;
+    }
+  }
+  .p-divider {
+    @apply h-6;
+  }
+
+  // dropdown and input text adjustments for better alignment
+  .p-dropdown {
+    .p-dropdown-label {
+      padding-right: 0.5rem;
+      font-size: 0.875rem;
+    }
+    .p-dropdown-trigger {
+      width: 2rem;
+    }
+  }
+
+  .p-inputtext {
+    &::placeholder {
+      font-size: 0.875rem;
+    }
+  }
+
+  // Remove dropdown borders since they're in a container
+  .filter-dropdown {
+    border: none;
+    box-shadow: none;
+    background-color: var(--surface-card) !important;
+
+    &:hover,
+    &:focus {
+      border: none;
+      box-shadow: none;
+    }
+  }
+}
+
+.search-container {
+  @apply dark:border-gray-500 rounded-lg;
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-color: var(--surface-border) !important;
+  background-color: var(--surface-card) !important;
+  padding-inline: 0.5rem;
+  padding-block: 0.25rem;
+}

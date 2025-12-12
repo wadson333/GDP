@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the field constraints for entity DoctorProfile.
+    -->
+    <changeSet id="20251202230606-fields-constraints" author="jhipster">
+        <addNotNullConstraint tableName="doctor_profile"
+            columnName="first_name"
+            columnDataType="varchar(255)"/>
+        <addNotNullConstraint tableName="doctor_profile"
+            columnName="last_name"
+            columnDataType="varchar(255)"/>
+        <addNotNullConstraint tableName="doctor_profile"
+            columnName="birth_date"
+            columnDataType="date"/>
+        <addUniqueConstraint tableName="doctor_profile"
+            columnNames="nif"
+            constraintName="ux_doctor_profile__nif"/>
+        <addUniqueConstraint tableName="doctor_profile"
+            columnNames="ninu"
+            constraintName="ux_doctor_profile__ninu"/>
+    </changeSet>
+</databaseChangeLog>

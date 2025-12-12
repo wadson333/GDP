@@ -1,5 +1,6 @@
 package com.ciatch.gdp.domain;
 
+import static com.ciatch.gdp.domain.AssertUtils.bigDecimalCompareTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DoctorProfileAsserts {
@@ -47,12 +48,59 @@ public class DoctorProfileAsserts {
     public static void assertDoctorProfileUpdatableFieldsEquals(DoctorProfile expected, DoctorProfile actual) {
         assertThat(expected)
             .as("Verify DoctorProfile relevant properties")
-            .satisfies(e -> assertThat(e.getSpecialty()).as("check specialty").isEqualTo(actual.getSpecialty()))
-            .satisfies(e -> assertThat(e.getLicenseNumber()).as("check licenseNumber").isEqualTo(actual.getLicenseNumber()))
+            .satisfies(e -> assertThat(e.getCodeClinic()).as("check codeClinic").isEqualTo(actual.getCodeClinic()))
+            .satisfies(e -> assertThat(e.getUid()).as("check uid").isEqualTo(actual.getUid()))
+            .satisfies(e ->
+                assertThat(e.getMedicalLicenseNumber()).as("check medicalLicenseNumber").isEqualTo(actual.getMedicalLicenseNumber())
+            )
+            .satisfies(e -> assertThat(e.getFirstName()).as("check firstName").isEqualTo(actual.getFirstName()))
+            .satisfies(e -> assertThat(e.getLastName()).as("check lastName").isEqualTo(actual.getLastName()))
+            .satisfies(e -> assertThat(e.getBirthDate()).as("check birthDate").isEqualTo(actual.getBirthDate()))
+            .satisfies(e -> assertThat(e.getGender()).as("check gender").isEqualTo(actual.getGender()))
+            .satisfies(e -> assertThat(e.getBloodType()).as("check bloodType").isEqualTo(actual.getBloodType()))
+            .satisfies(e -> assertThat(e.getPrimarySpecialty()).as("check primarySpecialty").isEqualTo(actual.getPrimarySpecialty()))
+            .satisfies(e -> assertThat(e.getOtherSpecialties()).as("check otherSpecialties").isEqualTo(actual.getOtherSpecialties()))
             .satisfies(e -> assertThat(e.getUniversity()).as("check university").isEqualTo(actual.getUniversity()))
+            .satisfies(e -> assertThat(e.getGraduationYear()).as("check graduationYear").isEqualTo(actual.getGraduationYear()))
             .satisfies(e ->
                 assertThat(e.getStartDateOfPractice()).as("check startDateOfPractice").isEqualTo(actual.getStartDateOfPractice())
-            );
+            )
+            .satisfies(e ->
+                assertThat(e.getConsultationDurationMinutes())
+                    .as("check consultationDurationMinutes")
+                    .isEqualTo(actual.getConsultationDurationMinutes())
+            )
+            .satisfies(e ->
+                assertThat(e.getAcceptingNewPatients()).as("check acceptingNewPatients").isEqualTo(actual.getAcceptingNewPatients())
+            )
+            .satisfies(e ->
+                assertThat(e.getAllowsTeleconsultation()).as("check allowsTeleconsultation").isEqualTo(actual.getAllowsTeleconsultation())
+            )
+            .satisfies(e ->
+                assertThat(e.getConsultationFee())
+                    .as("check consultationFee")
+                    .usingComparator(bigDecimalCompareTo)
+                    .isEqualTo(actual.getConsultationFee())
+            )
+            .satisfies(e ->
+                assertThat(e.getTeleconsultationFee())
+                    .as("check teleconsultationFee")
+                    .usingComparator(bigDecimalCompareTo)
+                    .isEqualTo(actual.getTeleconsultationFee())
+            )
+            .satisfies(e -> assertThat(e.getBio()).as("check bio").isEqualTo(actual.getBio()))
+            .satisfies(e -> assertThat(e.getSpokenLanguages()).as("check spokenLanguages").isEqualTo(actual.getSpokenLanguages()))
+            .satisfies(e -> assertThat(e.getWebsiteUrl()).as("check websiteUrl").isEqualTo(actual.getWebsiteUrl()))
+            .satisfies(e -> assertThat(e.getOfficePhone()).as("check officePhone").isEqualTo(actual.getOfficePhone()))
+            .satisfies(e -> assertThat(e.getOfficeAddress()).as("check officeAddress").isEqualTo(actual.getOfficeAddress()))
+            .satisfies(e -> assertThat(e.getStatus()).as("check status").isEqualTo(actual.getStatus()))
+            .satisfies(e -> assertThat(e.getIsVerified()).as("check isVerified").isEqualTo(actual.getIsVerified()))
+            .satisfies(e -> assertThat(e.getVerifiedAt()).as("check verifiedAt").isEqualTo(actual.getVerifiedAt()))
+            .satisfies(e -> assertThat(e.getNif()).as("check nif").isEqualTo(actual.getNif()))
+            .satisfies(e -> assertThat(e.getNinu()).as("check ninu").isEqualTo(actual.getNinu()))
+            .satisfies(e -> assertThat(e.getAverageRating()).as("check averageRating").isEqualTo(actual.getAverageRating()))
+            .satisfies(e -> assertThat(e.getReviewCount()).as("check reviewCount").isEqualTo(actual.getReviewCount()))
+            .satisfies(e -> assertThat(e.getVersion()).as("check version").isEqualTo(actual.getVersion()));
     }
 
     /**

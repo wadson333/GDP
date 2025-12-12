@@ -1,50 +1,517 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    @if (doctorProfile(); as doctorProfileRef) {
-      <div>
-        <h2 data-cy="doctorProfileDetailsHeading"><span jhiTranslate="gdpApp.doctorProfile.detail.title">Doctor Profile</span></h2>
+<div class="min-h-screen">
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
 
-        <hr />
+  @if (loading) {
+    <div class="flex justify-center items-center h-screen">
+      <i class="pi pi-spin pi-spinner text-4xl text-primary"></i>
+    </div>
+  } @else if (doctorProfile) {
+    <div class="container flex gap-x-3">
+      <!-- HEADER CARD -->
+      <div class="min-w-[30%]">
+        <!-- <div class="relative h-32 bg-gradient-to-r from-indigo-600 to-blue-500 rounded-t-lg"></div> -->
 
-        <jhi-alert-error></jhi-alert-error>
+        <div
+          class="px-3 pb-6 pt-3 rounded flex justify-center"
+          style="background-color: var(--surface-50); border: 1px solid var(--surface-200)"
+        >
+          <div class="flex flex-col md:flex-row md:items-end md:justify-between">
+            <!-- Left: Avatar + Info doctorProfile.user?.imageUrl || -->
+            <div class="flex flex-col items-center py-4">
+              <p-avatar
+                [image]="'content/images/jhipster_family_member_0_head-512.png'"
+                shape="circle"
+                [style]="{ width: '120px', height: '120px', border: '4px solid var(--surface-300)' }"
+              ></p-avatar>
 
-        <jhi-alert></jhi-alert>
+              <div class="text-center md:text-left mt-4 md:mt-0 md:mb-2">
+                <h1 class="text-2xl font-bold">Dr. {{ doctorProfile.firstName }} {{ doctorProfile.lastName?.toUpperCase() }}</h1>
+                <div class="flex flex-wrap items-center gap-2 mt-2 justify-center md:justify-start">
+                  <p-tag [value]="getSpecialtyLabel(doctorProfile.primarySpecialty)" severity="info" [rounded]="true"></p-tag>
+                  <p-divider [styleClass]="'mx-1'" layout="vertical"></p-divider>
+                  <p-tag
+                    [value]="getStatusLabel(doctorProfile.status)"
+                    [severity]="getStatusSeverity(doctorProfile.status)"
+                    [rounded]="true"
+                  ></p-tag>
+                </div>
+                <div class="flex items-center gap-4 mt-2 text-sm justify-center md:justify-start">
+                  <div class="flex items-center gap-1">
+                    <i class="pi pi-star-fill text-yellow-500"></i>
+                    <span>{{ doctorProfile.averageRating || 0 }} / 5</span>
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <i class="pi pi-comments"></i>
+                    <span>{{ doctorProfile.reviewCount || 0 }} {{ 'gdpApp.doctorProfile.detail.reviews' | translate }}</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2 mt-2">
+                  <i class="pi pi-phone"></i>
+                  <a [href]="'tel:' + doctorProfile.officePhone" class="text-blue-600 hover:underline">
+                    {{ doctorProfile.officePhone || '—' }}
+                  </a>
+                </div>
+              </div>
+              <!-- Other Specialties -->
+              @if (doctorProfile.otherSpecialties) {
+                <p-divider [layout]="'horizontal'"></p-divider>
+                <div class="px-4 py-2">
+                  <label
+                    class="block text-sm font-medium mb-2"
+                    style="color: var(--surface-400)"
+                    jhiTranslate="gdpApp.doctorProfile.otherSpecialties"
+                  >
+                    Other Specialties
+                  </label>
+                  <p class="leading-relaxed" style="color: var(--surface-600)">{{ doctorProfile.otherSpecialties }}</p>
+                </div>
+              }
+            </div>
 
-        <dl class="row-md jh-entity-details">
-          <dt><span jhiTranslate="global.field.id">ID</span></dt>
-          <dd>
-            <span>{{ doctorProfileRef.id }}</span>
-          </dd>
-          <dt><span jhiTranslate="gdpApp.doctorProfile.specialty">Specialty</span></dt>
-          <dd>
-            <span>{{ doctorProfileRef.specialty }}</span>
-          </dd>
-          <dt><span jhiTranslate="gdpApp.doctorProfile.licenseNumber">License Number</span></dt>
-          <dd>
-            <span>{{ doctorProfileRef.licenseNumber }}</span>
-          </dd>
-          <dt><span jhiTranslate="gdpApp.doctorProfile.university">University</span></dt>
-          <dd>
-            <span>{{ doctorProfileRef.university }}</span>
-          </dd>
-          <dt><span jhiTranslate="gdpApp.doctorProfile.startDateOfPractice">Start Date Of Practice</span></dt>
-          <dd>
-            <span>{{ doctorProfileRef.startDateOfPractice | formatMediumDate }}</span>
-          </dd>
-          <dt><span jhiTranslate="gdpApp.doctorProfile.user">User</span></dt>
-          <dd>
-            <span>{{ doctorProfileRef.user?.login }}</span>
-          </dd>
-        </dl>
+            <!-- Right: Action Buttons -->
+            <!-- <div class="flex gap-2 mt-4 md:mt-0 md:mb-2">
+              <button
+                type="button"
+                pButton
+                icon="pi pi-arrow-left"
+                [label]="'entity.action.back' | translate"
+                severity="secondary"
+                [outlined]="true"
+                (click)="previousState()"
+              ></button>
 
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-        </button>
+              @if (canVerify()) {
+                <button
+                  type="button"
+                  pButton
+                  icon="pi pi-check"
+                  [label]="'gdpApp.doctorProfile.action.verify' | translate"
+                  severity="success"
+                  (click)="openVerifyDialog()"
+                ></button>
+              }
 
-        <button type="button" [routerLink]="['/doctor-profile', doctorProfileRef.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-        </button>
+              <button
+                type="button"
+                pButton
+                icon="pi pi-pencil"
+                [label]="'entity.action.edit' | translate"
+                severity="warning"
+                (click)="openEditDialog()"
+              ></button>
+            </div> -->
+          </div>
+        </div>
       </div>
-    }
-  </div>
+
+      <div class="flex-grow">
+        <!-- TABS -->
+        <p-tabView styleClass="rounded-lg">
+          <!-- Tab 1: Professional Info -->
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+              <div class="flex items-center gap-2">
+                <i class="pi pi-briefcase"></i>
+                <span jhiTranslate="gdpApp.doctorProfile.detail.tab.professional">Professional Information</span>
+              </div>
+            </ng-template>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+              <!-- Medical License -->
+              <div>
+                <label
+                  class="block text-sm font-medium mb-1"
+                  style="color: var(--surface-400)"
+                  jhiTranslate="gdpApp.doctorProfile.medicalLicenseNumber"
+                >
+                  Medical License Number
+                </label>
+                <div class="text-lg font-semibold">{{ doctorProfile.medicalLicenseNumber }}</div>
+              </div>
+
+              <!-- Code Clinic (Copyable) -->
+              <div>
+                <label
+                  class="block text-sm font-medium mb-1"
+                  style="color: var(--surface-400)"
+                  jhiTranslate="gdpApp.doctorProfile.codeClinic"
+                >
+                  Code Clinic
+                </label>
+                <div class="flex items-center gap-2">
+                  <span class="text-lg font-semibold font-mono">{{ doctorProfile.codeClinic }}</span>
+                  <button
+                    type="button"
+                    pButton
+                    icon="pi pi-copy"
+                    class="p-button-rounded p-button-text p-button-sm"
+                    [pTooltip]="'gdpApp.doctorProfile.detail.copy' | translate"
+                    (click)="copyToClipboard(doctorProfile.codeClinic)"
+                  ></button>
+                </div>
+              </div>
+
+              <!-- University -->
+              <div>
+                <label
+                  class="block text-sm font-medium mb-1"
+                  style="color: var(--surface-400)"
+                  jhiTranslate="gdpApp.doctorProfile.university"
+                >
+                  University
+                </label>
+                <div class="text-lg">{{ doctorProfile.university || '—' }}</div>
+              </div>
+
+              <!-- Graduation Year -->
+              <div>
+                <label
+                  class="block text-sm font-medium mb-1"
+                  style="color: var(--surface-400)"
+                  jhiTranslate="gdpApp.doctorProfile.graduationYear"
+                >
+                  Graduation Year
+                </label>
+                <div class="text-lg">{{ doctorProfile.graduationYear || '—' }}</div>
+              </div>
+
+              <!-- Start Date + Experience -->
+              <div>
+                <label
+                  class="block text-sm font-medium mb-1"
+                  style="color: var(--surface-400)"
+                  jhiTranslate="gdpApp.doctorProfile.startDateOfPractice"
+                >
+                  Start Date of Practice
+                </label>
+                <div class="text-lg">
+                  {{ doctorProfile.startDateOfPractice | formatMediumDate }}
+                  <span class="text-sm ml-2" style="color: var(--surface-600)">
+                    ({{ getYearsOfExperience() }} {{ 'gdpApp.doctorProfile.detail.yearsExperience' | translate }})
+                  </span>
+                </div>
+              </div>
+
+              <!-- Verification Status -->
+              <div>
+                <label
+                  class="block text-sm font-medium mb-1"
+                  style="color: var(--surface-400)"
+                  jhiTranslate="gdpApp.doctorProfile.isVerified"
+                >
+                  Verification Status
+                </label>
+                <div class="flex items-center gap-2">
+                  @if (doctorProfile.isVerified) {
+                    <i class="pi pi-check-circle text-green-500 text-xl"></i>
+                    <span class="text-lg">{{ 'gdpApp.doctorProfile.detail.verified' | translate }}</span>
+                    @if (doctorProfile.verifiedAt) {
+                      <span class="text-sm" style="color: var(--surface-600)">({{ doctorProfile.verifiedAt | formatMediumDatetime }})</span>
+                    }
+                  } @else {
+                    <i class="pi pi-times-circle text-red-500 text-xl"></i>
+                    <span class="text-lg">{{ 'gdpApp.doctorProfile.detail.notVerified' | translate }}</span>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <p-divider></p-divider>
+
+            <!-- Bio -->
+            @if (doctorProfile.bio) {
+              <div class="px-4 py-2">
+                <label class="block text-sm font-medium mb-2" style="color: var(--surface-400)" jhiTranslate="gdpApp.doctorProfile.bio">
+                  Biography
+                </label>
+                <p class="leading-relaxed whitespace-pre-wrap" style="color: var(--surface-600)">{{ doctorProfile.bio }}</p>
+              </div>
+
+              <p-divider></p-divider>
+            }
+
+            <!-- Spoken Languages -->
+            <div class="px-4 py-2">
+              <label
+                class="block text-sm font-medium mb-2"
+                style="color: var(--surface-400)"
+                jhiTranslate="gdpApp.doctorProfile.spokenLanguages"
+              >
+                Spoken Languages
+              </label>
+              <div class="flex flex-wrap gap-2">
+                @for (language of getSpokenLanguagesArray(); track language) {
+                  <p-chip [label]="language"></p-chip>
+                } @empty {
+                  <span style="color: var(--surface-500)">—</span>
+                }
+              </div>
+            </div>
+          </p-tabPanel>
+
+          <!-- Tab 2: Practice & Fees -->
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+              <div class="flex items-center gap-2">
+                <i class="pi pi-building"></i>
+                <span jhiTranslate="gdpApp.doctorProfile.detail.tab.practice">Practice & Fees</span>
+              </div>
+            </ng-template>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+              <!-- Consultation Fee -->
+              <div>
+                <label
+                  class="block text-sm font-medium mb-1"
+                  style="color: var(--surface-400)"
+                  jhiTranslate="gdpApp.doctorProfile.consultationFee"
+                >
+                  Consultation Fee
+                </label>
+                <div class="text-xl font-bold text-green-600">
+                  @if (doctorProfile.consultationFee) {
+                    {{ doctorProfile.consultationFee | currency: 'USD' }}
+                  } @else {
+                    <span class="" style="color: var(--surface-400)">—</span>
+                  }
+                </div>
+              </div>
+
+              <!-- Teleconsultation Fee -->
+              <div>
+                <label
+                  class="block text-sm font-medium mb-1"
+                  style="color: var(--surface-400)"
+                  jhiTranslate="gdpApp.doctorProfile.teleconsultationFee"
+                >
+                  Teleconsultation Fee
+                </label>
+                <div class="text-xl font-bold text-blue-600">
+                  @if (doctorProfile.teleconsultationFee) {
+                    {{ doctorProfile.teleconsultationFee | currency: 'USD' }}
+                  } @else {
+                    <span class="" style="color: var(--surface-400)">—</span>
+                  }
+                </div>
+              </div>
+
+              <!-- Consultation Duration -->
+              <div>
+                <label
+                  class="block text-sm font-medium mb-1"
+                  style="color: var(--surface-400)"
+                  jhiTranslate="gdpApp.doctorProfile.consultationDurationMinutes"
+                >
+                  Consultation Duration
+                </label>
+                <div class="text-lg">
+                  {{ doctorProfile.consultationDurationMinutes }} {{ 'gdpApp.doctorProfile.detail.minutes' | translate }}
+                </div>
+              </div>
+
+              <!-- Accepting New Patients -->
+              <div>
+                <label
+                  class="block text-sm font-medium mb-1"
+                  style="color: var(--surface-400)"
+                  jhiTranslate="gdpApp.doctorProfile.acceptingNewPatients"
+                >
+                  Accepting New Patients
+                </label>
+                <div class="flex items-center gap-2">
+                  @if (doctorProfile.acceptingNewPatients) {
+                    <i class="pi pi-check-circle text-green-500 text-2xl"></i>
+                    <span class="text-lg">{{ 'global.yes' | translate }}</span>
+                  } @else {
+                    <i class="pi pi-times-circle text-red-500 text-2xl"></i>
+                    <span class="text-lg">{{ 'global.no' | translate }}</span>
+                  }
+                </div>
+              </div>
+
+              <!-- Teleconsultation -->
+              <div>
+                <label
+                  class="block text-sm font-medium mb-1"
+                  style="color: var(--surface-400)"
+                  jhiTranslate="gdpApp.doctorProfile.allowsTeleconsultation"
+                >
+                  Allows Teleconsultation
+                </label>
+                <div class="flex items-center gap-2">
+                  @if (doctorProfile.allowsTeleconsultation) {
+                    <i class="pi pi-check-circle text-green-500 text-2xl"></i>
+                    <span class="text-lg">{{ 'global.yes' | translate }}</span>
+                  } @else {
+                    <i class="pi pi-times-circle text-red-500 text-2xl"></i>
+                    <span class="text-lg">{{ 'global.no' | translate }}</span>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <p-divider></p-divider>
+
+            <!-- Contact Information -->
+            <div class="px-4 py-2">
+              <h3 class="text-lg font-semibold mb-4" jhiTranslate="gdpApp.doctorProfile.detail.contactInfo">Contact Information</h3>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Office Phone -->
+                <!-- <div>
+                  <label class="block text-sm font-medium mb-1" style="color: var(--surface-400)" jhiTranslate="gdpApp.doctorProfile.officePhone">
+                    Office Phone
+                  </label>
+                  <div class="flex items-center gap-2">
+                    <i class="pi pi-phone" style="color: var(--surface-400)"></i>
+                    <a [href]="'tel:' + doctorProfile.officePhone" class="text-blue-600 hover:underline">
+                      {{ doctorProfile.officePhone || '—' }}
+                    </a>
+                  </div>
+                </div> -->
+
+                <!-- Website -->
+                <div>
+                  <label
+                    class="block text-sm font-medium mb-1"
+                    style="color: var(--surface-400)"
+                    jhiTranslate="gdpApp.doctorProfile.websiteUrl"
+                  >
+                    Website
+                  </label>
+                  <div class="flex items-center gap-2">
+                    <i class="pi pi-globe" style="color: var(--surface-400)"></i>
+                    @if (doctorProfile.websiteUrl) {
+                      <a [href]="doctorProfile.websiteUrl" target="_blank" class="text-blue-600 hover:underline">
+                        {{ doctorProfile.websiteUrl }}
+                      </a>
+                    } @else {
+                      <span>—</span>
+                    }
+                  </div>
+                </div>
+
+                <!-- Office Address -->
+                <div class="md:col-span-2">
+                  <label
+                    class="block text-sm font-medium mb-1"
+                    style="color: var(--surface-400)"
+                    jhiTranslate="gdpApp.doctorProfile.officeAddress"
+                  >
+                    Office Address
+                  </label>
+                  <div class="flex items-start gap-2">
+                    <i class="pi pi-map-marker" style="color: var(--surface-400)"></i>
+                    <p class="whitespace-pre-wrap" style="color: var(--surface-600)">{{ doctorProfile.officeAddress || '—' }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </p-tabPanel>
+
+          <!-- Tab 3: Administrative (Secured) -->
+          @if (canViewAdministrative()) {
+            <p-tabPanel>
+              <ng-template pTemplate="header">
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-lock"></i>
+                  <span jhiTranslate="gdpApp.doctorProfile.detail.tab.administrative">Administrative</span>
+                </div>
+              </ng-template>
+
+              <div class="p-4">
+                <div class="bg-yellow-50 border border-yellow-200 rounded p-3 mb-4">
+                  <div class="flex items-center gap-2 text-yellow-800">
+                    <i class="pi pi-exclamation-triangle"></i>
+                    <span jhiTranslate="gdpApp.doctorProfile.detail.sensitiveInfo"
+                      >This section contains sensitive information. Handle with care.</span
+                    >
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <!-- NIF -->
+                  <div>
+                    <label class="block text-sm font-medium mb-1" style="color: var(--surface-400)" jhiTranslate="gdpApp.doctorProfile.nif">
+                      NIF
+                    </label>
+                    <div class="text-lg font-mono">{{ doctorProfile.nif || '—' }}</div>
+                  </div>
+
+                  <!-- NINU -->
+                  <div>
+                    <label
+                      class="block text-sm font-medium mb-1"
+                      style="color: var(--surface-400)"
+                      jhiTranslate="gdpApp.doctorProfile.ninu"
+                    >
+                      NINU
+                    </label>
+                    <div class="text-lg font-mono">{{ doctorProfile.ninu || '—' }}</div>
+                  </div>
+
+                  <!-- UID -->
+                  <div>
+                    <label class="block text-sm font-medium mb-1" style="color: var(--surface-400)" jhiTranslate="gdpApp.doctorProfile.uid">
+                      UID
+                    </label>
+                    <div class="flex items-center gap-2">
+                      <span class="text-sm font-mono" style="color: var(--surface-600)">{{ doctorProfile.uid }}</span>
+                      <button
+                        type="button"
+                        pButton
+                        icon="pi pi-copy"
+                        class="p-button-rounded p-button-text p-button-sm"
+                        [pTooltip]="'gdpApp.doctorProfile.detail.copy' | translate"
+                        (click)="copyToClipboard(doctorProfile.uid)"
+                      ></button>
+                    </div>
+                  </div>
+
+                  <!-- Version -->
+                  <div>
+                    <label
+                      class="block text-sm font-medium mb-1"
+                      style="color: var(--surface-400)"
+                      jhiTranslate="gdpApp.doctorProfile.version"
+                    >
+                      Version
+                    </label>
+                    <div class="text-lg">{{ doctorProfile.version }}</div>
+                  </div>
+                </div>
+
+                <p-divider></p-divider>
+
+                <!-- Audit Info -->
+                <div>
+                  <h3 class="text-lg font-semibold mb-3" jhiTranslate="gdpApp.doctorProfile.detail.auditInfo">Audit Information</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm" style="color: var(--surface-600)">
+                    <div>
+                      <span class="font-medium" jhiTranslate="gdpApp.doctorProfile.detail.createdBy">Created By:</span>
+                      {{ doctorProfile.user?.login || '—' }}
+                    </div>
+                    <!-- <div>
+                      <span class="font-medium" jhiTranslate="gdpApp.doctorProfile.detail.createdDate">Created Date:</span>
+                      {{ doctorProfile.user?.createdDate | formatMediumDatetime }}
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+            </p-tabPanel>
+          }
+        </p-tabView>
+      </div>
+    </div>
+  } @else {
+    <div class="flex justify-center items-center h-screen">
+      <div class="text-center">
+        <i class="pi pi-exclamation-triangle text-6xl mb-4" style="color: var(--surface-300)"></i>
+        <p class="text-xl" jhiTranslate="gdpApp.doctorProfile.detail.notFound" style="color: var(--surface-600)">
+          Doctor profile not found
+        </p>
+      </div>
+    </div>
+  }
 </div>

@@ -1,0 +1,22 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" lang="en">
+  <head>
+    <title th:text="#{email.approval.title}">Doctor Profile Approved</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="shortcut icon" href="../../static/images/favicon.ico" th:href="@{|${baseUrl}/favicon.ico|}" />
+  </head>
+  <body>
+    <p th:text="#{email.approval.greeting(${user.login})}">Dear Dr.</p>
+    <p th:text="#{email.approval.text1}">Your doctor profile has been approved!</p>
+    <p th:text="#{email.approval.text2}">You can now access the system and start managing your appointments.</p>
+    <p>
+      <strong th:text="#{email.approval.codeClinic}">Your Clinic Code:</strong>
+      <span th:text="${doctorProfile.codeClinic}">CODE</span>
+    </p>
+    <p>
+      <span th:text="#{email.approval.text3}">Kind regards,</span>
+      <br />
+      <em th:text="#{email.signature}">The Team.</em>
+    </p>
+  </body>
+</html>

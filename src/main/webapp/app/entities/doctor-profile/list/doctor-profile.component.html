@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <h2 id="page-heading" data-cy="DoctorProfileHeading">
     <span jhiTranslate="gdpApp.doctorProfile.home.title">DoctorProfiles</span>
 
@@ -24,6 +24,8 @@
 
   <jhi-alert></jhi-alert>
 
+  <jhi-filter [filters]="filters"></jhi-filter>
+
   @if (doctorProfiles?.length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span jhiTranslate="gdpApp.doctorProfile.home.notFound">Aucun Doctor Profile trouvé</span>
@@ -42,16 +44,72 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="specialty">
+            <th scope="col" jhiSortBy="codeClinic">
               <div class="d-flex">
-                <span jhiTranslate="gdpApp.doctorProfile.specialty">Specialty</span>
+                <span jhiTranslate="gdpApp.doctorProfile.codeClinic">Code Clinic</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="licenseNumber">
+            <th scope="col" jhiSortBy="uid">
               <div class="d-flex">
-                <span jhiTranslate="gdpApp.doctorProfile.licenseNumber">License Number</span>
+                <span jhiTranslate="gdpApp.doctorProfile.uid">Uid</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="medicalLicenseNumber">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.medicalLicenseNumber">Medical License Number</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="firstName">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.firstName">First Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastName">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.lastName">Last Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="birthDate">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.birthDate">Birth Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="gender">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.gender">Gender</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="bloodType">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.bloodType">Blood Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="primarySpecialty">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.primarySpecialty">Primary Specialty</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="otherSpecialties">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.otherSpecialties">Other Specialties</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -63,9 +121,142 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="graduationYear">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.graduationYear">Graduation Year</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="startDateOfPractice">
               <div class="d-flex">
                 <span jhiTranslate="gdpApp.doctorProfile.startDateOfPractice">Start Date Of Practice</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="consultationDurationMinutes">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.consultationDurationMinutes">Consultation Duration Minutes</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="acceptingNewPatients">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.acceptingNewPatients">Accepting New Patients</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="allowsTeleconsultation">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.allowsTeleconsultation">Allows Teleconsultation</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="consultationFee">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.consultationFee">Consultation Fee</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="teleconsultationFee">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.teleconsultationFee">Teleconsultation Fee</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="bio">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.bio">Bio</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="spokenLanguages">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.spokenLanguages">Spoken Languages</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="websiteUrl">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.websiteUrl">Website Url</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="officePhone">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.officePhone">Office Phone</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="officeAddress">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.officeAddress">Office Address</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="status">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.status">Status</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="isVerified">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.isVerified">Is Verified</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="verifiedAt">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.verifiedAt">Verified At</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="nif">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.nif">Nif</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="ninu">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.ninu">Ninu</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="averageRating">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.averageRating">Average Rating</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="reviewCount">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.reviewCount">Review Count</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="version">
+              <div class="d-flex">
+                <span jhiTranslate="gdpApp.doctorProfile.version">Version</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -85,10 +276,83 @@
               <td>
                 <a [routerLink]="['/doctor-profile', doctorProfile.id, 'view']">{{ doctorProfile.id }}</a>
               </td>
-              <td>{{ doctorProfile.specialty }}</td>
-              <td>{{ doctorProfile.licenseNumber }}</td>
+              <td>{{ doctorProfile.codeClinic }}</td>
+              <td>{{ doctorProfile.uid }}</td>
+              <td>{{ doctorProfile.medicalLicenseNumber }}</td>
+              <td>{{ doctorProfile.firstName }}</td>
+              <td>{{ doctorProfile.lastName }}</td>
+              <td>{{ doctorProfile.birthDate | formatMediumDate }}</td>
+              <td [jhiTranslate]="'gdpApp.Gender.' + (doctorProfile.gender ?? 'null')">
+                {{ { null: '', MALE: 'MALE', FEMALE: 'FEMALE', OTHER: 'OTHER' }[doctorProfile.gender ?? 'null'] }}
+              </td>
+              <td [jhiTranslate]="'gdpApp.BloodType.' + (doctorProfile.bloodType ?? 'null')">
+                {{
+                  {
+                    null: '',
+                    A_POS: 'A_POS',
+                    A_NEG: 'A_NEG',
+                    B_POS: 'B_POS',
+                    B_NEG: 'B_NEG',
+                    AB_POS: 'AB_POS',
+                    AB_NEG: 'AB_NEG',
+                    O_POS: 'O_POS',
+                    O_NEG: 'O_NEG',
+                    UNKNOWN: 'UNKNOWN',
+                  }[doctorProfile.bloodType ?? 'null']
+                }}
+              </td>
+              <td [jhiTranslate]="'gdpApp.MedicalSpecialty.' + (doctorProfile.primarySpecialty ?? 'null')">
+                {{
+                  {
+                    null: '',
+                    GENERAL_PRACTITIONER: 'GENERAL_PRACTITIONER',
+                    CARDIOLOGIST: 'CARDIOLOGIST',
+                    DERMATOLOGIST: 'DERMATOLOGIST',
+                    PEDIATRICIAN: 'PEDIATRICIAN',
+                    GYNECOLOGIST: 'GYNECOLOGIST',
+                    NEUROLOGIST: 'NEUROLOGIST',
+                    ORTHOPEDIST: 'ORTHOPEDIST',
+                    DENTIST: 'DENTIST',
+                    OPHTHALMOLOGIST: 'OPHTHALMOLOGIST',
+                    PSYCHIATRIST: 'PSYCHIATRIST',
+                    SURGEON: 'SURGEON',
+                    OTHER: 'OTHER',
+                  }[doctorProfile.primarySpecialty ?? 'null']
+                }}
+              </td>
+              <td>{{ doctorProfile.otherSpecialties }}</td>
               <td>{{ doctorProfile.university }}</td>
+              <td>{{ doctorProfile.graduationYear }}</td>
               <td>{{ doctorProfile.startDateOfPractice | formatMediumDate }}</td>
+              <td>{{ doctorProfile.consultationDurationMinutes }}</td>
+              <td>{{ doctorProfile.acceptingNewPatients }}</td>
+              <td>{{ doctorProfile.allowsTeleconsultation }}</td>
+              <td>{{ doctorProfile.consultationFee }}</td>
+              <td>{{ doctorProfile.teleconsultationFee }}</td>
+              <td>{{ doctorProfile.bio }}</td>
+              <td>{{ doctorProfile.spokenLanguages }}</td>
+              <td>{{ doctorProfile.websiteUrl }}</td>
+              <td>{{ doctorProfile.officePhone }}</td>
+              <td>{{ doctorProfile.officeAddress }}</td>
+              <td [jhiTranslate]="'gdpApp.DoctorStatus.' + (doctorProfile.status ?? 'null')">
+                {{
+                  {
+                    null: '',
+                    PENDING_APPROVAL: 'PENDING_APPROVAL',
+                    ACTIVE: 'ACTIVE',
+                    ON_LEAVE: 'ON_LEAVE',
+                    SUSPENDED: 'SUSPENDED',
+                    RETIRED: 'RETIRED',
+                  }[doctorProfile.status ?? 'null']
+                }}
+              </td>
+              <td>{{ doctorProfile.isVerified }}</td>
+              <td>{{ doctorProfile.verifiedAt | formatMediumDatetime }}</td>
+              <td>{{ doctorProfile.nif }}</td>
+              <td>{{ doctorProfile.ninu }}</td>
+              <td>{{ doctorProfile.averageRating }}</td>
+              <td>{{ doctorProfile.reviewCount }}</td>
+              <td>{{ doctorProfile.version }}</td>
               <td>
                 {{ doctorProfile.user?.login }}
               </td>
@@ -116,4 +380,432 @@
       </table>
     </div>
   }
+  @if (doctorProfiles && doctorProfiles.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div> -->
+<div class="card">
+  <p-toolbar>
+    <div class="p-toolbar-group-left">
+      <!-- Zone B: Search and Filters -->
+      <div class="flex items-center search-container">
+        <!-- Status Filter -->
+        <p-dropdown
+          [options]="statusOptions"
+          [(ngModel)]="selectedStatus"
+          optionLabel="label"
+          optionValue="value"
+          [placeholder]="'gdpApp.doctorProfile.filter.status' | translate"
+          [showClear]="true"
+          (onChange)="onFilterChange()"
+          styleClass="w-48 text-sm border-0 filter-dropdown"
+          class="filter-dropdown"
+        ></p-dropdown>
+        <p-divider layout="vertical" class="divider-v" />
+        <!-- Specialty Filter -->
+        <p-dropdown
+          [options]="specialtyOptions"
+          [(ngModel)]="selectedSpecialty"
+          optionLabel="label"
+          optionValue="value"
+          [placeholder]="'gdpApp.doctorProfile.filter.specialty' | translate"
+          [showClear]="true"
+          (onChange)="onFilterChange()"
+          styleClass="w-56 text-sm border-0 filter-dropdown"
+          class="filter-dropdown"
+        ></p-dropdown>
+        <p-divider layout="vertical" class="divider-v" />
+        <!-- Global Search -->
+        <p-inputGroup styleClass="w-72">
+          <input
+            type="text"
+            pInputText
+            [(ngModel)]="globalSearchTerm"
+            [placeholder]="'gdpApp.doctorProfile.filter.search' | translate"
+            (keyup.enter)="onSearch()"
+            class="flex-grow border-0 bg-transparent text-sm focus:outline-none focus:ring-0"
+          />
+          <!-- Clear Button -->
+          <p-button
+            (click)="clearSearch()"
+            size="small"
+            styleClass="p-button-text"
+            icon="pi pi-times"
+            [pTooltip]="'gdpApp.labTestCatalog.clearSearchLabel' | translate"
+            tooltipPosition="bottom"
+            [severity]="'danger'"
+            [style.visibility]="hasActiveFilters() ? 'visible' : 'hidden'"
+          ></p-button>
+          <button type="button" pButton icon="pi pi-search" (click)="onSearch()" severity="primary"></button>
+        </p-inputGroup>
+      </div>
+    </div>
+
+    <div class="p-toolbar-group-right">
+      <!-- Zone A: Toolbar Actions -->
+      <div class="px-1 py-1 border-b">
+        <div class="flex gap-1 justify-end">
+          <!-- refresh button   severity="help"-->
+          <p-button
+            icon="pi pi-refresh"
+            (click)="load()"
+            [loading]="isLoading"
+            [text]="true"
+            tooltipPosition="bottom"
+            [pTooltip]="'gdpApp.doctorProfile.home.refreshListLabel' | translate"
+          />
+
+          <!-- export button severity="help"-->
+          <p-menu #menu [popup]="true" [model]="menuItems"></p-menu>
+          <p-button
+            icon="pi pi-file-export"
+            (click)="menu.toggle($event)"
+            [text]="true"
+            tooltipPosition="bottom"
+            [pTooltip]="'gdpApp.doctorProfile.action.export' | translate"
+          />
+
+          <p-button
+            icon="pi pi-plus"
+            [label]="'gdpApp.doctorProfile.home.createLabel' | translate"
+            (onClick)="openCreateDialog()"
+            severity="primary"
+            tooltipPosition="bottom"
+            [pTooltip]="'gdpApp.doctorProfile.home.createLabelTooltip' | translate"
+          >
+          </p-button>
+        </div>
+      </div>
+    </div>
+  </p-toolbar>
+
+  <!-- Toolbar & Filters -->
+  <div class="card-body">
+    <!-- <div class="flex flex-wrap justify-between items-center gap-4 mb-4">
+      
+      <div class="flex flex-wrap items-center gap-3">
+       
+        <p-dropdown
+          [options]="statusOptions"
+          [(ngModel)]="selectedStatus"
+          optionLabel="label"
+          optionValue="value"
+          [placeholder]="'gdpApp.doctorProfile.filter.status' | translate"
+          [showClear]="true"
+          (onChange)="onFilterChange()"
+          styleClass="w-48"
+        ></p-dropdown>
+
+       
+        <p-dropdown
+          [options]="specialtyOptions"
+          [(ngModel)]="selectedSpecialty"
+          optionLabel="label"
+          optionValue="value"
+          [placeholder]="'gdpApp.doctorProfile.filter.specialty' | translate"
+          [showClear]="true"
+          (onChange)="onFilterChange()"
+          styleClass="w-56"
+        ></p-dropdown>
+
+       
+        <p-inputGroup styleClass="w-72">
+          <input
+            type="text"
+            pInputText
+            [(ngModel)]="globalSearchTerm"
+            [placeholder]="'gdpApp.doctorProfile.filter.search' | translate"
+            (keyup.enter)="onSearch()"
+          />
+          <button type="button" pButton icon="pi pi-search" (click)="onSearch()" severity="primary"></button>
+        </p-inputGroup>
+      </div>
+
+      
+      <div class="flex items-center gap-2">
+        <button
+          type="button"
+          pButton
+          icon="pi pi-refresh"
+          [label]="'gdpApp.doctorProfile.home.refreshListLabel' | translate"
+          (click)="loadDoctors()"
+          [loading]="loading"
+          severity="secondary"
+          [outlined]="true"
+        ></button>
+
+        <button
+          type="button"
+          pButton
+          icon="pi pi-file-excel"
+          [label]="'gdpApp.doctorProfile.action.export' | translate"
+          (click)="exportToExcel()"
+          severity="success"
+          [outlined]="true"
+        ></button>
+
+        <button
+          type="button"
+          pButton
+          icon="pi pi-plus"
+          [label]="'gdpApp.doctorProfile.home.createLabel' | translate"
+          (click)="openCreateDialog()"
+          severity="primary"
+        ></button>
+      </div>
+    </div> -->
+
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+
+    <!-- Data Table -->
+    <div class="mt-5">
+      <p-table
+        #dt
+        [value]="doctorProfiles ?? []"
+        [lazy]="true"
+        [paginator]="true"
+        [rows]="itemsPerPage"
+        [totalRecords]="totalItems"
+        [loading]="loading"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [showCurrentPageReport]="true"
+        [currentPageReportTemplate]="
+          'gdpApp.doctorProfile.table.pageDescription' | translate: { first: '{first}', last: '{last}', totalRecords: '{totalRecords}' }
+        "
+        (onLazyLoad)="loadPage($event)"
+        [rowHover]="true"
+        dataKey="id"
+        [globalFilterFields]="['firstName', 'lastName', 'email']"
+      >
+        <!-- Empty Message styleClass="p-datatable-gridlines"-->
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="4" class="text-center py-8">
+              <div class="flex flex-col items-center justify-center gap-3">
+                <i class="pi pi-inbox text-6xl" style="color: var(--surface-400)"></i>
+                <p class="text-lg" style="color: var(--surface-600)" jhiTranslate="gdpApp.doctorProfile.home.notFound">
+                  No Doctor Profiles found
+                </p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <!-- Loading Skeleton -->
+        <ng-template pTemplate="loadingbody">
+          @for (i of [1, 2, 3, 4, 5]; track i) {
+            <tr>
+              <td>
+                <div class="flex items-center gap-3">
+                  <p-skeleton shape="circle" size="3rem"></p-skeleton>
+                  <div class="flex-1">
+                    <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+                    <p-skeleton width="5rem"></p-skeleton>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <p-skeleton width="8rem" styleClass="mb-2"></p-skeleton>
+                <p-skeleton width="6rem"></p-skeleton>
+              </td>
+              <td>
+                <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+                <p-skeleton width="8rem"></p-skeleton>
+              </td>
+              <td>
+                <div class="flex gap-2">
+                  <p-skeleton width="2rem" height="2rem"></p-skeleton>
+                  <p-skeleton width="2rem" height="2rem"></p-skeleton>
+                  <p-skeleton width="2rem" height="2rem"></p-skeleton>
+                </div>
+              </td>
+            </tr>
+          }
+        </ng-template>
+
+        <!-- Table Header -->
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="firstName" style="min-width: 250px">
+              <div class="flex items-center">
+                <span jhiTranslate="gdpApp.doctorProfile.column.doctor">Doctor</span>
+                <p-sortIcon field="firstName"></p-sortIcon>
+              </div>
+            </th>
+            <th pSortableColumn="primarySpecialty" style="min-width: 200px">
+              <div class="flex items-center">
+                <span jhiTranslate="gdpApp.doctorProfile.column.professionalInfo">Professional Info</span>
+                <p-sortIcon field="primarySpecialty"></p-sortIcon>
+              </div>
+            </th>
+            <th>
+              <span jhiTranslate="gdpApp.doctorProfile.column.contact">Contact</span>
+            </th>
+            <th class="text-end">
+              <!-- <span jhiTranslate="gdpApp.doctorProfile.column.actions">Actions</span> -->
+            </th>
+          </tr>
+        </ng-template>
+
+        <!-- Table Body -->
+        <ng-template pTemplate="body" let-doctorProfile>
+          <tr>
+            <!-- Doctor Column -->
+            <td>
+              <div class="flex items-center gap-3">
+                <p-avatar
+                  [image]="doctorProfile.user?.imageUrl || 'content/images/jhipster_family_member_1_head-192.png'"
+                  shape="circle"
+                  size="large"
+                ></p-avatar>
+                <div class="">
+                  <div class="font-bold text-lg">
+                    <span>{{ doctorProfile.firstName }} {{ doctorProfile.lastName.toUpperCase() }}</span>
+                  </div>
+                  <div>
+                    <p-tag
+                      [value]="getStatusLabel(doctorProfile.status)"
+                      [severity]="getStatusSeverity(doctorProfile.status)"
+                      [rounded]="true"
+                    ></p-tag>
+                    <span class="text-sm font-medium" style="color: var(--surface-500)">
+                      {{ doctorProfile.codeClinic }}
+                    </span>
+                  </div>
+                  <!--  -->
+                </div>
+              </div>
+            </td>
+
+            <!-- Professional Info Column -->
+            <td>
+              <div class="mb-2">
+                <p-tag [value]="getSpecialtyLabel(doctorProfile.primarySpecialty)" severity="info" [rounded]="true"></p-tag>
+              </div>
+              <div class="text-sm" style="color: var(--surface-600)">
+                <i class="pi pi-id-card mr-1"></i>
+                {{ doctorProfile.otherSpecialties }}
+              </div>
+            </td>
+
+            <!-- Contact Column -->
+            <td>
+              <div class="mb-2">
+                <i class="pi pi-envelope mr-2" style="color: var(--surface-600)"></i>
+                <span class="text-sm">{{ doctorProfile.user?.email }}</span>
+              </div>
+              @if (doctorProfile.officePhone) {
+                <div>
+                  <i class="pi pi-phone mr-2" style="color: var(--surface-600)"></i>
+                  <span class="text-sm">{{ doctorProfile.officePhone }}</span>
+                </div>
+              }
+            </td>
+
+            <!-- Actions Column -->
+            <td>
+              <div class="flex gap-2 justify-end">
+                <!-- Verify Button (Only for pending and authorized roles) -->
+                @if (canVerify(doctorProfile)) {
+                  <button
+                    type="button"
+                    pButton
+                    icon="pi pi-check"
+                    class="p-button-outlined p-button-primary"
+                    [pTooltip]="'gdpApp.doctorProfile.action.verify' | translate"
+                    tooltipPosition="top"
+                    (click)="openVerifyDialog(doctorProfile)"
+                  ></button>
+                }
+
+                <!-- Edit Button -->
+                <button
+                  type="button"
+                  pButton
+                  icon="pi pi-pencil"
+                  class="p-button-text p-button-warning"
+                  [pTooltip]="'entity.action.edit' | translate"
+                  tooltipPosition="top"
+                  (click)="openEditDialog(doctorProfile)"
+                ></button>
+
+                <!-- View Button -->
+                <button
+                  type="button"
+                  pButton
+                  icon="pi pi-eye"
+                  class="p-button-text p-button-info"
+                  [pTooltip]="'entity.action.view' | translate"
+                  tooltipPosition="top"
+                  (click)="openDetailDialog(doctorProfile)"
+                ></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
 </div>
+<!-- detail dialog -->
+@if (selectedDoctor) {
+  <p-dialog
+    [(visible)]="displayDetailDialog"
+    [header]="'gdpApp.doctorProfile.detail.title' | translate"
+    [modal]="true"
+    [style]="{ width: '90vw', maxWidth: '1200px' }"
+    [draggable]="false"
+    [resizable]="false"
+    styleClass="p-fluid"
+    (onHide)="closeDetailDialog()"
+  >
+    <ng-template pTemplate="content">
+      <div class="p-4">
+        <jhi-doctor-profile-detail [doctorProfile]="selectedDoctor"></jhi-doctor-profile-detail>
+      </div>
+    </ng-template>
+  </p-dialog>
+}
+
+<!-- Verify Confirmation Dialog -->
+<p-confirmDialog [style]="{ width: '450px' }" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+
+<!-- Create/Edit Dialog -->
+<p-dialog
+  [(visible)]="displayDialog"
+  [header]="dialogTitle"
+  [modal]="true"
+  [style]="{ width: '90vw', maxWidth: '1200px' }"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="p-fluid"
+  (onHide)="closeDialog()"
+>
+  <ng-template pTemplate="content">
+    <div class="p-4">
+      <jhi-doctor-profile-update
+        [doctorUid]="selectedDoctor?.uid ?? ''"
+        [mode]="mode"
+        (saveSuccess)="onDoctorSaved()"
+        (saveSuccess)="onDoctorSaved()"
+      ></jhi-doctor-profile-update>
+    </div>
+  </ng-template>
+</p-dialog>

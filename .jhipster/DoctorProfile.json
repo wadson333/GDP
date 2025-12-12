@@ -3,34 +3,186 @@
     "changelogDate": "20250716190745"
   },
   "applications": "*",
-  "documentation": "Profil professionnel détaillé pour chaque médecin.\\n@encryptedFields licenseNumber",
   "dto": "mapstruct",
   "fields": [
     {
-      "fieldName": "specialty",
+      "fieldName": "codeClinic",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "10"
+    },
+    {
+      "fieldName": "uid",
+      "fieldType": "UUID",
+      "fieldValidateRules": ["unique", "required"]
+    },
+    {
+      "fieldName": "medicalLicenseNumber",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique", "minlength", "maxlength"],
+      "fieldValidateRulesMaxlength": "50",
+      "fieldValidateRulesMinlength": "5"
+    },
+    {
+      "fieldName": "firstName",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "licenseNumber",
+      "fieldName": "lastName",
       "fieldType": "String",
-      "fieldValidateRules": ["required", "unique"]
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "birthDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "gender",
+      "fieldType": "Gender",
+      "fieldValues": "MALE,FEMALE,OTHER"
+    },
+    {
+      "fieldName": "bloodType",
+      "fieldType": "BloodType",
+      "fieldValues": "A_POS,A_NEG,B_POS,B_NEG,AB_POS,AB_NEG,O_POS,O_NEG,UNKNOWN"
+    },
+    {
+      "fieldName": "primarySpecialty",
+      "fieldType": "MedicalSpecialty",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "GENERAL_PRACTITIONER,CARDIOLOGIST,DERMATOLOGIST,PEDIATRICIAN,GYNECOLOGIST,NEUROLOGIST,ORTHOPEDIST,DENTIST,OPHTHALMOLOGIST,PSYCHIATRIST,SURGEON,OTHER"
+    },
+    {
+      "fieldName": "otherSpecialties",
+      "fieldType": "TextBlob"
     },
     {
       "fieldName": "university",
-      "fieldType": "String"
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "100"
+    },
+    {
+      "fieldName": "graduationYear",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["min", "max"],
+      "fieldValidateRulesMax": "2100",
+      "fieldValidateRulesMin": "1950"
     },
     {
       "fieldName": "startDateOfPractice",
       "fieldType": "LocalDate",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "consultationDurationMinutes",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["min", "max", "required"],
+      "fieldValidateRulesMax": "120",
+      "fieldValidateRulesMin": "5"
+    },
+    {
+      "fieldName": "acceptingNewPatients",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "allowsTeleconsultation",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "consultationFee",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "teleconsultationFee",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "bio",
+      "fieldType": "TextBlob"
+    },
+    {
+      "fieldName": "spokenLanguages",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "255"
+    },
+    {
+      "fieldName": "websiteUrl",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "255"
+    },
+    {
+      "fieldName": "officePhone",
+      "fieldType": "String",
+      "fieldValidateRules": ["pattern"],
+      "fieldValidateRulesPattern": "^\\+?[1-9]\\d{1,14}$"
+    },
+    {
+      "fieldName": "officeAddress",
+      "fieldType": "TextBlob"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "DoctorStatus",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "PENDING_APPROVAL,ACTIVE,ON_LEAVE,SUSPENDED,RETIRED"
+    },
+    {
+      "fieldName": "isVerified",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "verifiedAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "nif",
+      "fieldType": "String",
+      "fieldValidateRules": ["unique", "minlength", "maxlength"],
+      "fieldValidateRulesMaxlength": "10",
+      "fieldValidateRulesMinlength": "10"
+    },
+    {
+      "fieldName": "ninu",
+      "fieldType": "String",
+      "fieldValidateRules": ["unique", "minlength", "maxlength"],
+      "fieldValidateRulesMaxlength": "10",
+      "fieldValidateRulesMinlength": "10"
+    },
+    {
+      "fieldName": "averageRating",
+      "fieldType": "Double",
+      "fieldValidateRules": ["min", "max"],
+      "fieldValidateRulesMax": "5",
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "reviewCount",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "version",
+      "fieldType": "Long"
     }
   ],
   "incrementalChangelog": false,
+  "jpaMetamodelFiltering": true,
   "name": "DoctorProfile",
+  "pagination": "pagination",
   "relationships": [
     {
-      "documentation": "Un profil de médecin est lié à un et un seul compte utilisateur.",
       "otherEntityField": "login",
       "otherEntityName": "user",
       "relationshipName": "user",

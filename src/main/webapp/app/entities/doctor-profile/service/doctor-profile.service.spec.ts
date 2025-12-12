@@ -10,7 +10,9 @@ import { DoctorProfileService, RestDoctorProfile } from './doctor-profile.servic
 
 const requireRestSample: RestDoctorProfile = {
   ...sampleWithRequiredData,
+  birthDate: sampleWithRequiredData.birthDate?.format(DATE_FORMAT),
   startDateOfPractice: sampleWithRequiredData.startDateOfPractice?.format(DATE_FORMAT),
+  verifiedAt: sampleWithRequiredData.verifiedAt?.toJSON(),
 };
 
 describe('DoctorProfile Service', () => {
